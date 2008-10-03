@@ -21,8 +21,11 @@ QT4_WRAP_CPP( MOC_SRCS ${HDRS} )
 include( ${CMAKE_BINARY_DIR} )
 
 #| Create the Executable
-add_executable( quillTex ${SRCS} ${MOC_SRCS} )
+add_executable( baulk ${SRCS} ${MOC_SRCS} )
+set( EXECUTABLE_OUTPUT_PATH
+	${PROJECT_BINARY_DIR}/../../bin
+)
 
 #| Link Needed Libraries
-target_link_libraries( quillTex ${QT_LIBRARIES} )
+target_link_libraries( baulk ${QT_LIBRARIES} )
 

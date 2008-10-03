@@ -24,20 +24,20 @@ void handler( QtMsgType type, const char *msg ) {
 	QString log = "";
 	switch ( type ) {
 	case QtDebugMsg:
-		log = tr("<Debug> %1").arg( msg );
-		std::cerr << log.toUtf8() << std::endl;
+		log = QObject::tr("<Debug> %1").arg( msg );
+		std::cerr << log.toUtf8().data() << std::endl;
 		break;
 	case QtWarningMsg:
-		log = tr("<Warning> %1").arg( msg );
-		std::cerr << log.toUtf8() << std::endl;
+		log = QObject::tr("<Warning> %1").arg( msg );
+		std::cerr << log.toUtf8().data() << std::endl;
 		break;
 	case QtCriticalMsg:
-		log = tr("<Critical> %1").arg( msg );
-		std::cerr << log.toUtf8() << std::endl;
+		log = QObject::tr("<Critical> %1").arg( msg );
+		std::cerr << log.toUtf8().data() << std::endl;
 		break;
 	case QtFatalMsg:
-		log = tr("<Fatal> %1").arg( msg );
-		std::cerr << log.toUtf8() << std::endl;
+		log = QObject::tr("<Fatal> %1").arg( msg );
+		std::cerr << log.toUtf8().data() << std::endl;
 		break;
 	}
 }
