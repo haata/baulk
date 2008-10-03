@@ -1,6 +1,13 @@
 // Main - Baulk
 //
-// Baulk - Copyright (C) 2008  Jacob Alexander - (Oct 1)
+// Baulk - Copyright (C) 2008  Jacob Alexander
+//
+//  File:	main.cpp
+//  Author(s):	Jacob Alexander (HaaTa)
+//
+//  Description: 
+//  	First point of entry, which passes to baulk.h. Captures
+//  	all debug output for this instance of Baulk.
 //
 //  Baulk is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by

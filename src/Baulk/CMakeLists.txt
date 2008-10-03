@@ -6,11 +6,13 @@ cmake_minimum_required( VERSION 2.6 )
 
 #| Sources
 set( SRCS
+	./baulk.cpp
         ./main.cpp
 )
 
 #| Headers
 set( HDRS
+	./baulk.h
 )
 
 #| Misc Qt4
