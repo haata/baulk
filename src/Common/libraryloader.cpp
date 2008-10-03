@@ -33,16 +33,27 @@ QStringList LibraryLoader::errorList() const {
 
 // Library Loaders
 bool LibraryLoader::loadLibrary( QString libraryName ) {
-	
-	return true;
+	setFileName( libraryName );
+	bool success = load();
+	if ( !success )
+		allErrors << errorString();
+	return success;
 }
 
 bool LibraryLoader::loadLibrary( QString libraryName, int versionNumber ) {
-	return true;
+	setFileNameAndVersion( libraryName, versionNumber );
+	bool success = load();
+	if ( !success )
+		allErrors << errorString();
+	return success;
 }
 
 bool LibraryLoader::loadLibrary( QString libraryName, QString versionNumber ) {
-	return true;
+	//setLibraryNameAndVersion( libraryName, versionNumber );
+	bool success = load();
+	if ( !success )
+		allErrors << errorString();
+	return success;
 }
 
 // Less Restrictive Symbol Resolver

@@ -27,7 +27,7 @@ include( ${CMAKE_BINARY_DIR} )
 QT4_WRAP_CPP( MOC_SRCS_LL ${HDRS_LL} )
 
 #| Create the Library Loader Library
-add_library( ${LIB_LL} ${SRCS_LL} ${MOC_SRCS_LL} )
+add_library( ${LIB_LL} SHARED ${SRCS_LL} ${MOC_SRCS_LL} )
 
 #| Link Needed Libraries
 target_link_libraries( ${LIB_LL} ${QT_LIBRARIES} )

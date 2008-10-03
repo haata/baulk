@@ -46,6 +46,8 @@ public:
 	void *lrResolve( QString symbol );
 
 private:
+	void updateErrorList();
+
 	QStringList allErrors;
 	QStringList libraryDirs;
 };
