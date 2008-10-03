@@ -1,23 +1,22 @@
-###| CMAKE Baulk |###
+###| CMAKE BUILDNAMEHERE |###
 
 #| Project
-project( baulk )
+project( BUILDNAMEHERE )
 cmake_minimum_required( VERSION 2.6 )
 
 #| Sources
 set( SRCS
-	./baulk.cpp
-        ./main.cpp
+        SOURCESHERE
 )
 
 #| Headers
 set( HDRS
-	./baulk.h
+	HEADERSHERE
 )
 
 #| Executable
 set( EXEC
-	baulk
+	EXECUTABLEHERE
 )
 
 #| Misc Qt4
@@ -29,9 +28,6 @@ include( ${CMAKE_BINARY_DIR} )
 
 #| Create the Executable
 add_executable( ${EXEC} ${SRCS} ${MOC_SRCS} )
-set( EXECUTABLE_OUTPUT_PATH
-	${PROJECT_BINARY_DIR}/../../bin
-)
 
 #| Link Needed Libraries
 target_link_libraries( ${EXEC} ${QT_LIBRARIES} )
