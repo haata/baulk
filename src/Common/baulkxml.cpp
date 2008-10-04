@@ -48,7 +48,7 @@ bool BaulkXML::saveConfig() {
 		output << xmlDoc->toString();
 	}
 	else {
-		qCritical( tr("BaulkXML\n|Could not open config file\n||%1").arg( configFile.fileName() ).toUtf8() );
+		qWarning( tr("BaulkXML\n|Could not open config file\n||%1").arg( configFile.fileName() ).toUtf8() );
 		return false;
 	}
 

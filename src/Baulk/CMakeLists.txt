@@ -20,6 +20,19 @@ set( EXEC
 	baulk
 )
 
+#| Baulk Common Libraries
+include_directories(
+	${PROJECT_BINARY_DIR}/../Common
+	${PROJECT_SOURCE_DIR}/../Common
+)
+set( CMAKE_LIBRARY_PATH
+	${PROJECT_BINARY_DIR}/../Common
+)
+find_library( LIBRARY_LOADER
+	LibraryLoader
+)
+
+
 #| Misc Qt4
 add_definitions( -Wall )
 find_package( Qt4 REQUIRED )
@@ -34,5 +47,8 @@ set( EXECUTABLE_OUTPUT_PATH
 )
 
 #| Link Needed Libraries
-target_link_libraries( ${EXEC} ${QT_LIBRARIES} )
+target_link_libraries( ${EXEC} 
+	${QT_LIBRARIES} 
+	${LIBRARY_LOADER} 
+)
 

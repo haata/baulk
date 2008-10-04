@@ -30,7 +30,10 @@ Baulk::Baulk( QWidget *parent ) : QMainWindow( parent ) {
 	setAttribute( Qt::WA_DeleteOnClose );
 
 	// Setup Controller Instance
-	//setCentralWidget( controller );	
+	LibraryLoader library( this );
+	library.loadLibrary( "BaulkControl" ); // TODO Add Version Control
+	controller = ( (QWidget*(*)( QWidget* )) library.lrResolve("new_widget") )( this ); // TODO Use Correct Symbol
+	setCentralWidget( controller );	
 }
 
 // Window Close Event

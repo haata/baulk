@@ -28,11 +28,16 @@
 #include <QCloseEvent>
 #include <QMainWindow>
 
+#include "libraryloader.h"
+
 class Baulk : public QMainWindow {
 	Q_OBJECT
 
 public:
 	Baulk( QWidget *parent = 0 );
+
+private:
+	QWidget *controller;
 
 protected:
 	virtual void closeEvent( QCloseEvent *event );

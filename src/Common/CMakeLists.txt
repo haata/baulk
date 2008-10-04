@@ -49,14 +49,17 @@ include( ${QT_USE_FILE} )
 include( ${CMAKE_BINARY_DIR} )
 
 
-##| Library Loader
-QT4_WRAP_CPP( MOC_SRCS_LL ${HDRS_LL} )
-add_library( ${LIB_LL} SHARED ${SRCS_LL} ${MOC_SRCS_LL} )
-target_link_libraries( ${LIB_LL} ${QT_LIBRARIES} )
-
-
 ##| BaulkXML
 QT4_WRAP_CPP( MOC_SRCS_BXML ${HDRS_BXML} )
 add_library( ${LIB_BXML} SHARED ${SRCS_BXML} ${MOC_SRCS_BXML} )
 target_link_libraries( ${LIB_BXML} ${QT_LIBRARIES} )
+
+
+##| Library Loader
+QT4_WRAP_CPP( MOC_SRCS_LL ${HDRS_LL} )
+add_library( ${LIB_LL} SHARED ${SRCS_LL} ${MOC_SRCS_LL} )
+target_link_libraries( ${LIB_LL} 
+	${QT_LIBRARIES} 
+	${LIB_BXML}
+)
 

@@ -5,8 +5,8 @@ project( BaulkTOPLEVEL )
 cmake_minimum_required( VERSION 2.6 )
 
 subdirs(
-	Baulk
 	Common
+	Baulk
 	Widgets
 )
 

@@ -26,6 +26,8 @@
 
 #include <iostream>
 
+#include "baulk.h"
+
 // Handles all messages sent by the application
 void handler( QtMsgType type, const char *msg ) {
 	QString log = "";
@@ -53,7 +55,8 @@ int main( int argc, char *argv[] ) {
 	qInstallMsgHandler( handler ); // Message Handler
 	QApplication *app = new QApplication( argc, argv );
 
-	//windows = new MultiWindow;
+	Baulk baulk;
+	baulk.show();
 
 	// Event-Loop	
 	int reTurn = app->exec();
