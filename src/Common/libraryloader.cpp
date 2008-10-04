@@ -22,7 +22,7 @@
 
 // Constructor
 LibraryLoader::LibraryLoader( QObject *parent ) : QLibrary( parent ) {
-	// Determine/Add potential library directories
+	// Determine/Add potential library directories (From XML Config File)
 	// and check if they exist before adding to the list
 }
 
@@ -49,7 +49,7 @@ bool LibraryLoader::loadLibrary( QString libraryName, int versionNumber ) {
 }
 
 bool LibraryLoader::loadLibrary( QString libraryName, QString versionNumber ) {
-	//setLibraryNameAndVersion( libraryName, versionNumber );
+	setFileNameAndVersion( libraryName, versionNumber );
 	bool success = load();
 	if ( !success )
 		allErrors << errorString();
@@ -59,6 +59,9 @@ bool LibraryLoader::loadLibrary( QString libraryName, QString versionNumber ) {
 // Less Restrictive Symbol Resolver
 void *LibraryLoader::lrResolve( QString symbol ) {
 	const char *symbolName = symbol.toAscii().data(); 
-	return resolve( symbolName );
+	void *tmp = resolve( symbolName );
+	if ( allErrors.last() != errorString() )
+		allErrors << errorString();
+	return tmp;
 }
 
