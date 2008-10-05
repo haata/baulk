@@ -65,7 +65,6 @@ exec_program( ${cat_prog}
 	ARGS ${PROJECT_SOURCE_DIR}/../../Common/VERSION 
 	OUTPUT_VARIABLE VERSION 
 )
-message( "AAAA ${VERSION}" )
 set( LIBRARY_VERSION
 	"${VERSION}"
 )
