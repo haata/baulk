@@ -46,7 +46,6 @@ add_definitions( -Wall )
 find_package( Qt4 REQUIRED )
 set( QT_USE_QTNETWORK 1 )
 include( ${QT_USE_FILE} )
-include( ${CMAKE_BINARY_DIR} )
 
 ###| Library Output Location
 set( LIBRARY_OUTPUT_PATH

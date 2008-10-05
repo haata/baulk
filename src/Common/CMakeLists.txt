@@ -46,7 +46,13 @@ add_definitions( -Wall )
 find_package( Qt4 REQUIRED )
 set( QT_USE_QTXML 1 )
 include( ${QT_USE_FILE} )
-include( ${CMAKE_BINARY_DIR} )
+
+###| Library Output - WIN
+if( WIN32 )
+	set( LIBRARY_OUTPUT_PATH
+		${PROJECT_BINARY_DIR}/../../../bin
+	)
+endif( WIN32 )
 
 
 ##| BaulkXML
