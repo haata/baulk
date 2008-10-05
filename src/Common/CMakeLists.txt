@@ -7,17 +7,17 @@ cmake_minimum_required( VERSION 2.6 )
 
 ##| Library Loader
 
-#| Sources - Library Loader
+#| Sources
 set( SRCS_LL
         libraryloader.cpp
 )
 
-#| Headers - Library Loader
+#| Headers
 set( HDRS_LL
 	libraryloader.h
 )
 
-#| Library - Library Loader
+#| Library
 set( LIB_LL
 	LibraryLoader
 )
@@ -25,17 +25,17 @@ set( LIB_LL
 
 ##| BaulkXML
 
-#| Sources - BaulkXML
+#| Sources
 set( SRCS_BXML
         baulkxml.cpp
 )
 
-#| Headers - BaulkXML
+#| Headers
 set( HDRS_BXML
 	baulkxml.h
 )
 
-#| Library - BaulkXML
+#| Library
 set( LIB_BXML
 	BaulkXML
 )

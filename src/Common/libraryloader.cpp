@@ -70,8 +70,12 @@ bool LibraryLoader::loadLibrary( QString libraryName, int versionNumber ) {
 	return success;
 }
 
-bool LibraryLoader::loadLibrary( QString libraryName, QString versionNumber ) {
-	setFileNameAndVersion( determineLibraryPath( libraryName ), versionNumber );
+bool LibraryLoader::loadLibrary( QString libraryName, bool detectVersion, QString versionNumber ) {
+	if ( detectVersion )
+		setFileName( determineLibraryPath( libraryName ) ); // TODO - Implement version detection here
+	else
+		setFileNameAndVersion( determineLibraryPath( libraryName ), versionNumber );
+
 	bool success = load();
 	if ( !success )
 		allErrors << errorString();
@@ -98,3 +102,7 @@ QString LibraryLoader::determineLibraryPath( QString libraryName ) {
 	return "";
 }
 
+// Checks for Baulk Library Existance 
+bool LibraryLoader::exists( QString libraryName ) {
+	return isLibrary( determineLibraryPath( libraryName ) );
+}
