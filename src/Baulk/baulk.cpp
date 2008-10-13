@@ -20,27 +20,40 @@
 
 #include "baulk.h"
 
+#include "client.h" // TODO - REMOVEME
+
 // Constructor
 Baulk::Baulk( QWidget *parent ) : QMainWindow( parent ) {
 	QString serverListenName = "BaulkServ"; // TODO Put in config
 	// Check if Server is already running
-	if ( !InformationServer::serverExists( serverListenName ) )
-		infoServer = new InformationServer( serverListenName, this );
+	if ( !InformationServer::serverExists( serverListenName ) ) // TODO - Disable if flagged in config
+		infoServer = new InformationServer( serverListenName );
+	else
+		qDebug( tr("Baulk\n\t|Information Server is already running\n\t||%1").arg( serverListenName ).toUtf8() );
 
 	// Window Settings
 	setWindowTitle( tr("Baulk - STATIC TITLE - %1").arg( serverListenName ) );
-	setAttribute( Qt::WA_DeleteOnClose );
+
+	InformationClient *client = new InformationClient( serverListenName, this );
+	client->connectToServer();
 
 	// Setup Controller Instance
+	/*
 	LibraryLoader *library = new LibraryLoader( this );
 	library->loadLibrary( "BaulkControl" ); // TODO Add Version Control
 	controller = ( (QWidget*(*)( QWidget* )) library->lrResolve("mainWidget") )( this );
 	setCentralWidget( controller );	
+	*/
 }
 
 // Window Close Event
 void Baulk::closeEvent( QCloseEvent *event ) {
 	//event->ignore();
+	
+	// TODO - Send Event to Controller for quit/save message
+	// 		Use controller infoClient inorder to determine whether or not to kill the server
+	infoServer->terminate();
+		
 	qDebug("Closing");
 	event->accept();
 }

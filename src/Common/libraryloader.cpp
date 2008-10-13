@@ -45,7 +45,7 @@ LibraryLoader::LibraryLoader( QObject *parent ) : QLibrary( parent ) {
 			libraryDirs.removeAt( c );
 
 	if ( libraryDirs.count() < 1 )
-		qCritical( tr("Library Loader\n|No library directories could be found").toUtf8() );
+		qCritical( tr("Library Loader\n\t|No library directories could be found").toUtf8() );
 }
 
 // Error List
@@ -98,7 +98,7 @@ QString LibraryLoader::determineLibraryPath( QString libraryName ) {
 		if ( isLibrary( dir ) )
 			return dir;
 	}
-	qFatal( tr("Library Loader\n|Could not find specified Library\n||%1").arg( libraryName ).toUtf8() );
+	qFatal( tr("Library Loader\n\t|Could not find specified Library\n\t||%1").arg( libraryName ).toUtf8() );
 	return "";
 }
 
