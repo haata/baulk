@@ -46,3 +46,10 @@ void InformationServer::sendBackLinkInfo() {
 	clientConnection->disconnectFromServer();
 }
 
+bool InformationServer::serverExists( QString listen ) {
+	QLocalServer testServer;
+	bool tmp = testServer.listen( listen );
+	testServer.close();
+	return tmp;
+}
+

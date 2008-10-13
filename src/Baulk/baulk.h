@@ -29,6 +29,7 @@
 #include <QMainWindow>
 
 #include "libraryloader.h"
+#include "server.h"
 
 class Baulk : public QMainWindow {
 	Q_OBJECT
@@ -37,6 +38,8 @@ public:
 	Baulk( QWidget *parent = 0 );
 
 private:
+	InformationServer *infoServer;
+
 	QWidget *controller;
 
 protected:

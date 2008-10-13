@@ -9,12 +9,12 @@ cmake_minimum_required( VERSION 2.6 )
 
 #| Sources
 set( SRCS_BS
-        server.cpp
+        ./server.cpp
 )
 
 #| Headers
 set( HDRS_BS
-	server.h
+	./server.h
 )
 
 #| Library
@@ -27,12 +27,12 @@ set( LIB_BS
 
 #| Sources
 set( SRCS_BC
-        client.cpp
+        ./client.cpp
 )
 
 #| Headers
 set( HDRS_BC
-	client.h
+	./client.h
 )
 
 #| Library
@@ -46,11 +46,6 @@ add_definitions( -Wall )
 find_package( Qt4 REQUIRED )
 set( QT_USE_QTNETWORK 1 )
 include( ${QT_USE_FILE} )
-
-###| Library Output Location
-set( LIBRARY_OUTPUT_PATH
-	${PROJECT_BINARY_DIR}/../../../bin/BaulkLibs
-)
 
 ###| Library Versioning
 set( cat_prog cat )
@@ -70,7 +65,7 @@ set( LIBRARY_VERSION
 
 
 ##| Baulk Server
-QT4_WRAP_CPP( MOC_SRCS_BXML ${HDRS_BS} )
+QT4_WRAP_CPP( MOC_SRCS_BS ${HDRS_BS} )
 add_library( ${LIB_BS} SHARED ${SRCS_BS} ${MOC_SRCS_BS} )
 set_target_properties( ${LIB_BS} PROPERTIES VERSION ${LIBRARY_VERSION} )
 target_link_libraries( ${LIB_BS} ${QT_LIBRARIES} )

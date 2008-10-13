@@ -22,19 +22,19 @@
 
 // Constructor
 Baulk::Baulk( QWidget *parent ) : QMainWindow( parent ) {
-	LibraryLoader *library = new LibraryLoader( this );
-	if ( library->exists("BaulkServer") && library->exists("BaulkClient") ) {
-		// TODO - Start Server
-	}
-	
+	QString serverListenName = "BaulkServ"; // TODO Put in config
+	// Check if Server is already running
+	if ( !InformationServer::serverExists( serverListenName ) )
+		infoServer = new InformationServer( serverListenName, this );
+
 	// Window Settings
-	setWindowTitle("Baulk - STATIC TITLE");
+	setWindowTitle( tr("Baulk - STATIC TITLE - %1").arg( serverListenName ) );
 	setAttribute( Qt::WA_DeleteOnClose );
 
 	// Setup Controller Instance
-	library = new LibraryLoader( this );
+	LibraryLoader *library = new LibraryLoader( this );
 	library->loadLibrary( "BaulkControl" ); // TODO Add Version Control
-	controller = ( (QWidget*(*)( QWidget* )) library->lrResolve("new_widget") )( this ); // TODO Use Correct Symbol
+	controller = ( (QWidget*(*)( QWidget* )) library->lrResolve("mainWidget") )( this );
 	setCentralWidget( controller );	
 }
 

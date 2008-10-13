@@ -27,20 +27,16 @@ set( EXEC
 
 #| Baulk Common Libraries
 include_directories(
-	${PROJECT_BINARY_DIR}/../Common
 	${PROJECT_SOURCE_DIR}/../Common
 )
-set( CMAKE_LIBRARY_PATH
-	${PROJECT_BINARY_DIR}/../Common
-)
-find_library( LIBRARY_LOADER
-	LibraryLoader
-)
 
+#| Baulk Information Server Libraries
+include_directories( Server )
 
 #| Misc Qt4
 add_definitions( -Wall )
 find_package( Qt4 REQUIRED )
+set( QT_USE_QTNETWORK 1 )
 include( ${QT_USE_FILE} )
 QT4_WRAP_CPP( MOC_SRCS ${HDRS} )
 
@@ -53,6 +49,7 @@ set( EXECUTABLE_OUTPUT_PATH
 #| Link Needed Libraries
 target_link_libraries( ${EXEC} 
 	${QT_LIBRARIES} 
-	${LIBRARY_LOADER} 
+	LibraryLoader	# From Common
+	BaulkServer	# From Server
 )
 
