@@ -24,7 +24,7 @@ InformationServer::InformationServer( QString listen, QObject *parent ) : QObjec
 	listenSocket = listen;
 	server = new QLocalServer( this );
 	if ( !server->listen( listenSocket ) ) 
-		qCritical( tr("InformationServer\n|Could not open listen socket\n||%1").arg( listenSocket ).toUtf8() );
+		qCritical( tr("InformationServer\n\t|Could not open listen socket\n\t||%1").arg( listenSocket ).toUtf8() );
 
 	connect( server, SIGNAL( newConnection() ), this, SLOT( sendBackLinkInfo() ) );
 }
@@ -33,10 +33,7 @@ void InformationServer::sendBackLinkInfo() {
 	QByteArray block;
 	QDataStream out( &block, QIODevice::WriteOnly );
 	out.setVersion( QDataStream::Qt_4_4 );
-	out << (quint16)0;
 	out << QString("TEST");
-	out.device()->seek(0);
-	out << (quint16)(block.size() - sizeof(quint16));
 	
 	QLocalSocket *clientConnection = server->nextPendingConnection();
 	connect( clientConnection, SIGNAL( disconnected() ), clientConnection, SLOT( deleteLater() ) );
@@ -50,6 +47,12 @@ bool InformationServer::serverExists( QString listen ) {
 	QLocalServer testServer;
 	bool tmp = testServer.listen( listen );
 	testServer.close();
-	return tmp;
+	return !tmp; // tmp returns whether a Server can be started, therefore should return the opposite
 }
 
+bool InformationServer::terminate() {
+	// TODO - Check Connections list before closing
+	server->close();
+
+	return true;
+}

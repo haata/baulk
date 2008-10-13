@@ -41,6 +41,24 @@ set( LIB_BC
 )
 
 
+##| Packet Encoder/Decoder
+
+#| Sources
+set( SRCS_PED
+	./packet.cpp
+)
+
+#| Headers
+set( HDRS_PED
+	./packet.h
+)
+
+#| Library
+set( LIB_PED
+	PacketEncoderDecoder
+)
+
+
 ###| Misc Qt4
 add_definitions( -Wall )
 find_package( Qt4 REQUIRED )
@@ -62,6 +80,13 @@ exec_program( ${cat_prog}
 set( LIBRARY_VERSION
 	"${VERSION}"
 )
+
+
+##| Packet Encoder/Decoder
+QT4_WRAP_CPP( MOD_SRCS_PED ${HDRS_PED} )
+add_library( ${LIB_PED} SHARED ${SRCS_PED} ${MOC_SRCS_PED} )
+set_target_properties( ${LIB_PED} PROPERTIES VERSION ${LIBRARY_VERSION} )
+target_link_libraries( ${LIB_PED} ${QT_LIBRARIES} )
 
 
 ##| Baulk Server

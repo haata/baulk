@@ -41,6 +41,8 @@ public:
 	// Tests if the Server already exists
 	static bool serverExists( QString listen );
 
+	bool terminate();
+
 private:
 	QLocalServer *server;
 
