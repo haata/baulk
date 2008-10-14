@@ -26,16 +26,27 @@
 Baulk::Baulk( QWidget *parent ) : QMainWindow( parent ) {
 	QString serverListenName = "BaulkServ"; // TODO Put in config
 	// Check if Server is already running
-	if ( !InformationServer::serverExists( serverListenName ) ) // TODO - Disable if flagged in config
-		infoServer = new InformationServer( serverListenName );
+	if ( !InformationServer::serverExists( serverListenName ) ) { // TODO - Disable if flagged in config
+		/*
+		using namespace boost::interprocess;
+		shared_memory_object::remove("BaulkMem");
+		managed_shared_memory segment( create_only, "BaulkMem", 655360 );
+		//infoServer = segment.construct<InformationServer>
+		       ("BaulkInfoServer")
+		       ( serverListenName );
+		int *aaa = segment.construct<int> ("BaulkInt") (5);
+		//shared_memory_object::remove("BaulkMem");
+		qDebug( "%d", *aaa );
+		*/
+	}
 	else
 		qDebug( tr("Baulk\n\t|Information Server is already running\n\t||%1").arg( serverListenName ).toUtf8() );
 
 	// Window Settings
 	setWindowTitle( tr("Baulk - STATIC TITLE - %1").arg( serverListenName ) );
 
-	InformationClient *client = new InformationClient( serverListenName, this );
-	client->connectToServer();
+	//InformationClient *client = new InformationClient( serverListenName, this );
+	//client->connectToServer();
 
 	// Setup Controller Instance
 	/*
@@ -43,6 +54,15 @@ Baulk::Baulk( QWidget *parent ) : QMainWindow( parent ) {
 	library->loadLibrary( "BaulkControl" ); // TODO Add Version Control
 	controller = ( (QWidget*(*)( QWidget* )) library->lrResolve("mainWidget") )( this );
 	setCentralWidget( controller );	
+	*/
+	/*
+	{
+		using namespace boost::interprocess;
+		managed_shared_memory segment( open_only, "BaulkMem" );
+		int *te = segment.find<int>("BaulkInt").first;
+		qDebug( "%d", *te );
+		shared_memory_object::remove("BaulkMem");
+	}
 	*/
 }
 
@@ -52,7 +72,7 @@ void Baulk::closeEvent( QCloseEvent *event ) {
 	
 	// TODO - Send Event to Controller for quit/save message
 	// 		Use controller infoClient inorder to determine whether or not to kill the server
-	infoServer->terminate();
+	//infoServer->terminate();
 		
 	qDebug("Closing");
 	event->accept();

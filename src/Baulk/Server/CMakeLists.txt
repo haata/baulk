@@ -9,6 +9,7 @@ cmake_minimum_required( VERSION 2.6 )
 
 #| Sources
 set( SRCS_BS
+	./main.cpp
         ./server.cpp
 )
 
@@ -20,6 +21,11 @@ set( HDRS_BS
 #| Library
 set( LIB_BS
 	BaulkServer
+)
+
+#| Executable
+set( EXEC_BS
+	baulkServ
 )
 
 
@@ -60,7 +66,7 @@ set( LIB_PED
 
 
 ###| Misc Qt4
-add_definitions( -Wall )
+add_definitions( -Wall -ggdb )
 find_package( Qt4 REQUIRED )
 set( QT_USE_QTNETWORK 1 )
 include( ${QT_USE_FILE} )
@@ -91,6 +97,11 @@ target_link_libraries( ${LIB_PED} ${QT_LIBRARIES} )
 
 ##| Baulk Server
 QT4_WRAP_CPP( MOC_SRCS_BS ${HDRS_BS} )
+add_executable( ${EXEC_BS} ${SRCS_BS} ${MOC_SRCS_BS} )
+target_link_libraries( 	${EXEC_BS} 
+			${QT_LIBRARIES} 
+			${LIB_PED}
+)
 add_library( ${LIB_BS} SHARED ${SRCS_BS} ${MOC_SRCS_BS} )
 set_target_properties( ${LIB_BS} PROPERTIES VERSION ${LIBRARY_VERSION} )
 target_link_libraries( 	${LIB_BS} 

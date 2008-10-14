@@ -26,7 +26,12 @@ InformationServer::InformationServer( QString listen, QObject *parent ) : QObjec
 	if ( !server->listen( listenSocket ) ) 
 		qCritical( tr("InformationServer\n\t|Could not open listen socket\n\t||%1").arg( listenSocket ).toUtf8() );
 
+
 	connect( server, SIGNAL( newConnection() ), this, SLOT( sendBackLinkInfo() ) );
+}
+
+InformationServer::~InformationServer() {
+	terminate();
 }
 
 void InformationServer::sendBackLinkInfo() {
@@ -44,10 +49,11 @@ void InformationServer::sendBackLinkInfo() {
 }
 
 bool InformationServer::serverExists( QString listen ) {
-	QLocalServer testServer;
-	bool tmp = testServer.listen( listen );
-	testServer.close();
-	return !tmp; // tmp returns whether a Server can be started, therefore should return the opposite
+	//QLocalServer testServer;
+	//bool tmp = testServer.listen( listen );
+	//testServer.close();
+	//return !tmp; // tmp returns whether a Server can be started, therefore should return the opposite
+	return false; // tmp returns whether a Server can be started, therefore should return the opposite
 }
 
 bool InformationServer::terminate() {

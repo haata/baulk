@@ -31,6 +31,8 @@
 #include "libraryloader.h"
 #include "server.h"
 
+//#include <boost/interprocess/managed_shared_memory.hpp>
+
 class Baulk : public QMainWindow {
 	Q_OBJECT
 

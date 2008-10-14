@@ -39,6 +39,7 @@ class InformationServer : public QObject {
 
 public:
 	InformationServer( QString listen, QObject *parent = 0 );
+	~InformationServer();
 
 	// Tests if the Server already exists
 	static bool serverExists( QString listen );
