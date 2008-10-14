@@ -28,8 +28,8 @@
 #include <QCloseEvent>
 #include <QMainWindow>
 
-#include "libraryloader.h"
-#include "server.h"
+#include <libraryloader.h>
+#include <server.h>
 
 //#include <boost/interprocess/managed_shared_memory.hpp>
 

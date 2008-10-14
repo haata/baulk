@@ -1,4 +1,4 @@
-// Main - Baulk
+// Main - BaulkServ
 //
 // Baulk - Copyright (C) 2008  Jacob Alexander
 //
@@ -6,8 +6,8 @@
 //  Author(s):	Jacob Alexander (HaaTa)
 //
 //  Description: 
-//  	First point of entry, which passes to baulk.h. Captures
-//  	all debug output for this instance of Baulk.
+//  	Baulk Server daemon.
+//  	Processes all the information sent from the Baulk Clients.
 //
 //  Baulk is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,14 +26,14 @@
 
 #include <handler.h>
 
-#include "baulk.h"
+#include "server.h"
 
 int main( int argc, char *argv[] ) {
 	qInstallMsgHandler( handler ); // Message Handler
 	QApplication *app = new QApplication( argc, argv );
 
-	Baulk baulk;
-	baulk.show();
+	QString listenSocket = "BaulkServ";
+	InformationServer serv( listenSocket );
 
 	// Event-Loop	
 	int reTurn = app->exec();

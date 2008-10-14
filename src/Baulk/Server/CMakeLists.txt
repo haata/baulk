@@ -65,6 +65,11 @@ set( LIB_PED
 )
 
 
+###| Baulk Common Libraries
+include_directories(
+	${PROJECT_SOURCE_DIR}/../../Common
+)
+
 ###| Misc Qt4
 add_definitions( -Wall -ggdb )
 find_package( Qt4 REQUIRED )
