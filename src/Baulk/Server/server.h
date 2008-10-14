@@ -32,6 +32,8 @@
 #include <QLocalSocket>
 #include <QObject>
 
+#include "packet.h"
+
 class InformationServer : public QObject {
 	Q_OBJECT
 

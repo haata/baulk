@@ -29,6 +29,8 @@
 #include <QLocalSocket>
 #include <QObject>
 
+#include "packet.h"
+
 class InformationClient : public QObject {
 	Q_OBJECT
 

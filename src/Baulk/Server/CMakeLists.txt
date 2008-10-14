@@ -83,7 +83,7 @@ set( LIBRARY_VERSION
 
 
 ##| Packet Encoder/Decoder
-QT4_WRAP_CPP( MOD_SRCS_PED ${HDRS_PED} )
+QT4_WRAP_CPP( MOC_SRCS_PED ${HDRS_PED} )
 add_library( ${LIB_PED} SHARED ${SRCS_PED} ${MOC_SRCS_PED} )
 set_target_properties( ${LIB_PED} PROPERTIES VERSION ${LIBRARY_VERSION} )
 target_link_libraries( ${LIB_PED} ${QT_LIBRARIES} )
@@ -93,12 +93,18 @@ target_link_libraries( ${LIB_PED} ${QT_LIBRARIES} )
 QT4_WRAP_CPP( MOC_SRCS_BS ${HDRS_BS} )
 add_library( ${LIB_BS} SHARED ${SRCS_BS} ${MOC_SRCS_BS} )
 set_target_properties( ${LIB_BS} PROPERTIES VERSION ${LIBRARY_VERSION} )
-target_link_libraries( ${LIB_BS} ${QT_LIBRARIES} )
+target_link_libraries( 	${LIB_BS} 
+			${QT_LIBRARIES} 
+			${LIB_PED}
+)
 
 
-##| Library Loader
+##| Baulk Client
 QT4_WRAP_CPP( MOC_SRCS_BC ${HDRS_BC} )
 add_library( ${LIB_BC} SHARED ${SRCS_BC} ${MOC_SRCS_BC} )
 set_target_properties( ${LIB_BC} PROPERTIES VERSION ${LIBRARY_VERSION} )
-target_link_libraries( ${LIB_BC} ${QT_LIBRARIES} )
+target_link_libraries( 	${LIB_BC} 
+			${QT_LIBRARIES}
+			${LIB_PED}
+)
 

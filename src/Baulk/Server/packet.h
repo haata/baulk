@@ -50,6 +50,7 @@
 
 #include <QList>
 #include <QObject>
+#include <QRegExp>
 #include <QStringList>
 
 class Packet : public QObject {
@@ -62,10 +63,67 @@ public:
 	// 	- Note: Each String of data MUST be accompanied with a dataFlag string
 	Packet( QString destinationId, QString senderId, QStringList dataFlags = QStringList(), QStringList data = QStringList(), QObject *parent = 0 );
 
-private:
-	bool redecode;
-	bool reencode;
 
+	// Id Conversion
+	struct PacketIdInformation {
+		int screenId;
+		int windowId;
+	};
+
+	static PacketIdInformation idToInfo( QString id );
+	static QString infoToId( int screenId, int windowId );
+
+
+	// Get/Sets
+	QString packet() const 		{ return packetS; }
+	void setPacket( QString packet ) { 
+		packetS = packet;
+		decode(); 
+	}
+
+	QStringList data() const 	{ return dataS; }
+	void setData( QStringList data ) { 
+		if ( !dataSanityStore( data ) ) 
+			debugOutput(); 			
+		encode(); 
+	}
+
+	QStringList dataFlags() const 	{ return dataFlagsS; }
+	void setDataFlags( QStringList dataFlags ) { 
+		if ( !dataFlagsSanityStore( dataFlags ) )
+			debugOutput(); 		
+		encode(); 
+	}
+
+	QString destinationId() const 	{ return destinationIdS; }
+	void setDestinationId( QString destinationId ) { 
+		if ( !destinationIdSanityStore( destinationId ) )
+			debugOutput(); 	
+		encode(); 
+	}
+
+	QString senderId() const 	{ return senderIdS; }
+	void setSenderId( QString senderId ) { 
+		if ( senderIdSanityStore( senderId ) )
+			debugOutput(); 		
+		encode(); 
+	}
+
+	void setEncode( QString destinationId, QString senderId, QStringList dataFlags, QStringList data ) {
+		QList<bool> success;
+		success << destinationIdSanityStore( destinationId )
+			<< senderIdSanityStore( senderId )
+			<< dataFlagsSanityStore( dataFlags )
+			<< dataSanityStore( data );
+
+		// If a single sanity fails, output debug info
+		for ( int c = 0; c < success.count(); ++c )
+			if ( !success[c] )
+				debugOutput();
+		encode(); 
+	}
+
+private:
 	QString packetS;
 	QString destinationIdS;
 	QString senderIdS;
@@ -78,6 +136,10 @@ private:
 	bool destinationIdSanityStore( QString destinationId );
 	bool senderIdSanityStore( QString senderId );
 
+	QRegExp dataCheck() const { return QRegExp("[:\\|]"); }
+	QRegExp idCheck() const { return QRegExp("^Screen\\{[0-9]*\\}Inc\\{[0-9]*\\}$"); }
+
+	// Called on encode/decode failure
 	void debugOutput();
 
 	void decode();
