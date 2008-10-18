@@ -31,6 +31,7 @@
 #include <QLocalServer>
 #include <QLocalSocket>
 #include <QObject>
+#include <QVector>
 
 #include "packet.h"
 
@@ -54,14 +55,16 @@ private:
 
 	QString listenSocket;
 
+	QVector<QLocalSocket*> clientList;
+
 	void clientRedirect();
+	void outgoingData( QString data );
 	void requestId();
 	void serverRequest();
 
 private slots:
 	void connection();
 	void incomingData();
-	//void outgoingData();
 
 };
 

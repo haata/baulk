@@ -21,27 +21,62 @@
 #include "client.h"
 
 InformationClient::InformationClient( QString call, QObject *parent ) : QObject( parent ) {
+	currentId = 0; // Default Id;
 	serverName = call;
 	socket = new QLocalSocket( this );
 
-	connect( socket, SIGNAL( readyRead() ), this, SLOT( firstServerContact() ) );
+	connect( socket, SIGNAL( readyRead() ), this, SLOT( incomingData() ) );
+}
+
+void InformationClient::clientRequest() {
+	QStringList flags = incomingPacket->dataFlags();
+	QStringList data = incomingPacket->data();
+
+	for ( int c = 0; c < flags.count(); ++c ) {
+		if ( flags[c] == "NewId" ) {
+			int newIdnum = data[c].toInt();
+			if ( newIdnum != 0 ) // toInt defaults to 0 on failure, and 0 will never be an assigned Id 
+				newId( newIdnum );
+		}
+	}
 }
 
 void InformationClient::connectToServer() {	
 	qDebug("READ!");
 }
 
-void InformationClient::firstServerContact() {
+// All Incoming Data goes through here
+void InformationClient::incomingData() {
 	QDataStream in( socket );
 	in.setVersion( QDataStream::Qt_4_4 );
 
 	QString data;
 	in >> data;
+	incomingPacket = new Packet( data, this );
 
-	qDebug( data.toUtf8() );
+	// Only Accept Packets Assigning Id's initially
+	if ( currentId == 0 ) {
+		// Only accept Packets from Server
+		if ( Packet::idToInfo( incomingPacket->senderId() ).windowId == 0 ) {
+			clientRequest();
+			return;
+		}
+	}
+	else {
+	}
+
+	// Invalid Packet
+	qDebug( QString("InformationClient\n\t|Invalid Packet!\n\t\t%1").arg( data ).toUtf8() );
 }
 
-void InformationClient::requestId() {
+void InformationClient::newId( int newIdnum ) {
+	currentId = newIdnum;
+	// TODO emit signal for Controller to determine new Id
+	qDebug( QString("InformationClient\n\t|New Id || %1").arg( currentId ).toUtf8() );
+}
+
+// All Outgoing Data goes through here
+void InformationClient::outgoingData( QString data ) {
 	socket->abort();
 	socket->connectToServer( serverName );
 
@@ -49,14 +84,18 @@ void InformationClient::requestId() {
 	QDataStream out( &block, QIODevice::WriteOnly );
 	out.setVersion( QDataStream::Qt_4_4 );
 
+	out << data;
+
+	socket->write( block );
+	socket->flush();
+}
+
+void InformationClient::requestId() {
 	Packet requestPacket( 	Packet::infoToId( 0, 0 ), 
 				Packet::infoToId( 0, 0 ), 
 				QStringList() << "RequestId", 
 				QStringList() << "True" );
 
-	out << requestPacket.packet();
-
-	socket->write( block );
-	socket->flush();
+	outgoingData( requestPacket.packet() );
 }
 

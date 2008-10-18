@@ -21,6 +21,10 @@
 #include "server.h"
 
 InformationServer::InformationServer( QString listen, QObject *parent ) : QObject( parent ) {
+	// Reserve First Socket
+	QLocalSocket *tmp;
+	clientList.append( tmp );
+
 	listenSocket = listen;
 	server = new QLocalServer( this );
 	if ( !server->listen( listenSocket ) ) 
@@ -36,26 +40,22 @@ InformationServer::~InformationServer() {
 
 void InformationServer::clientRedirect() {
 	qDebug("InformationServer\n\t|Client Request (Server Redirect)");
+
+	QStringList flags = incomingPacket->dataFlags();
+	QStringList data = incomingPacket->data();
+
+	for ( int c = 0; c < flags.count(); ++c ) {
+	/*	if ( flags[c] == "RequestId" ) {
+			if ( data[c] == "True" )
+				requestId();
+		}*/
+	}
 }
 
 void InformationServer::connection() {
-	/*
-	QByteArray block;
-	QDataStream out( &block, QIODevice::WriteOnly );
-	out.setVersion( QDataStream::Qt_4_4 );
-	out << QString("TEST");
-	
-	QLocalSocket *clientConnection = server->nextPendingConnection();
-	connect( clientConnection, SIGNAL( disconnected() ), clientConnection, SLOT( deleteLater() ) );
-
-	clientConnection->write( block );
-	clientConnection->flush();
-	clientConnection->disconnectFromServer();
-	*/
-
 	clientConnection = server->nextPendingConnection();
 	connect( clientConnection, SIGNAL( readyRead() ), this, SLOT( incomingData() ) );
-	//connect( clientConnection, SIGNAL( disconnected() ), clientConnection, SLOT( deleteLater() ) );
+	connect( clientConnection, SIGNAL( disconnected() ), clientConnection, SLOT( deleteLater() ) );
 }
 
 // All Incoming Data goes through here
@@ -84,14 +84,31 @@ void InformationServer::incomingData() {
 	qDebug( QString("InformationServer\n\t|Invalid Packet!\n\t\t%1").arg( data ).toUtf8() );
 }
 
-void InformationServer::requestId() {
-	qDebug("AATT");
+void InformationServer::outgoingData( QString data ) {
 	QByteArray block;
 	QDataStream out( &block, QIODevice::WriteOnly );
 	out.setVersion( QDataStream::Qt_4_4 );
-	out << QString("TESTOUT");
+
+	out << data;
+
 	clientConnection->write( block );
 	clientConnection->flush();
+}
+
+void InformationServer::requestId() {
+	int newId = clientList.count();
+	clientList.append( clientConnection );
+
+	QString destination = Packet::infoToId( 
+		Packet::idToInfo( incomingPacket->senderId() ).screenId, 
+		newId );
+
+	Packet answerPacket(	destination,
+				incomingPacket->destinationId(),
+				QStringList() << "NewId",
+				QStringList() << QString::number( newId ) );
+
+	outgoingData( answerPacket.packet() );
 }
 
 bool InformationServer::serverExists( QString listen ) {

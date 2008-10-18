@@ -43,12 +43,19 @@ public:
 	void requestId();
 
 public slots:
-	void firstServerContact();
+	void incomingData();
 
 private:
+	int currentId;
+
+	Packet *incomingPacket;
+
 	QLocalSocket *socket;
 	QString serverName;
 
+	void clientRequest();
+	void newId( int newId );
+	void outgoingData( QString data );
 };
 
 #endif
