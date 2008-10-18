@@ -28,28 +28,35 @@ InformationClient::InformationClient( QString call, QObject *parent ) : QObject(
 }
 
 void InformationClient::connectToServer() {	
-	socket->abort();
-	socket->connectToServer( serverName );
+	qDebug("READ!");
 }
 
 void InformationClient::firstServerContact() {
-
 	QDataStream in( socket );
 	in.setVersion( QDataStream::Qt_4_4 );
-
-	if ( socket->bytesAvailable() < (int)sizeof(quint16) ) {
-		qDebug("NoByte");
-		return;
-	}
-
-	if ( in.atEnd() ) {
-		qDebug("END!!");
-		return;
-	}
 
 	QString data;
 	in >> data;
 
 	qDebug( data.toUtf8() );
+}
+
+void InformationClient::requestId() {
+	socket->abort();
+	socket->connectToServer( serverName );
+
+	QByteArray block;
+	QDataStream out( &block, QIODevice::WriteOnly );
+	out.setVersion( QDataStream::Qt_4_4 );
+
+	Packet requestPacket( 	Packet::infoToId( 0, 0 ), 
+				Packet::infoToId( 0, 0 ), 
+				QStringList() << "RequestId", 
+				QStringList() << "True" );
+
+	out << requestPacket.packet();
+
+	socket->write( block );
+	socket->flush();
 }
 

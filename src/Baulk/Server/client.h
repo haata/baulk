@@ -25,6 +25,8 @@
 #ifndef __INFORMATIONCLIENT_H
 #define __INFORMATIONCLIENT_H
 
+#include <stdlib.h>
+
 #include <QLocalServer>
 #include <QLocalSocket>
 #include <QObject>
@@ -38,6 +40,7 @@ public:
 	InformationClient( QString call, QObject *parent = 0 );
 
 	void connectToServer();
+	void requestId();
 
 public slots:
 	void firstServerContact();

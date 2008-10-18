@@ -27,14 +27,19 @@ InformationServer::InformationServer( QString listen, QObject *parent ) : QObjec
 		qCritical( tr("InformationServer\n\t|Could not open listen socket\n\t||%1").arg( listenSocket ).toUtf8() );
 
 
-	connect( server, SIGNAL( newConnection() ), this, SLOT( sendBackLinkInfo() ) );
+	connect( server, SIGNAL( newConnection() ), this, SLOT( connection() ) );
 }
 
 InformationServer::~InformationServer() {
 	terminate();
 }
 
-void InformationServer::sendBackLinkInfo() {
+void InformationServer::clientRedirect() {
+	qDebug("InformationServer\n\t|Client Request (Server Redirect)");
+}
+
+void InformationServer::connection() {
+	/*
 	QByteArray block;
 	QDataStream out( &block, QIODevice::WriteOnly );
 	out.setVersion( QDataStream::Qt_4_4 );
@@ -46,6 +51,47 @@ void InformationServer::sendBackLinkInfo() {
 	clientConnection->write( block );
 	clientConnection->flush();
 	clientConnection->disconnectFromServer();
+	*/
+
+	clientConnection = server->nextPendingConnection();
+	connect( clientConnection, SIGNAL( readyRead() ), this, SLOT( incomingData() ) );
+	//connect( clientConnection, SIGNAL( disconnected() ), clientConnection, SLOT( deleteLater() ) );
+}
+
+// All Incoming Data goes through here
+void InformationServer::incomingData() {
+	QDataStream in( clientConnection );
+	in.setVersion( QDataStream::Qt_4_4 );
+	QString data;
+
+	in >> data;
+
+	incomingPacket = new Packet( data, this );
+
+	// Server Request
+	if ( Packet::idToInfo( incomingPacket->destinationId() ).windowId == 0 ) {
+		serverRequest();
+		return;
+	}
+
+	// Client Request
+	if ( Packet::idToInfo( incomingPacket->destinationId() ).windowId > 0 ) {
+		clientRedirect();
+		return;
+	}
+
+	// Invalid Packet
+	qDebug( QString("InformationServer\n\t|Invalid Packet!\n\t\t%1").arg( data ).toUtf8() );
+}
+
+void InformationServer::requestId() {
+	qDebug("AATT");
+	QByteArray block;
+	QDataStream out( &block, QIODevice::WriteOnly );
+	out.setVersion( QDataStream::Qt_4_4 );
+	out << QString("TESTOUT");
+	clientConnection->write( block );
+	clientConnection->flush();
 }
 
 bool InformationServer::serverExists( QString listen ) {
@@ -56,9 +102,24 @@ bool InformationServer::serverExists( QString listen ) {
 	return false; // tmp returns whether a Server can be started, therefore should return the opposite
 }
 
+void InformationServer::serverRequest() {
+	qDebug("InformationServer\n\t|Server Request");
+	
+	QStringList flags = incomingPacket->dataFlags();
+	QStringList data = incomingPacket->data();
+
+	for ( int c = 0; c < flags.count(); ++c ) {
+		if ( flags[c] == "RequestId" ) {
+			if ( data[c] == "True" )
+				requestId();
+		}
+	}
+}
+
 bool InformationServer::terminate() {
 	// TODO - Check Connections list before closing
 	server->close();
 
 	return true;
 }
+

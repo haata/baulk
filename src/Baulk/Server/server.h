@@ -47,12 +47,21 @@ public:
 	bool terminate();
 
 private:
+	Packet *incomingPacket;
+
 	QLocalServer *server;
+	QLocalSocket *clientConnection;
 
 	QString listenSocket;
 
+	void clientRedirect();
+	void requestId();
+	void serverRequest();
+
 private slots:
-	void sendBackLinkInfo();
+	void connection();
+	void incomingData();
+	//void outgoingData();
 
 };
 

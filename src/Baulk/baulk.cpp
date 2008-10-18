@@ -45,8 +45,8 @@ Baulk::Baulk( QWidget *parent ) : QMainWindow( parent ) {
 	// Window Settings
 	setWindowTitle( tr("Baulk - STATIC TITLE - %1").arg( serverListenName ) );
 
-	//InformationClient *client = new InformationClient( serverListenName, this );
-	//client->connectToServer();
+	InformationClient *client = new InformationClient( serverListenName, this );
+	client->requestId();
 
 	// Setup Controller Instance
 	/*
