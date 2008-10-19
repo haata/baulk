@@ -33,13 +33,15 @@ int main( int argc, char *argv[] ) {
 	QApplication *app = new QApplication( argc, argv );
 
 	QString listenSocket = "BaulkServ";
-	InformationServer serv( listenSocket );
+	for ( int c = 1; c < argc; ++c ) {
+		listenSocket = argv[c];
+	}
+
+	InformationServer *serv = new InformationServer( listenSocket );
+	QObject::connect( serv, SIGNAL( destroyed() ), app, SLOT( quit() ));
 
 	// Event-Loop	
 	int reTurn = app->exec();
-
-	// Post-Quit Events
-	
 
 	return reTurn;
 }

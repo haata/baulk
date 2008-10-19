@@ -28,11 +28,13 @@
 
 #include <stdlib.h>
 
+#include <QList>
 #include <QLocalServer>
 #include <QLocalSocket>
 #include <QObject>
 #include <QVector>
 
+#include "client.h"
 #include "packet.h"
 
 class InformationServer : public QObject {
@@ -42,12 +44,15 @@ public:
 	InformationServer( QString listen, QObject *parent = 0 );
 	~InformationServer();
 
-	// Tests if the Server already exists
-	static bool serverExists( QString listen );
+	QLocalServer *serverOpen() const { return server; }
 
 	bool terminate();
 
 private:
+	bool allowTerminate;
+
+	int connectedClients;
+
 	Packet *incomingPacket;
 
 	QLocalServer *server;
@@ -56,6 +61,7 @@ private:
 	QString listenSocket;
 
 	QVector<QLocalSocket*> clientList;
+	QList<int> emptyClientListEntries;
 
 	void clientRedirect();
 	void outgoingData( QString data );
@@ -66,6 +72,8 @@ private slots:
 	void connection();
 	void incomingData();
 
+signals:
+	void alreadyRunning();
 };
 
 #endif

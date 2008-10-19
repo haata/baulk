@@ -28,6 +28,15 @@ InformationClient::InformationClient( QString call, QObject *parent ) : QObject(
 	connect( socket, SIGNAL( readyRead() ), this, SLOT( incomingData() ) );
 }
 
+InformationClient::~InformationClient() {
+	// Remove Client From Server List
+	Packet removePacket(	Packet::infoToId( 0, 0 ),
+				Packet::infoToId( 0, currentId ),
+				QStringList() << "RemoveId",
+				QStringList() << "True");
+	outgoingData( removePacket.packet() );
+}
+
 void InformationClient::clientRequest() {
 	QStringList flags = incomingPacket->dataFlags();
 	QStringList data = incomingPacket->data();
@@ -77,8 +86,10 @@ void InformationClient::newId( int newIdnum ) {
 
 // All Outgoing Data goes through here
 void InformationClient::outgoingData( QString data ) {
-	socket->abort();
-	socket->connectToServer( serverName );
+	//if ( !socket->isValid() ) {
+		socket->abort();
+		socket->connectToServer( serverName );
+	//}
 
 	QByteArray block;
 	QDataStream out( &block, QIODevice::WriteOnly );

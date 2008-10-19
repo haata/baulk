@@ -27,6 +27,8 @@
 
 #include <QCloseEvent>
 #include <QMainWindow>
+#include <QProcess>
+#include <QTest>
 
 #include <libraryloader.h>
 #include <server.h>

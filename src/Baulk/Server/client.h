@@ -38,9 +38,12 @@ class InformationClient : public QObject {
 
 public:
 	InformationClient( QString call, QObject *parent = 0 );
+	~InformationClient();
 
 	void connectToServer();
 	void requestId();
+
+	int id() const { return currentId; }
 
 public slots:
 	void incomingData();

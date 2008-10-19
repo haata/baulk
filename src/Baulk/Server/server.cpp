@@ -21,21 +21,32 @@
 #include "server.h"
 
 InformationServer::InformationServer( QString listen, QObject *parent ) : QObject( parent ) {
-	// Reserve First Socket
-	QLocalSocket *tmp;
+	allowTerminate = true;
+	// Reserve First Socket and already running test
+	QLocalSocket *tmp = new QLocalSocket( this );
 	clientList.append( tmp );
+	tmp->connectToServer( listen );
 
-	listenSocket = listen;
-	server = new QLocalServer( this );
-	if ( !server->listen( listenSocket ) ) 
-		qCritical( tr("InformationServer\n\t|Could not open listen socket\n\t||%1").arg( listenSocket ).toUtf8() );
+	switch ( tmp->error() ) { 
+	// Server Not Running
+	case QLocalSocket::ServerNotFoundError:
+		listenSocket = listen;
+		server = new QLocalServer( this );
+		if ( !server->listen( listenSocket ) ) 
+			qCritical( tr("InformationServer\n\t|Could not open listen socket\n\t||%1").arg( listenSocket ).toUtf8() );
+		connect( server, SIGNAL( newConnection() ), this, SLOT( connection() ) );
+		break;
+	// Server Already Running Case
+	default:
+		terminate();
+		break;
+	}
 
-
-	connect( server, SIGNAL( newConnection() ), this, SLOT( connection() ) );
+	allowTerminate = false;
+	connectedClients = 0;
 }
 
 InformationServer::~InformationServer() {
-	terminate();
 }
 
 void InformationServer::clientRedirect() {
@@ -65,6 +76,11 @@ void InformationServer::incomingData() {
 	QString data;
 
 	in >> data;
+
+	if ( data == "" ) {
+		qDebug( QString("InformationServer\n\t|Blank Packet!").toUtf8() );
+		return;
+	}
 
 	incomingPacket = new Packet( data, this );
 
@@ -96,7 +112,14 @@ void InformationServer::outgoingData( QString data ) {
 }
 
 void InformationServer::requestId() {
-	int newId = clientList.count();
+	int newId = 0;
+	if ( emptyClientListEntries.count() > 0 ) {
+		newId = emptyClientListEntries.first();
+		emptyClientListEntries.removeFirst();
+	}
+	else 
+		newId = clientList.count();
+
 	clientList.append( clientConnection );
 
 	QString destination = Packet::infoToId( 
@@ -109,14 +132,9 @@ void InformationServer::requestId() {
 				QStringList() << QString::number( newId ) );
 
 	outgoingData( answerPacket.packet() );
-}
 
-bool InformationServer::serverExists( QString listen ) {
-	//QLocalServer testServer;
-	//bool tmp = testServer.listen( listen );
-	//testServer.close();
-	//return !tmp; // tmp returns whether a Server can be started, therefore should return the opposite
-	return false; // tmp returns whether a Server can be started, therefore should return the opposite
+	allowTerminate = true;
+	++connectedClients;
 }
 
 void InformationServer::serverRequest() {
@@ -130,13 +148,39 @@ void InformationServer::serverRequest() {
 			if ( data[c] == "True" )
 				requestId();
 		}
+		if ( flags[c] == "Ping" ) {
+			if ( data[c] == "True" ) {
+				Packet answerPacket(	incomingPacket->senderId(),
+							incomingPacket->destinationId(),
+							QStringList() << "PingReply",
+							QStringList() << "True");
+				outgoingData( answerPacket.packet() );
+			}
+		}
+		if ( flags[c] == "RemoveId" ) {
+			if ( data[c] == "True" ) {
+				int id = Packet::idToInfo( incomingPacket->senderId() ).windowId;
+				emptyClientListEntries.append( id );
+
+				if ( emptyClientListEntries.count() >= clientList.count() )
+					emptyClientListEntries.removeOne( clientList.count() );
+
+				qDebug( QString("InformationServer\n\t|Id Removed\n\t\t%1").arg( id ).toUtf8() );
+
+				--connectedClients;
+				if ( connectedClients < 1 )
+					terminate();
+			}
+		}
 	}
 }
 
 bool InformationServer::terminate() {
-	// TODO - Check Connections list before closing
-	server->close();
+	// Only Allow Close if the Server has been used
+	if ( !allowTerminate ) 
+		return false;
 
+	deleteLater();
 	return true;
 }
 

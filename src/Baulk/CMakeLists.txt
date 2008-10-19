@@ -37,6 +37,7 @@ include_directories( Server )
 add_definitions( -Wall -ggdb )
 find_package( Qt4 REQUIRED )
 set( QT_USE_QTNETWORK 1 )
+set( QT_USE_QTTEST 1 )
 include( ${QT_USE_FILE} )
 QT4_WRAP_CPP( MOC_SRCS ${HDRS} )
 
