@@ -27,7 +27,7 @@ LibraryLoader::LibraryLoader( QObject *parent ) : QLibrary( parent ) {
 
 	// Default Library Directory Search - In order
 	libraryDirs = QStringList()
-		<< "BaulkLibs"			// Build Directory
+		<< QString("%1/BaulkLibs").arg( QDir::currentPath() ) 	// Build Directory
 		<< "/usr/local/lib/BaulkLibs"
 		<< "/usr/lib/BaulkLibs";
 
@@ -41,8 +41,10 @@ LibraryLoader::LibraryLoader( QObject *parent ) : QLibrary( parent ) {
 	// Revise Library Directory List
 	QDir dir;
 	for ( int c = 0; c < libraryDirs.count(); ++c )
-		if ( !dir.exists( libraryDirs[ c ] ) )
+		if ( !dir.exists( libraryDirs[ c ] ) ) {
 			libraryDirs.removeAt( c );
+			--c;
+		}
 
 	if ( libraryDirs.count() < 1 )
 		qCritical( tr("Library Loader\n\t|No library directories could be found").toUtf8() );
@@ -86,7 +88,7 @@ bool LibraryLoader::loadLibrary( QString libraryName, bool detectVersion, QStrin
 void *LibraryLoader::lrResolve( QString symbol ) {
 	const char *symbolName = symbol.toAscii().data(); 
 	void *tmp = resolve( symbolName );
-	if ( allErrors.last() != errorString() )
+	if ( allErrors.isEmpty() || allErrors.last() != errorString() )
 		allErrors << errorString();
 	return tmp;
 }
@@ -94,8 +96,9 @@ void *LibraryLoader::lrResolve( QString symbol ) {
 // Gives the full path to the detected Baulk Library
 QString LibraryLoader::determineLibraryPath( QString libraryName ) {
 	for ( int c = 0; c < libraryDirs.count(); ++c ) {
-		QString dir = libraryDirs[ c ] + "/" + libraryName;
-		if ( isLibrary( dir ) )
+		QString dir = libraryDirs[ c ] + "/lib" + libraryName +".so";
+		qDebug( dir.toUtf8() );
+		if ( QLibrary::isLibrary( dir ) )
 			return dir;
 	}
 	qFatal( tr("Library Loader\n\t|Could not find specified Library\n\t||%1").arg( libraryName ).toUtf8() );

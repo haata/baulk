@@ -4,7 +4,7 @@
 project( baulk )
 cmake_minimum_required( VERSION 2.6 )
 subdirs(
-	#Control
+	Control
 	Server
 )
 
