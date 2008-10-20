@@ -31,7 +31,6 @@
 #include <QTest>
 
 #include <libraryloader.h>
-#include <server.h>
 
 //#include <boost/interprocess/managed_shared_memory.hpp>
 
@@ -42,8 +41,6 @@ public:
 	Baulk( QWidget *parent = 0 );
 
 private:
-	InformationServer *infoServer;
-
 	QWidget *controller;
 
 protected:

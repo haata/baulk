@@ -114,12 +114,13 @@ target_link_libraries( 	${EXEC_BS}
 			${QT_LIBRARIES} 
 			${LIB_PED}
 )
-add_library( ${LIB_BS} SHARED ${SRCS_BS} ${MOC_SRCS_BS} )
-set_target_properties( ${LIB_BS} PROPERTIES VERSION ${LIBRARY_VERSION} )
-target_link_libraries( 	${LIB_BS} 
-			${QT_LIBRARIES} 
-			${LIB_PED}
-)
+#| Baulk Server Library - Currently not needed
+#add_library( ${LIB_BS} SHARED ${SRCS_BS} ${MOC_SRCS_BS} )
+#set_target_properties( ${LIB_BS} PROPERTIES VERSION ${LIBRARY_VERSION} )
+#target_link_libraries( 	${LIB_BS} 
+#			${QT_LIBRARIES} 
+#			${LIB_PED}
+#)
 
 
 ##| Baulk Client

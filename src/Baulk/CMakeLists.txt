@@ -51,7 +51,6 @@ set( EXECUTABLE_OUTPUT_PATH
 target_link_libraries( ${EXEC} 
 	${QT_LIBRARIES} 
 	LibraryLoader	# From Common
-	BaulkServer	# From Server
 	BaulkClient	# From Server
 )
 
