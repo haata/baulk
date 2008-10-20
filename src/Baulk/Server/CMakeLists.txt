@@ -92,6 +92,13 @@ set( LIBRARY_VERSION
 	"${VERSION}"
 )
 
+###| Library Output - WIN
+if( WIN32 )
+	set( LIBRARY_OUTPUT_PATH
+		${PROJECT_BINARY_DIR}/../../../bin
+	)
+endif( WIN32 )
+
 
 ##| Packet Encoder/Decoder
 QT4_WRAP_CPP( MOC_SRCS_PED ${HDRS_PED} )
