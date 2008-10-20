@@ -30,9 +30,8 @@
 #include <QProcess>
 #include <QTest>
 
+#include <baulkwidget.h>
 #include <libraryloader.h>
-
-//#include <boost/interprocess/managed_shared_memory.hpp>
 
 class Baulk : public QMainWindow {
 	Q_OBJECT
@@ -41,7 +40,7 @@ public:
 	Baulk( QWidget *parent = 0 );
 
 private:
-	QWidget *controller;
+	BaulkWidget *controller;
 
 protected:
 	virtual void closeEvent( QCloseEvent *event );

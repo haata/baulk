@@ -8,7 +8,7 @@ cmake_minimum_required( VERSION 2.6 )
 ##| Baulk Widget
 
 #| Sources
-set( SRC_BW
+set( SRCS_BW
 	baulkwidget.cpp
 )
 

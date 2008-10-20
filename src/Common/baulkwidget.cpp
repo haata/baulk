@@ -20,6 +20,6 @@
 
 #include "baulkwidget.h"
 
-BaulkWidget::BaulkWidget( BaulkWidget *parent ) : QWidget( parent ) {
+BaulkWidget::BaulkWidget( QWidget *parent ) : QWidget( parent ) {
 }
 

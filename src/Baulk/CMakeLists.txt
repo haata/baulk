@@ -52,5 +52,6 @@ target_link_libraries( ${EXEC}
 	${QT_LIBRARIES} 
 	LibraryLoader	# From Common
 	BaulkClient	# From Server
+	BaulkWidget	# From Common
 )
 

@@ -39,12 +39,12 @@ Baulk::Baulk( QWidget *parent ) : QMainWindow( parent ) {
 	client->requestId();
 
 	// Setup Controller Instance
-	/*
+	
 	LibraryLoader *library = new LibraryLoader( this );
-	library->loadLibrary( "BaulkControl" ); // TODO Add Version Control
-	controller = ( (QWidget*(*)( QWidget* )) library->lrResolve("mainWidget") )( this );
+	controller = new BaulkWidget( this );
+	//library->loadLibrary( "BaulkControl" ); // TODO Add Version Control
+	//controller = ( (QWidget*(*)( QWidget* )) library->lrResolve("mainWidget") )( this );
 	setCentralWidget( controller );	
-	*/
 }
 
 // Window Close Event

@@ -30,7 +30,7 @@ class BaulkWidget : public QWidget {
 	Q_OBJECT
 
 public:
-	BaulkWidget( BaulkWidget *parent = 0 );
+	BaulkWidget( QWidget *parent = 0 );
 
 private:
 };
