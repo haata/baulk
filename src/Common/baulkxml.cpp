@@ -2,7 +2,7 @@
 //
 // Baulk - Copyright (C) 2008 - Jacob Alexander
 //
-//  File:	FILENAME HERE
+//  File:	baulkxml.cpp
 //  Author(s):	Jacob Alexander (HaaTa)
 //
 //  Baulk is free software; you can redistribute it and/or modify
