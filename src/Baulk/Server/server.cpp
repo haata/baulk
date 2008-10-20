@@ -47,6 +47,7 @@ InformationServer::InformationServer( QString listen, QObject *parent ) : QObjec
 }
 
 InformationServer::~InformationServer() {
+	qDebug("BaulkServ - Closing");
 }
 
 void InformationServer::clientRedirect() {
