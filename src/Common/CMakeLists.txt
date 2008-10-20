@@ -5,6 +5,24 @@ project( Common )
 cmake_minimum_required( VERSION 2.6 )
 
 
+##| Baulk Widget
+
+#| Sources
+set( SRC_BW
+	baulkwidget.cpp
+)
+
+#| Headers
+set( HDRS_BW
+	baulkwidget.h
+)
+
+#| Library
+set( LIB_BW
+	BaulkWidget
+)
+
+
 ##| Library Loader
 
 #| Sources
@@ -53,6 +71,12 @@ if( WIN32 )
 		${PROJECT_BINARY_DIR}/../../../bin
 	)
 endif( WIN32 )
+
+
+##| Baulk Widget
+QT4_WRAP_CPP( MOC_SRCS_BW ${HDRS_BW} )
+add_library( ${LIB_BW} SHARED ${SRCS_BW} ${MOC_SRCS_BW} )
+target_link_libraries( ${LIB_BW} ${QT_LIBRARIES} )
 
 
 ##| BaulkXML
