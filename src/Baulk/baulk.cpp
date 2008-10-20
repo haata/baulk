@@ -27,13 +27,15 @@ Baulk::Baulk( QWidget *parent ) : QMainWindow( parent ) {
 	QString serverListenName = "BaulkServ"; // TODO Put in config
 	//qDebug( tr("Baulk\n\t|Information Server is already running\n\t||%1").arg( serverListenName ).toUtf8() );
 
-	QString program = "./baulkServ";
+	// Start Daemon - Automatically closes if Daemon is already running
+	QString program = QString("./baulkServ %1").arg( serverListenName );
 	QProcess::startDetached( program );
 	QTest::qSleep(100); // Leave Time for the Daemon to start
 
 	// Window Settings
 	setWindowTitle( tr("Baulk - STATIC TITLE - %1").arg( serverListenName ) );
 
+	// TODO MOVE ME INTO CONTROLLER!!
 	InformationClient *client = new InformationClient( serverListenName, this );
 	client->requestId();
 
