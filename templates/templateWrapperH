@@ -25,7 +25,7 @@
 //
 // Note: The <name>_ portion of the name is not required.
 //
-// 	<name>_mainWidget	- Central (or main) QWidget
+// 	<name>_mainWidget	- Central (or main) BaulkWidget (Which is a glorified QWidget) or QWidget
 // 	<name>_mainObject	- Central (or main) QObject 
 //
 // 
