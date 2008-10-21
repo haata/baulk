@@ -45,7 +45,7 @@
 #include <QWidget>
 
 // Exported Symbols
-extern "C" {
+extern "C" EXPORTDLL {
 	QStringList symbolList();
 }
 
