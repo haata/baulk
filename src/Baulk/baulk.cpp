@@ -20,8 +20,6 @@
 
 #include "baulk.h"
 
-#include "client.h" // TODO - REMOVEME
-
 // Constructor
 Baulk::Baulk( QWidget *parent ) : QMainWindow( parent ) {
 	QString serverListenName = "BaulkServ"; // TODO Put in config
@@ -31,19 +29,16 @@ Baulk::Baulk( QWidget *parent ) : QMainWindow( parent ) {
 	QProcess::startDetached( program );
 	QTest::qSleep(100); // Leave Time for the Daemon to start
 
-	// Window Settings
-	setWindowTitle( tr("Baulk - STATIC TITLE - %1").arg( serverListenName ) );
-
-	// TODO MOVE ME INTO CONTROLLER!!
-	InformationClient *client = new InformationClient( serverListenName, this );
-	client->requestId();
-
 	// Setup Controller Instance
-	
 	LibraryLoader *library = new LibraryLoader( this );
 	library->loadLibrary( "BaulkControl" ); // TODO Add Version Control
 	controller = ( (BaulkWidget*(*)( QWidget* )) library->lrResolve("control_mainWidget") )( this );
-	//setCentralWidget( controller );	
+	controller->setServerListenName( serverListenName );
+	setCentralWidget( controller );	
+
+	// Window Settings
+	setWindowTitle( tr("Baulk - %1").arg( serverListenName ) );
+	connect( controller, SIGNAL( windowTitleNameSet( QString ) ), this, SLOT( setWindowTitleName( QString ) ) );
 }
 
 // Window Close Event
@@ -56,5 +51,10 @@ void Baulk::closeEvent( QCloseEvent *event ) {
 		
 	qDebug("Closing");
 	event->accept();
+}
+
+// SLOTS ******************************************************************************************
+void Baulk::setWindowTitleName( QString windowTitle ) {
+	setWindowTitle( windowTitle );
 }
 

@@ -35,15 +35,21 @@
 #ifndef __WRAPPER_CONTROL_H
 #define __WRAPPER_CONTROL_H
 
-#include <QWidget>
+#ifdef Q_WS_WIN
+	#define EXPORTDLL __declspec(dllexport)
+#else
+	#define EXPORTDLL
+#endif
 
-#include <QPushButton> // TODO REMOVE ME
-#include <QVBoxLayout> // TODO REMOVE ME
+
+#include <QWidget>
 
 #include <baulkwidget.h>
 
+#include "control.h"
+
 // Exported Symbols
-extern "C" {
+extern "C" EXPORTDLL {
 	QStringList symbolList();
 
 	// Main Widget
@@ -51,6 +57,7 @@ extern "C" {
 }
 
 // Misc Declarations
+BaulkControl *control;
 
 #endif
 

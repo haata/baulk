@@ -23,3 +23,20 @@
 BaulkWidget::BaulkWidget( QWidget *parent ) : QWidget( parent ) {
 }
 
+// PROPERTIES *************************************************************************************
+QString BaulkWidget::serverListenName() const { 
+	return property("serverListenName").toString(); 
+}
+void BaulkWidget::setServerListenName( QString listenName ) { 
+	setProperty( "serverListenName", QVariant( listenName) ); 
+	emit serverListenNameSet( listenName ); 
+}
+
+QString BaulkWidget::windowTitleName() const { 
+	return property("windowTitleName").toString(); 
+}
+void BaulkWidget::setWindowTitleName( QString titleName ) {
+	setProperty( "windowTitleName", QVariant( titleName ) );
+	emit windowTitleNameSet( titleName ); 
+}
+

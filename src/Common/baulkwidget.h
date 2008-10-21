@@ -24,6 +24,7 @@
 #ifndef __BAULKWIDGET_H
 #define __BAULKWIDGET_H
 
+#include <QVariant>
 #include <QWidget>
 
 class BaulkWidget : public QWidget {
@@ -32,7 +33,20 @@ class BaulkWidget : public QWidget {
 public:
 	BaulkWidget( QWidget *parent = 0 );
 
+	// Properties
+	QString serverListenName() const;
+	void setServerListenName( QString listenName );
+
+	QString windowTitleName() const;
+	void setWindowTitleName( QString titleName );
+
+public slots:
+
 private:
+
+signals:
+	void serverListenNameSet( QString listenName );
+	void windowTitleNameSet( QString titleName );
 };
 
 #endif

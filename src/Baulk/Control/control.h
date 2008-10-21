@@ -26,9 +26,17 @@
 #ifndef __CONTROL_H
 #define __CONTROL_H
 
+#include <QAction>
+#include <QHBoxLayout>
+#include <QSplitter>
+#include <QStackedWidget>
+#include <QVBoxLayout>
 #include <QWidget>
 
+#include <QPushButton> // TODO REMOVE ME
+
 #include <baulkwidget.h>
+#include <client.h>
 
 class BaulkControl : public BaulkWidget {
 	Q_OBJECT
@@ -37,6 +45,19 @@ public:
 	BaulkControl( QWidget *parent = 0 );
 
 private:
+	// Main Layout
+	QHBoxLayout *topHLayout;
+	QVBoxLayout *topVLayout;
+
+	// Tab Layer
+	QStackedWidget *tabLayer;
+
+	// Dynamic Layout
+	QSplitter *dynTopLayout;
+	QSplitter *dynBotLayout;
+
+private slots:
+	void startInformationClient();
 	
 };
 

@@ -28,12 +28,8 @@ QStringList symbolList() {
 
 // Main Widget
 BaulkWidget *control_mainWidget( QWidget *parent ) {
-	BaulkWidget *mainWidget = new BaulkWidget( parent );
+	control = new BaulkControl( parent );
 
-	QVBoxLayout *test2 = new QVBoxLayout;	
-	mainWidget->setLayout( test2 );
-	QPushButton *test = new QPushButton( "TEST", parent );
-	test2->addWidget( test );
-	return mainWidget;
+	return control;
 }
 

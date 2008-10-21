@@ -42,6 +42,9 @@ public:
 private:
 	BaulkWidget *controller;
 
+private slots:
+	void setWindowTitleName( QString windowTitle );
+
 protected:
 	virtual void closeEvent( QCloseEvent *event );
 };
