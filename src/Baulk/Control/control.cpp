@@ -53,10 +53,16 @@ BaulkControl::BaulkControl( QWidget *parent ) : BaulkWidget( parent ) {
 
 }
 
+// Daemon Interaction *****************************************************************************
 void BaulkControl::startInformationClient() {
 	// Connection to the Daemon
 	InformationClient *client = new InformationClient( serverListenName(), this );
 	client->requestId();
 	disconnect( this, SIGNAL( serverListenNameSet( QString ) ), this, SLOT( startInformationClient() ) );
+}
+
+// Dynamic Libraries ******************************************************************************
+void BaulkControl::loadLibraries() {
+
 }
 

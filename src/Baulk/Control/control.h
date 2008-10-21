@@ -57,6 +57,8 @@ private:
 	QSplitter *dynBotLayout;
 
 private slots:
+	void loadLibraries();
+
 	void startInformationClient();
 	
 };

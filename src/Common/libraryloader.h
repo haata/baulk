@@ -24,6 +24,7 @@
 #ifndef __LIBRARYLOADER_H
 #define __LIBRARYLOADER_H
 
+#include <QDir>
 #include <QLibrary>
 #include <QStringList>
 
@@ -49,6 +50,9 @@ public:
 	// Less Restrictive Symbol Resolver, provided for convenience, be careful using it
 	void *lrResolve( QString symbol );
 
+	// Returns a list of loadable libraries in the preferred library directory
+	QStringList loadableLibraries();
+
 private:
 	QString determineLibraryPath( QString libraryName );
 
@@ -56,6 +60,7 @@ private:
 
 	QStringList allErrors;
 	QStringList libraryDirs;
+	QStringList libraryFilters;
 };
 
 #endif

@@ -21,7 +21,7 @@
 #include "baulkxml.h"
 #include "libraryloader.h"
 
-// Constructor
+// Constructor ************************************************************************************
 LibraryLoader::LibraryLoader( QObject *parent ) : QLibrary( parent ) {
 	BaulkXML xmlConfig( "BaulkLibs", this );
 
@@ -48,14 +48,19 @@ LibraryLoader::LibraryLoader( QObject *parent ) : QLibrary( parent ) {
 
 	if ( libraryDirs.count() < 1 )
 		qCritical( tr("Library Loader\n\t|No library directories could be found").toUtf8() );
+
+	// Library Filters
+	libraryFilters = QStringList()
+		<< "lib*.so"
+		<< "lib*.dll";
 }
 
-// Error List
+// Error List *************************************************************************************
 QStringList LibraryLoader::errorList() const {
 	return allErrors;
 }
 
-// Library Loaders
+// Library Loaders ********************************************************************************
 bool LibraryLoader::loadLibrary( QString libraryName ) {
 	setFileName( determineLibraryPath( libraryName ) );
 	bool success = load();
@@ -84,7 +89,7 @@ bool LibraryLoader::loadLibrary( QString libraryName, bool detectVersion, QStrin
 	return success;
 }
 
-// Less Restrictive Symbol Resolver
+// Less Restrictive Symbol Resolver ***************************************************************
 void *LibraryLoader::lrResolve( QString symbol ) {
 	const char *symbolName = symbol.toAscii().data(); 
 	void *tmp = resolve( symbolName );
@@ -93,7 +98,7 @@ void *LibraryLoader::lrResolve( QString symbol ) {
 	return tmp;
 }
 
-// Gives the full path to the detected Baulk Library
+// Gives the full path to the detected Baulk Library **********************************************
 QString LibraryLoader::determineLibraryPath( QString libraryName ) {
 	for ( int c = 0; c < libraryDirs.count(); ++c ) {
 		QString dir = libraryDirs[ c ] + "/lib" + libraryName +".so";
@@ -105,7 +110,15 @@ QString LibraryLoader::determineLibraryPath( QString libraryName ) {
 	return "";
 }
 
-// Checks for Baulk Library Existance 
+// Library Existance ******************************************************************************
 bool LibraryLoader::exists( QString libraryName ) {
 	return isLibrary( determineLibraryPath( libraryName ) );
 }
+
+QStringList LibraryLoader::loadableLibraries() {
+	if ( libraryDirs.count() > 0 ) 
+		return QDir( libraryDirs.first() ).entryList( libraryFilters );
+
+	return QStringList();
+}
+
