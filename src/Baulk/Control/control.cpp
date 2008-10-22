@@ -63,6 +63,17 @@ void BaulkControl::startInformationClient() {
 
 // Dynamic Libraries ******************************************************************************
 void BaulkControl::loadLibraries() {
+	QStringList libraryList = LibraryLoader( this ).loadableLibraries();
 
+	for ( int c = 0; c < libraryList.count(); ++c ) {
+		if ( libraryList[c] != "BaulkControl" ) {
+			LibraryLoader *library = new LibraryLoader( this );
+			library->loadLibrary( libraryList[c] );
+			loadSymbols( library );
+		}
+	}
+}
+
+void BaulkControl::loadSymbols( LibraryLoader *library ) {
 }
 

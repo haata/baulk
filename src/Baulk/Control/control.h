@@ -37,6 +37,7 @@
 
 #include <baulkwidget.h>
 #include <client.h>
+#include <libraryloader.h>
 
 class BaulkControl : public BaulkWidget {
 	Q_OBJECT
@@ -57,7 +58,9 @@ private:
 	QSplitter *dynBotLayout;
 
 private slots:
+	// Dynamic Librariess
 	void loadLibraries();
+	void loadSymbols( LibraryLoader *library );
 
 	void startInformationClient();
 	

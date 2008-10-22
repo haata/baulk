@@ -60,5 +60,6 @@ set_target_properties( ${LIB} PROPERTIES VERSION ${LIBRARY_VERSION} )
 target_link_libraries( ${LIB} 
 	${QT_LIBRARIES}
 	BaulkWidget	# From Common
+	LibraryLoader	# From Common
 )
 
