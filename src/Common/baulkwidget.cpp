@@ -20,10 +20,18 @@
 
 #include "baulkwidget.h"
 
+// Constructors ***********************************************************************************
 BaulkWidget::BaulkWidget( QWidget *parent ) : QWidget( parent ) {
 }
 
-// PROPERTIES *************************************************************************************
+BaulkWidget::BaulkWidget( QWidget *wrapWidget, QWidget *parent ) : QWidget( parent ) {
+	QVBoxLayout *layout = new QVBoxLayout;
+	layout->setContentsMargins( 0,0,0,0 );
+	layout->addWidget( wrapWidget );
+	setLayout( layout );
+}
+
+// Properties *************************************************************************************
 QString BaulkWidget::serverListenName() const { 
 	return property("serverListenName").toString(); 
 }

@@ -1,12 +1,9 @@
-// Baulk - Common - Baulk Widget
+// Baulk - Baulk Terminal - Terminal for Baulk using qtermwidget
 //
 // Baulk - Copyright (C) 2008 - Jacob Alexander
 //
-//  File:	baulkwidget.h
+//  File:	wrapper_baulkterm.cpp
 //  Author(s):	Jacob Alexander (HaaTa)
-//
-//  Description: 
-//	A QWidget, but a lot more useful.
 //
 //  Baulk is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,36 +18,22 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __BAULKWIDGET_H
-#define __BAULKWIDGET_H
+#include "wrapper_baulkterm.h"
 
-#include <QVariant>
-#include <QVBoxLayout>
-#include <QWidget>
+// Symbol List
+QStringList symbolList() {
+	return QStringList()
+		<< "baulkterm_mainWidget";
+}
 
-class BaulkWidget : public QWidget {
-	Q_OBJECT
+BaulkWidget *baulkterm_mainWidget( QWidget *parent ) {
+	qDebug("Loading");
 
-public:
-	BaulkWidget( QWidget *parent = 0 );
-	// For using a QWidget (or derivative) as BaulkWidget
-	BaulkWidget( QWidget *wrapWidget, QWidget *parent );
+	term = new QTermWidget( 1, parent );
+	BaulkWidget *wrapper = new BaulkWidget( term, parent );
 
-	// Properties
-	QString serverListenName() const;
-	void setServerListenName( QString listenName );
+	QObject::connect( term, SIGNAL( finished() ), term, SLOT( close() ) );
 
-	QString windowTitleName() const;
-	void setWindowTitleName( QString titleName );
-
-public slots:
-
-private:
-
-signals:
-	void serverListenNameSet( QString listenName );
-	void windowTitleNameSet( QString titleName );
-};
-
-#endif
+	return wrapper;
+}
 

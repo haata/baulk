@@ -51,6 +51,8 @@ BaulkControl::BaulkControl( QWidget *parent ) : BaulkWidget( parent ) {
 	dynBotLayout->addWidget( test );
 	dynBotLayout->addWidget( test2 );
 
+	loadLibraries();
+
 }
 
 // Daemon Interaction *****************************************************************************
@@ -66,14 +68,18 @@ void BaulkControl::loadLibraries() {
 	QStringList libraryList = LibraryLoader( this ).loadableLibraries();
 
 	for ( int c = 0; c < libraryList.count(); ++c ) {
-		if ( libraryList[c] != "BaulkControl" ) {
+		qDebug( "AAA" );
+		if ( !libraryList[c].contains("BaulkControl") ) {
+		qDebug( libraryList[c].toUtf8() + "DD" );
 			LibraryLoader *library = new LibraryLoader( this );
 			library->loadLibrary( libraryList[c] );
-			loadSymbols( library );
+			preLoadSymbols( library );
 		}
 	}
 }
 
-void BaulkControl::loadSymbols( LibraryLoader *library ) {
+void BaulkControl::preLoadSymbols( LibraryLoader *library ) {
+	BaulkWidget *widget = ( (BaulkWidget*(*)( QWidget* )) library->lrResolve("baulkterm_mainWidget") )( this );
+	dynBotLayout->addWidget( widget );
 }
 

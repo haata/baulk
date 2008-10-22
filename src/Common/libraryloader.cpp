@@ -99,9 +99,13 @@ void *LibraryLoader::lrResolve( QString symbol ) {
 }
 
 // Gives the full path to the detected Baulk Library **********************************************
-QString LibraryLoader::determineLibraryPath( QString libraryName ) {
+QString LibraryLoader::determineLibraryPath( QString libraryName ) { 
 	for ( int c = 0; c < libraryDirs.count(); ++c ) {
-		QString dir = libraryDirs[ c ] + "/lib" + libraryName +".so";
+		QString dir;
+		if ( !libraryName.contains("lib") ) // TODO HACKEY
+			dir = libraryDirs[ c ] + "/lib" + libraryName +".so";
+		else
+			dir = libraryDirs[ c ] + "/" + libraryName; // TODO FIXME
 		qDebug( dir.toUtf8() );
 		if ( QLibrary::isLibrary( dir ) )
 			return dir;

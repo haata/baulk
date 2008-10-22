@@ -1,14 +1,12 @@
-// Baulk - Control
+// Baulk - Baulk Terminal - Terminal for Baulk using qtermwidget
 //
 // Baulk - Copyright (C) 2008 - Jacob Alexander
 //
-//  File:	control.h
+//  File:	wrapper_baulkterm.h
 //  Author(s):	Jacob Alexander (HaaTa)
 //
 //  Description: 
-//	The main control for Baulk. Handles most, if not
-//	all user interaction for Baulk, minus, what is
-//	provided by each Widget.
+//	DLL Wrapper for qtermwidget, for use in Baulk.
 //
 //  Baulk is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,48 +21,31 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __CONTROL_H
-#define __CONTROL_H
+#ifndef __WRAPPER_BAULKTERM_H
+#define __WRAPPER_BAULKTERM_H
 
-#include <QAction>
-#include <QHBoxLayout>
-#include <QSplitter>
-#include <QStackedWidget>
+#ifdef Q_WS_WIN
+	#define EXPORTDLL __declspec(dllexport)
+#else
+	#define EXPORTDLL
+#endif
+
+
 #include <QVBoxLayout>
 #include <QWidget>
 
-#include <QPushButton> // TODO REMOVE ME
-
 #include <baulkwidget.h>
-#include <client.h>
-#include <libraryloader.h>
+#include <qtermwidget.h>
 
-class BaulkControl : public BaulkWidget {
-	Q_OBJECT
+// Exported Symbols
+extern "C" EXPORTDLL {
+	QStringList symbolList();
 
-public:
-	BaulkControl( QWidget *parent = 0 );
+	BaulkWidget *baulkterm_mainWidget( QWidget *parent );
+}
 
-private:
-	// Main Layout
-	QHBoxLayout *topHLayout;
-	QVBoxLayout *topVLayout;
-
-	// Tab Layer
-	QStackedWidget *tabLayer;
-
-	// Dynamic Layout
-	QSplitter *dynTopLayout;
-	QSplitter *dynBotLayout;
-
-private slots:
-	// Dynamic Librariess
-	void loadLibraries();
-	void preLoadSymbols( LibraryLoader *library );
-
-	void startInformationClient();
-	
-};
+// Misc Declarations
+QTermWidget *term;
 
 #endif
 
