@@ -35,7 +35,7 @@
 #ifndef __WRAPPER_NAME_H
 #define __WRAPPER_NAME_H
 
-#ifndef Q_WS_WIN
+#ifdef Q_WS_WIN
 	#define EXPORTDLL __declspec(dllexport)
 #else
 	#define EXPORTDLL
