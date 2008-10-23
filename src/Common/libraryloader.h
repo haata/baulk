@@ -24,10 +24,6 @@
 #ifndef __LIBRARYLOADER_H
 #define __LIBRARYLOADER_H
 
-#ifdef Q_OS_WIN32
-
-#endif
-
 #include <QDir>
 #include <QLibrary>
 #include <QStringList>

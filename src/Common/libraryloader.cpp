@@ -139,7 +139,7 @@ QString LibraryLoader::determineLibraryPath( QString libraryName ) {
 		}
 		else
 			dir = libraryDirs[c] + "/" + libraryName;
-		qDebug( dir.toUtf8() );
+
 		if ( QLibrary::isLibrary( dir ) )
 			return dir;
 	}
