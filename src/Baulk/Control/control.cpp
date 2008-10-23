@@ -79,7 +79,9 @@ void BaulkControl::loadLibraries() {
 }
 
 void BaulkControl::preLoadSymbols( LibraryLoader *library ) {
-	BaulkWidget *widget = ( (BaulkWidget*(*)( QWidget* )) library->lrResolve("baulkterm_mainWidget") )( this );
+	// For Widgets/Objects that need to loaded before an instance of the mainWidget is started
+	// ie. Configuration dialogs
+	BaulkWidget *widget = library->loadBaulkWidget("mainWidget");;
 	dynBotLayout->addWidget( widget );
 }
 

@@ -24,6 +24,10 @@
 #ifndef __LIBRARYLOADER_H
 #define __LIBRARYLOADER_H
 
+#ifdef Q_OS_WIN32
+
+#endif
+
 #include <QDir>
 #include <QLibrary>
 #include <QStringList>
@@ -56,17 +60,21 @@ public:
 	QStringList loadableLibraries();
 
 	// BaulkControl Simplified Loaders
-	BaulkWidget *mainWidget();
-	QObject *mainObject();
+	BaulkWidget *loadBaulkWidget( QString symbolBase );
+	QAction *loadQAction( QString symbolBase );
+	QObject *loadQObject( QString symbolBase );
 
 private:
 	QString determineLibraryPath( QString libraryName );
+	QStringList symbolList();
 
 	void updateErrorList();
 
 	QStringList allErrors;
 	QStringList libraryDirs;
 	QStringList libraryFilters;
+
+	QStringList loadableSymbols;
 };
 
 #endif

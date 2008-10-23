@@ -89,7 +89,7 @@ bool LibraryLoader::loadLibrary( QString libraryName, bool detectVersion, QStrin
 	return success;
 }
 
-// Less Restrictive Symbol Resolver ***************************************************************
+// Symbol Resolvers *******************************************************************************
 void *LibraryLoader::lrResolve( QString symbol ) {
 	const char *symbolName = symbol.toAscii().data(); 
 	void *tmp = resolve( symbolName );
@@ -98,14 +98,47 @@ void *LibraryLoader::lrResolve( QString symbol ) {
 	return tmp;
 }
 
+BaulkWidget *LibraryLoader::loadBaulkWidget( QString symbolBase ) {
+	for ( int c = 0; c < symbolList().count(); ++c )
+		if ( symbolList()[c].contains( symbolBase ) )
+			return ( (BaulkWidget*(*)( QWidget* )) lrResolve( symbolList()[c] ) )( 0 );
+
+	qCritical( QString("Library Loader\n\t|No %1 symbol exists for BaulkWidget load").arg( symbolBase ).toUtf8() );
+	return 0;
+}
+
+QAction *LibraryLoader::loadQAction( QString symbolBase ) {
+	for ( int c = 0; c < symbolList().count(); ++c )
+		if ( symbolList()[c].contains( symbolBase ) )
+			return ( (QAction*(*)( QObject* )) lrResolve( symbolList()[c] ) )( 0 );
+
+	qCritical( QString("Library Loader\n\t|No %1 symbol exists for QAction load").arg( symbolBase ).toUtf8() );
+	return 0;
+}
+
+QObject *LibraryLoader::loadQObject( QString symbolBase ) {
+	for ( int c = 0; c < symbolList().count(); ++c )
+		if ( symbolList()[c].contains( symbolBase ) )
+			return ( (QObject*(*)( QObject* )) lrResolve( symbolList()[c] ) )( 0 );
+
+	qCritical( QString("Library Loader\n\t|No %1 symbol exists for QObject load").arg( symbolBase ).toUtf8() );
+	return 0;
+}
+
 // Gives the full path to the detected Baulk Library **********************************************
 QString LibraryLoader::determineLibraryPath( QString libraryName ) { 
 	for ( int c = 0; c < libraryDirs.count(); ++c ) {
 		QString dir;
-		if ( !libraryName.contains("lib") ) // TODO HACKEY
-			dir = libraryDirs[ c ] + "/lib" + libraryName +".so";
+		if ( !libraryName.contains("lib") ) {
+			dir = libraryDirs[c] + "/lib" + libraryName;
+			#ifdef Q_OS_WIN32
+			dir += ".dll";
+			#else
+			dir += ".so";
+			#endif
+		}
 		else
-			dir = libraryDirs[ c ] + "/" + libraryName; // TODO FIXME
+			dir = libraryDirs[c] + "/" + libraryName;
 		qDebug( dir.toUtf8() );
 		if ( QLibrary::isLibrary( dir ) )
 			return dir;
@@ -126,10 +159,10 @@ QStringList LibraryLoader::loadableLibraries() {
 	return QStringList();
 }
 
-// BaulkControl Convinience Loaders ***************************************************************************
-BaulkWidget *LibraryLoader::mainWidget() {
-}
-
-QObject *LibraryLoader::mainObject() {
+// Symbol List ************************************************************************************
+QStringList LibraryLoader::symbolList() {
+	if ( loadableSymbols.count() < 1 )
+		loadableSymbols = ( (QStringList(*)()) lrResolve("symbolList") )();
+	return loadableSymbols;
 }
 
