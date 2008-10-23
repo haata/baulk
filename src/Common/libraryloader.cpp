@@ -126,3 +126,10 @@ QStringList LibraryLoader::loadableLibraries() {
 	return QStringList();
 }
 
+// BaulkControl Convinience Loaders ***************************************************************************
+BaulkWidget *LibraryLoader::mainWidget() {
+}
+
+QObject *LibraryLoader::mainObject() {
+}
+

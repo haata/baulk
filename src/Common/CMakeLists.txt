@@ -91,5 +91,6 @@ add_library( ${LIB_LL} SHARED ${SRCS_LL} ${MOC_SRCS_LL} )
 target_link_libraries( ${LIB_LL} 
 	${QT_LIBRARIES} 
 	${LIB_BXML}
+	${LIB_BW}
 )
 

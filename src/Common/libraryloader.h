@@ -28,6 +28,8 @@
 #include <QLibrary>
 #include <QStringList>
 
+#include "baulkwidget.h"
+
 class LibraryLoader : public QLibrary {
 	Q_OBJECT
 
@@ -52,6 +54,10 @@ public:
 
 	// Returns a list of loadable libraries in the preferred library directory
 	QStringList loadableLibraries();
+
+	// BaulkControl Simplified Loaders
+	BaulkWidget *mainWidget();
+	QObject *mainObject();
 
 private:
 	QString determineLibraryPath( QString libraryName );
