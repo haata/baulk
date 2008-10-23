@@ -68,7 +68,7 @@ include( ${QT_USE_FILE} )
 ###| Library Output - WIN
 if( WIN32 )
 	set( LIBRARY_OUTPUT_PATH
-		${PROJECT_BINARY_DIR}/../../../bin
+		${PROJECT_BINARY_DIR}/../../bin
 	)
 endif( WIN32 )
 

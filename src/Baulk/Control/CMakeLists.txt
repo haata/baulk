@@ -31,14 +31,11 @@ add_definitions( -Wall )
 find_package( Qt4 REQUIRED )
 include( ${QT_USE_FILE} )
 QT4_WRAP_CPP( MOC_SRCS ${HDRS} )
-include( ${CMAKE_BINARY_DIR} )
 
 ###| Library Versioning
 set( cat_prog cat )
 if( WIN32 )
-  if( not UNIX )
-    set( cat_prog type )
-  endif( not UNIX )
+	set( cat_prog type )
 endif( WIN32 )
 
 exec_program( ${cat_prog} 
