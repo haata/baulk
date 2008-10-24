@@ -65,29 +65,40 @@ find_package( Qt4 REQUIRED )
 set( QT_USE_QTXML 1 )
 include( ${QT_USE_FILE} )
 
-###| Library Output - WIN
-if( WIN32 )
-	set( LIBRARY_OUTPUT_PATH
-		${PROJECT_BINARY_DIR}/../../bin
-	)
-endif( WIN32 )
-
 
 ##| Baulk Widget
 QT4_WRAP_CPP( MOC_SRCS_BW ${HDRS_BW} )
-add_library( ${LIB_BW} SHARED ${SRCS_BW} ${MOC_SRCS_BW} )
+
+if ( WIN32 )
+	add_library( ${LIB_BW} STATIC ${SRCS_BW} ${MOC_SRCS_BW} )
+else ( WIN32 )
+	add_library( ${LIB_BW} SHARED ${SRCS_BW} ${MOC_SRCS_BW} )
+endif( WIN32 )
+
 target_link_libraries( ${LIB_BW} ${QT_LIBRARIES} )
 
 
 ##| BaulkXML
 QT4_WRAP_CPP( MOC_SRCS_BXML ${HDRS_BXML} )
-add_library( ${LIB_BXML} SHARED ${SRCS_BXML} ${MOC_SRCS_BXML} )
+
+if ( WIN32 )
+	add_library( ${LIB_BXML} STATIC ${SRCS_BXML} ${MOC_SRCS_BXML} )
+else ( WIN32 )
+	add_library( ${LIB_BXML} SHARED ${SRCS_BXML} ${MOC_SRCS_BXML} )
+endif( WIN32 )
+
 target_link_libraries( ${LIB_BXML} ${QT_LIBRARIES} )
 
 
 ##| Library Loader
 QT4_WRAP_CPP( MOC_SRCS_LL ${HDRS_LL} )
-add_library( ${LIB_LL} SHARED ${SRCS_LL} ${MOC_SRCS_LL} )
+
+if ( WIN32 )
+	add_library( ${LIB_LL} STATIC ${SRCS_LL} ${MOC_SRCS_LL} )
+else ( WIN32 )
+	add_library( ${LIB_LL} SHARED ${SRCS_LL} ${MOC_SRCS_LL} )
+endif( WIN32 )
+
 target_link_libraries( ${LIB_LL} 
 	${QT_LIBRARIES} 
 	${LIB_BXML}
