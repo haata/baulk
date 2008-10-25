@@ -29,6 +29,7 @@
 #include <QMainWindow>
 #include <QProcess>
 #include <QTest>
+#include <QWidget>
 
 #include <baulkwidget.h>
 #include <libraryloader.h>
