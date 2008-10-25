@@ -4,13 +4,16 @@
 project( BaulkTermWrapper )
 cmake_minimum_required( VERSION 2.6 )
 
+
 #| Sources
 set( SRCS
+	./baulkterm.cpp
         ./wrapper_baulkterm.cpp
 )
 
 #| Headers
 set( HDRS
+	./baulkterm.h
 )
 
 #| Library

@@ -1,12 +1,12 @@
-// Baulk - Common - Baulk Widget
+// Baulk - qtermwidget Reimplement - BaulkTerm
 //
 // Baulk - Copyright (C) 2008 - Jacob Alexander
 //
-//  File:	baulkwidget.h
+//  File:	baulkterm.h
 //  Author(s):	Jacob Alexander (HaaTa)
 //
 //  Description: 
-//	A QWidget, but a lot more useful.
+//	Additional functionality for qtermwidget
 //
 //  Baulk is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,40 +21,22 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __BAULKWIDGET_H
-#define __BAULKWIDGET_H
+#ifndef __BAULKTERM_H
+#define __BAULKTERM_H
 
 #include <QResizeEvent>
-#include <QVariant>
-#include <QVBoxLayout>
 #include <QWidget>
 
-class BaulkWidget : public QWidget {
+#include <qtermwidget.h>
+
+class BaulkTerm : public QTermWidget {
 	Q_OBJECT
 
 public:
-	BaulkWidget( QWidget *parent = 0 );
-	// For using a QWidget (or derivative) as BaulkWidget
-	BaulkWidget( QWidget *wrapWidget, QWidget *parent );
-
-	// Properties
-	QString serverListenName() const;
-	void setServerListenName( QString listenName );
-
-	QString windowTitleName() const;
-	void setWindowTitleName( QString titleName );
-
-public slots:
-
-private:
-	void widgetSetup();
+	BaulkTerm( int startNow = 1, QWidget *parent = 0 );
 
 protected:
 	virtual void resizeEvent( QResizeEvent *event );
-
-signals:
-	void serverListenNameSet( QString listenName );
-	void windowTitleNameSet( QString titleName );
 };
 
 #endif

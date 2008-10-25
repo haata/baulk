@@ -20,16 +20,17 @@
 
 #include "wrapper_baulkterm.h"
 
-// Symbol List
+// Symbol List ************************************************************************************
 QStringList symbolList() {
 	return QStringList()
 		<< "baulkterm_mainWidget";
 }
 
+// Main *******************************************************************************************
 BaulkWidget *baulkterm_mainWidget( QWidget *parent ) {
 	qDebug("Loading");
 
-	term = new QTermWidget( 1, parent );
+	term = new BaulkTerm( 1, parent );
 	BaulkWidget *wrapper = new BaulkWidget( term, parent );
 
 	QObject::connect( term, SIGNAL( finished() ), term, SLOT( close() ) );

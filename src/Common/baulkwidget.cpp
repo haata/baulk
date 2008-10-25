@@ -36,7 +36,7 @@ BaulkWidget::BaulkWidget( QWidget *wrapWidget, QWidget *parent ) : QWidget( pare
 
 // Defaults ***************************************************************************************
 void BaulkWidget::widgetSetup() {
-	setMinimumSize( 25, 25 );
+	setMinimumSize( 250, 250 );
 	setSizePolicy( QSizePolicy::Preferred, QSizePolicy::Preferred );
 }
 
@@ -55,5 +55,9 @@ QString BaulkWidget::windowTitleName() const {
 void BaulkWidget::setWindowTitleName( QString titleName ) {
 	setProperty( "windowTitleName", QVariant( titleName ) );
 	emit windowTitleNameSet( titleName ); 
+}
+
+// Reimplemented QWidget Functions ****************************************************************
+void BaulkWidget::resizeEvent( QResizeEvent *event ) {
 }
 

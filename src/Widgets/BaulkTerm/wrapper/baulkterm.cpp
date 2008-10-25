@@ -1,12 +1,9 @@
-// Baulk - Baulk Terminal - Terminal for Baulk using qtermwidget
+// Baulk - qtermwidget Reimplement - BaulkTerm
 //
 // Baulk - Copyright (C) 2008 - Jacob Alexander
 //
-//  File:	wrapper_baulkterm.h
+//  File:	baulkterm.cpp
 //  Author(s):	Jacob Alexander (HaaTa)
-//
-//  Description: 
-//	DLL Wrapper for qtermwidget, for use in Baulk.
 //
 //  Baulk is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,32 +18,14 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __WRAPPER_BAULKTERM_H
-#define __WRAPPER_BAULKTERM_H
-
-#ifdef Q_WS_WIN
-	#define EXPORTDLL __declspec(dllexport)
-#else
-	#define EXPORTDLL
-#endif
-
-
-#include <QVBoxLayout>
-#include <QWidget>
-
-#include <baulkwidget.h>
-
 #include "baulkterm.h"
 
-// Exported Symbols
-extern "C" EXPORTDLL {
-	QStringList symbolList();
-
-	BaulkWidget *baulkterm_mainWidget( QWidget *parent );
+// Constructors ***********************************************************************************
+BaulkTerm::BaulkTerm( int startNow, QWidget *parent ) : QTermWidget( startNow, parent ) {
+	connect( this, SIGNAL( finished() ), this, SLOT( close() ) );
 }
 
-// Misc Declarations
-BaulkTerm *term;
-
-#endif
+// Reimplemented Functions ************************************************************************
+void BaulkTerm::resizeEvent( QResizeEvent *event ) {
+}
 
