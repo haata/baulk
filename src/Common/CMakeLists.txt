@@ -9,12 +9,12 @@ cmake_minimum_required( VERSION 2.6 )
 
 #| Sources
 set( SRCS_BW
-	baulkwidget.cpp
+	./baulkwidget.cpp
 )
 
 #| Headers
 set( HDRS_BW
-	baulkwidget.h
+	./baulkwidget.h
 )
 
 #| Library
@@ -27,12 +27,12 @@ set( LIB_BW
 
 #| Sources
 set( SRCS_LL
-        libraryloader.cpp
+        ./libraryloader.cpp
 )
 
 #| Headers
 set( HDRS_LL
-	libraryloader.h
+	./libraryloader.h
 )
 
 #| Library
@@ -45,12 +45,12 @@ set( LIB_LL
 
 #| Sources
 set( SRCS_BXML
-        baulkxml.cpp
+        ./baulkxml.cpp
 )
 
 #| Headers
 set( HDRS_BXML
-	baulkxml.h
+	./baulkxml.h
 )
 
 #| Library

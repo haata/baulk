@@ -54,9 +54,20 @@ set( LIBRARY_OUTPUT_PATH
 set_target_properties( ${LIB} PROPERTIES VERSION ${LIBRARY_VERSION} )
 
 #| Link Needed Libraries
+if( WIN32 )
 target_link_libraries( ${LIB} 
 	${QT_LIBRARIES}
 	BaulkWidget	# From Common
 	LibraryLoader	# From Common
+	BaulkClient	# From Server
+	BaulkLib	# From Baulk
 )
+else( WIN32 )
+target_link_libraries( ${LIB} 
+	${QT_LIBRARIES}
+	BaulkWidget	# From Common
+	LibraryLoader	# From Common
+	BaulkClient	# From Server
+)
+endif( WIN32 )
 

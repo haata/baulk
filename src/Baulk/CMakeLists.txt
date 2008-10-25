@@ -4,8 +4,8 @@
 project( baulk )
 cmake_minimum_required( VERSION 2.6 )
 subdirs(
-	Control
 	Server
+	Control
 )
 
 
@@ -23,6 +23,11 @@ set( HDRS
 #| Executable
 set( EXEC
 	baulk
+)
+
+#| Library
+set( LIB
+	BaulkLib
 )
 
 #| Baulk Common Libraries
@@ -46,6 +51,11 @@ add_executable( ${EXEC} ${SRCS} ${MOC_SRCS} )
 set( EXECUTABLE_OUTPUT_PATH
 	${PROJECT_BINARY_DIR}/../../bin
 )
+
+#| Library for Win32
+if( WIN32 )
+	add_library( ${LIB} STATIC ${SRCS} ${MOC_SRCS} )
+endif( WIN32 )
 
 #| Link Needed Libraries
 target_link_libraries( ${EXEC} 
