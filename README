@@ -1,0 +1,85 @@
+// Baulk ******************************************************************************************
+
+Baulk is a cross-platform native application tiling management tool written in Qt4. An emphasis is made on making all major components a separate dynamic library, for modularity.
+
+
+Baulk is a complete rewrite of QuillTex (also written by me, which was in its third complete rewrite).
+At current QuillTex is far more usable, and has WAY more working features, mind you only in Linux.
+You can find QuillTex at http://quilltex.sf.net, and currently the SVN source is lightyears ahead of the released version. It has a plethora of features above the release, and a plethora of bugs to go with it. 
+The released version has very few bugs.
+
+
+// History ****************************************************************************************
+
+Aug 10 2007 - QFS 1 Started (QuillTex from Scratch)
+
+Feb 18 2008 - QFS 2 Started
+
+May 21 2008 - QFS 3 Started
+
+Jun 26 2008 - Released QuillTex 0.1
+
+Oct 01 2008 - Baulk Started
+
+Oct 19 2008 - "Baulk Daemons poised to rule the world", in other news, Baulk Daemon is functionally working
+
+Oct 25 2008 - Win32 officially supported in Baulk
+
+
+// Dependencies ***********************************************************************************
+
+Dependencies:
+
+Qt 4.4
+
+
+Build Dependencies:
+
+Qt 4.4 Dev
+cmake 2.6
+
+
+Linux Build Dependencies:
+
+cvs
+gcc-c++ (A relatively new one, I use 4.3.2)
+
+
+Win32 Build Dependencies:
+
+mingw (I use the one with Qt 4.4)
+
+
+// How to Build, then Run *************************************************************************
+
+Linux
+
+cd src
+cmake .
+make
+cd ../bin
+./baulk
+
+
+Win32
+
+(Remember to setup your paths)
+cd src
+cmake .
+make
+cd ..\bin
+baulk.exe
+
+
+// Troubleshooting ********************************************************************************
+
+If you're having issues building, just ask, I'm more than willing to help.
+
+If you're having runtime issues, take a look at the console messages, they'll tell you whats going on.
+
+
+// Contact ****************************************************************************************
+
+If you don't know how to get a hold of me, I'd recommend the mailing list. 
+I'll setup a mailing list for 
+
