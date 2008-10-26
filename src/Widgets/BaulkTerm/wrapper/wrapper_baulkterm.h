@@ -38,14 +38,14 @@
 
 #include "baulkterm.h"
 
-// Exported Symbols
+// Exported Symbols *******************************************************************************
 extern "C" EXPORTDLL {
 	QStringList symbolList();
 
 	BaulkWidget *baulkterm_mainWidget( QWidget *parent );
 }
 
-// Misc Declarations
+// Misc Declarations ******************************************************************************
 BaulkTerm *term;
 
 #endif
