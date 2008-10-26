@@ -43,6 +43,10 @@ int main( int argc, char *argv[] ) {
 	// Event-Loop	
 	int reTurn = app->exec();
 
+	// Post-Quit Events
+	delete serv;
+	delete app;
+
 	return reTurn;
 }
 
