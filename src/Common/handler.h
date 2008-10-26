@@ -50,7 +50,6 @@ void handler( QtMsgType type, const char *msg ) {
 			"</style>";
 	switch ( type ) {
 	case QtDebugMsg:
-		logPlain = QObject::tr("<Debug> %1").arg( msg );
 		log = QObject::tr("%1<font color=\"green\">&lt;Debug&gt; %2<br></font>")
 			.arg( css )
 			.arg( QString( msg )
@@ -58,39 +57,40 @@ void handler( QtMsgType type, const char *msg ) {
 				.replace( QRegExp("\t(.*)"), QString("<li>\\1</li>") ) 
 			);
 #ifndef BAULK
+		logPlain = QObject::tr("<Debug> %1").arg( msg );
 		std::cerr << logPlain.toUtf8().data() << std::endl;
 #endif
 		break;
 	case QtWarningMsg:
-		logPlain = QObject::tr("<Warning> %1").arg( msg );
-		log = QObject::tr( "%1<font color=\"orange\">&lt;Warning&gt;</font> %2<br>")
+		log = QObject::tr( "%1<font color=\"orange\">&lt;Warning&gt; %2<br></font>")
 			.arg( css )
 			.arg( QString( msg )
 				.replace( QRegExp("\t(.*)\n"), QString("<li>\\1</li>") ) 
 				.replace( QRegExp("\t(.*)"), QString("<li>\\1</li>") ) 
 			);
 #ifndef BAULK
+		logPlain = QObject::tr("<Warning> %1").arg( msg );
 		std::cerr << logPlain.toUtf8().data() << std::endl;
 #endif
 		break;
 	case QtCriticalMsg:
-		logPlain = QObject::tr("<Critical> %1").arg( msg );
-		log = QObject::tr("%1<font color=\"red\">&lt;Critical&gt;</font> %2<br>")
+		log = QObject::tr("%1<font color=\"red\">&lt;Critical&gt; %2<br></font>")
 			.arg( css )
 			.arg( QString( msg )
 				.replace( QRegExp("\t(.*)\n"), QString("<li>\\1</li>") ) 
 				.replace( QRegExp("\t(.*)"), QString("<li>\\1</li>") ) 
 			);
+		logPlain = QObject::tr("<Critical> %1").arg( msg );
 		std::cerr << logPlain.toUtf8().data() << std::endl;
 		break;
 	case QtFatalMsg:
-		logPlain = QObject::tr("<Fatal> %1").arg( msg );
-		log = QObject::tr("%1<font color=\"red\" font-size=\"large\">&lt;Fatal&gt;</font> %2<br>")
+		log = QObject::tr("%1<font color=\"red\" font-size=\"large\">&lt;Fatal&gt; %2<br></font>")
 			.arg( css )
 			.arg( QString( msg )
 				.replace( QRegExp("\t(.*)\n"), QString("<li>\\1</li>") ) 
 				.replace( QRegExp("\t(.*)"), QString("<li>\\1</li>") ) 
 			);
+		logPlain = QObject::tr("<Fatal> %1").arg( msg );
 		std::cerr << logPlain.toUtf8().data() << std::endl;
 		break;
 	}
