@@ -20,7 +20,7 @@
 
 #include "baulk.h"
 
-// Constructor
+// Constructor ************************************************************************************
 Baulk::Baulk( QWidget *parent ) : QMainWindow( parent ) {
 	QString serverListenName = "BaulkServ"; // TODO Put in config
 
@@ -41,7 +41,7 @@ Baulk::Baulk( QWidget *parent ) : QMainWindow( parent ) {
 	connect( controller, SIGNAL( windowTitleNameSet( QString ) ), this, SLOT( setWindowTitleName( QString ) ) );
 }
 
-// Window Close Event
+// Window Close Event *****************************************************************************
 void Baulk::closeEvent( QCloseEvent *event ) {
 	//event->ignore();
 	
@@ -50,6 +50,12 @@ void Baulk::closeEvent( QCloseEvent *event ) {
 		
 	qDebug("Closing");
 	event->accept();
+}
+
+// Log Update *************************************************************************************
+void Baulk::updatingMsgLogs( QStringList msgLogs ) {
+	if ( controller != 0 )
+		controller->setMsgLogs( msgLogs );
 }
 
 // SLOTS ******************************************************************************************

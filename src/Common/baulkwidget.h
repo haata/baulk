@@ -38,6 +38,9 @@ public:
 	BaulkWidget( QWidget *wrapWidget, QWidget *parent );
 
 	// Properties
+	QStringList msgLogs() const;
+	void setMsgLogs( QStringList msgLogs );
+
 	QString serverListenName() const;
 	void setServerListenName( QString listenName );
 
@@ -53,6 +56,7 @@ protected:
 	virtual void resizeEvent( QResizeEvent *event );
 
 signals:
+	void msgLogsUpdated( QStringList msgLogs );
 	void serverListenNameSet( QString listenName );
 	void windowTitleNameSet( QString titleName );
 };

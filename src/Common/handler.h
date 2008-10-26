@@ -26,6 +26,10 @@
 
 #include <iostream>
 
+#include <QStringList>
+
+QStringList msgLogs;
+
 // Handles all messages sent by the application
 void handler( QtMsgType type, const char *msg ) {
 	QString log = "";
@@ -47,6 +51,15 @@ void handler( QtMsgType type, const char *msg ) {
 		std::cerr << log.toUtf8().data() << std::endl;
 		break;
 	}
+
+	msgLogs << log;
+	
+#ifdef BAULK
+	if ( baulk != 0 ) {
+		baulk->updatingMsgLogs( msgLogs );
+		msgLogs.clear();
+	}
+#endif
 }
 
 #endif

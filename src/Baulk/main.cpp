@@ -22,24 +22,29 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#define BAULK
+
 #include <QApplication>
 
-#include <handler.h>
-
 #include "baulk.h"
+
+Baulk *baulk;
+
+#include <handler.h>
 
 int main( int argc, char *argv[] ) {
 	qInstallMsgHandler( handler ); // Message Handler
 	QApplication *app = new QApplication( argc, argv );
 
-	Baulk baulk;
-	baulk.show();
+	baulk = new Baulk;
+	baulk->show();
 
 	// Event-Loop	
 	int reTurn = app->exec();
 
 	// Post-Quit Events
-	
+	delete baulk;
+	delete app;
 
 	return reTurn;
 }

@@ -41,6 +41,14 @@ void BaulkWidget::widgetSetup() {
 }
 
 // Properties *************************************************************************************
+QStringList BaulkWidget::msgLogs() const {
+	return property("msgLogs").toStringList();
+}
+void BaulkWidget::setMsgLogs( QStringList msgLogs ) {
+	setProperty( "msgLogs", QVariant( msgLogs ) );
+	emit msgLogsUpdated( msgLogs );
+}
+
 QString BaulkWidget::serverListenName() const { 
 	return property("serverListenName").toString(); 
 }
