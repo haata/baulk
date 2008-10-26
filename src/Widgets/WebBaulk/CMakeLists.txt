@@ -16,7 +16,7 @@ set( HDRS
 	./webbaulk.h
 )
 
-#| Executable
+#| Library
 set( LIB
 	WebBaulk
 )
@@ -39,9 +39,7 @@ QT4_WRAP_CPP( MOC_SRCS ${HDRS} )
 #| Library Versioning
 set( cat_prog cat )
 if( WIN32 )
-  if( not UNIX )
-    set( cat_prog type )
-  endif( not UNIX )
+	set( cat_prog type )
 endif( WIN32 )
 
 exec_program( ${cat_prog} 
