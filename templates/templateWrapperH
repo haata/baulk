@@ -44,12 +44,16 @@
 
 #include <QWidget>
 
-// Exported Symbols
+#include <baulkwidget.h>
+
+// Exported Symbols *******************************************************************************
 extern "C" EXPORTDLL {
 	QStringList symbolList();
+
+	BaulkWidget *mainWidget( QWidget *parent );
 }
 
-// Misc Declarations
+// Misc Declarations ******************************************************************************
 
 #endif
 

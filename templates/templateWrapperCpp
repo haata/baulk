@@ -20,9 +20,13 @@
 
 #include "wrapper_NAME.h"
 
-// Symbol List
+// Symbol List ************************************************************************************
 QStringList symbolList() {
 	return QStringList()
-		<< "mainObject";
+		<< "mainWidget";
+}
+
+// Main *******************************************************************************************
+BaulkWidget *mainWidget( QWidget *parent ) {
 }
 
