@@ -22,6 +22,7 @@
 
 // Constructors ***********************************************************************************
 BaulkWidget::BaulkWidget( QWidget *parent ) : QWidget( parent ) {
+	widgetSetup();
 }
 
 BaulkWidget::BaulkWidget( QWidget *wrapWidget, QWidget *parent ) : QWidget( parent ) {
@@ -29,6 +30,14 @@ BaulkWidget::BaulkWidget( QWidget *wrapWidget, QWidget *parent ) : QWidget( pare
 	layout->setContentsMargins( 0,0,0,0 );
 	layout->addWidget( wrapWidget );
 	setLayout( layout );
+
+	widgetSetup();
+}
+
+// Defaults ***************************************************************************************
+void BaulkWidget::widgetSetup() {
+	setMinimumSize( 25, 25 );
+	setSizePolicy( QSizePolicy::Preferred, QSizePolicy::Preferred );
 }
 
 // Properties *************************************************************************************

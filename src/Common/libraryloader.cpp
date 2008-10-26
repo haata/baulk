@@ -91,7 +91,7 @@ bool LibraryLoader::loadLibrary( QString libraryName, bool detectVersion, QStrin
 
 // Symbol Resolvers *******************************************************************************
 void *LibraryLoader::lrResolve( QString symbol ) {
-	const char *symbolName = symbol.toAscii().data(); 
+	const char *symbolName = symbol.toUtf8().data(); 
 	void *tmp = resolve( symbolName );
 	if ( allErrors.isEmpty() || allErrors.last() != errorString() )
 		allErrors << errorString();

@@ -46,6 +46,7 @@ public:
 public slots:
 
 private:
+	void widgetSetup();
 
 signals:
 	void serverListenNameSet( QString listenName );
