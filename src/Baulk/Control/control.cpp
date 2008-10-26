@@ -46,13 +46,7 @@ BaulkControl::BaulkControl( QWidget *parent ) : BaulkWidget( parent ) {
 	dynTopLayout->setHandleWidth( 1 );
 	dynBotLayout->setHandleWidth( 1 );
 	
-	QPushButton *test = new QPushButton( "TEST", parent );
-	QPushButton *test2 = new QPushButton( "TEST2", parent );
-	dynBotLayout->addWidget( test );
-	dynBotLayout->addWidget( test2 );
-
 	loadLibraries();
-
 }
 
 // Daemon Interaction *****************************************************************************

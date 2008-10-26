@@ -33,8 +33,6 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
-#include <QPushButton> // TODO REMOVE ME
-
 #include <baulkwidget.h>
 #include <client.h>
 #include <libraryloader.h>
