@@ -7,6 +7,13 @@ cmake_minimum_required( VERSION 2.6 )
 if ( UNIX )
 	subdirs(
 		BaulkTerm
+		WebBaulk
 	)
 endif ( UNIX )
+
+if ( WIN32 )
+	subdirs(
+		WebBaulk
+	)
+endif ( WIN32 )
 
