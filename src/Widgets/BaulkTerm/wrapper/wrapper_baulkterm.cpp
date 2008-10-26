@@ -30,8 +30,10 @@ QStringList symbolList() {
 BaulkWidget *baulkterm_mainWidget( QWidget *parent ) {
 	qDebug("Loading BaulkTerm");
 
-	term = new BaulkTerm( 1, parent );
+	term = new BaulkTerm();
 	BaulkWidget *wrapper = new BaulkWidget( term, parent );
+
+	QObject::connect( term, SIGNAL( finished() ), wrapper, SLOT( close() ) );
 
 	return wrapper;
 }

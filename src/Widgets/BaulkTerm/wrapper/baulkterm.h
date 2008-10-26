@@ -25,15 +25,20 @@
 #define __BAULKTERM_H
 
 #include <QResizeEvent>
+#include <QVBoxLayout>
 #include <QWidget>
 
+#include <baulkwidget.h>
 #include <qtermwidget.h>
 
-class BaulkTerm : public QTermWidget {
+class BaulkTerm : public BaulkWidget {
 	Q_OBJECT
 
 public:
 	BaulkTerm( int startNow = 1, QWidget *parent = 0 );
+
+private:
+	QTermWidget *term;
 
 protected:
 	virtual void resizeEvent( QResizeEvent *event );

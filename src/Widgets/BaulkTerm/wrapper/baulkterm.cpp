@@ -21,12 +21,18 @@
 #include "baulkterm.h"
 
 // Constructors ***********************************************************************************
-BaulkTerm::BaulkTerm( int startNow, QWidget *parent ) : QTermWidget( startNow, parent ) {
-	connect( this, SIGNAL( finished() ), this, SLOT( close() ) );
+BaulkTerm::BaulkTerm( int startNow, QWidget *parent ) : BaulkWidget( parent ) {
+	QVBoxLayout *layout = new QVBoxLayout;
+	layout->setContentsMargins( 0,0,0,0 );
+	setLayout( layout );
+
+	term = new QTermWidget( startNow, this );
+	layout->addWidget( term );
+	connect( term, SIGNAL( finished() ), this, SLOT( close() ) );
 }
 
 // Reimplemented Functions ************************************************************************
 void BaulkTerm::resizeEvent( QResizeEvent *event ) {
-	resize( event->size() );
+	term->resize( event->size() );
 }
 
