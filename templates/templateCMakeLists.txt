@@ -46,7 +46,7 @@ if( WIN32 )
 endif( WIN32 )
 
 exec_program( ${cat_prog} 
-	ARGS ${PROJECT_SOURCE_DIR}/../../Common/VERSION 
+	ARGS ${PROJECT_SOURCE_DIR}/<To Common Dir>/Common/VERSION 
 	OUTPUT_VARIABLE VERSION 
 )
 set( LIBRARY_VERSION
@@ -67,7 +67,7 @@ add_library( ${LIB} SHARED ${SRCS} ${MOC_SRCS} )
 #| Link Needed Libraries to Library
 target_link_libraries( ${LIB} ${QT_LIBRARIES} )
 set( LIBRARY_OUTPUT_PATH
-        ${PROJECT_BINARY_DIR}/../../../bin/BaulkLibs
+        ${PROJECT_BINARY_DIR}/<To Top Dir>/bin/BaulkLibs
 )
 set_target_properties( ${LIB} PROPERTIES VERSION ${LIBRARY_VERSION} )
 
