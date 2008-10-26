@@ -27,5 +27,6 @@ BaulkTerm::BaulkTerm( int startNow, QWidget *parent ) : QTermWidget( startNow, p
 
 // Reimplemented Functions ************************************************************************
 void BaulkTerm::resizeEvent( QResizeEvent *event ) {
+	resize( event->size() );
 }
 

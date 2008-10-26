@@ -53,9 +53,13 @@ void Baulk::closeEvent( QCloseEvent *event ) {
 }
 
 // Log Update *************************************************************************************
-void Baulk::updatingMsgLogs( QStringList msgLogs ) {
-	if ( controller != 0 )
+bool Baulk::updateMsgLogs( QStringList msgLogs ) {
+	if ( controller != 0 ) {
 		controller->setMsgLogs( msgLogs );
+		return true;
+	}
+	
+	return false;
 }
 
 // SLOTS ******************************************************************************************

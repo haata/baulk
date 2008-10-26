@@ -35,6 +35,8 @@ class LibraryLoader : public QLibrary {
 
 public:
 	LibraryLoader( QObject *parent = 0 );
+
+	void setupLibraryLoader( QObject *parent );
 	
 	// A list of all errors since initialization, not accurate when using QLibrary directly (unless function reimplemented)
 	QStringList errorList() const;
@@ -56,9 +58,9 @@ public:
 	QStringList loadableLibraries();
 
 	// BaulkControl Simplified Loaders
-	BaulkWidget *loadBaulkWidget( QString symbolBase );
-	QAction *loadQAction( QString symbolBase );
-	QObject *loadQObject( QString symbolBase );
+	BaulkWidget *loadBaulkWidget( QString symbolBase, BaulkWidget *parent = 0 );
+	QAction *loadQAction( QString symbolBase, BaulkWidget *parent = 0 );
+	QObject *loadQObject( QString symbolBase, BaulkWidget *parent = 0 );
 
 private:
 	QString errorName() const { return tr("Library Loader"); }

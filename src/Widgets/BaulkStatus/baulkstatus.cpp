@@ -20,12 +20,24 @@
 
 #include "baulkstatus.h"
 
+// Constructors ***********************************************************************************
 BaulkStatus::BaulkStatus( BaulkWidget *parent ) : BaulkWidget( parent ) {
 	QVBoxLayout *layout = new QVBoxLayout;
 	layout->setContentsMargins( 0,0,0,0 );
 	setLayout( layout );
 
 	messageBrowser = new QTextBrowser;
+	messageBrowser->setStyleSheet("QTextBrowser {"
+			"background: black;"
+			"selection-background-color: darkgray;"
+			"}");
 	layout->addWidget( messageBrowser );
+	connect( parent, SIGNAL( msgLogsUpdated( QStringList ) ), this, SLOT( updateMsgLog( QStringList ) ) );
+}
+
+
+// Private Slots **********************************************************************************
+void BaulkStatus::updateMsgLog( QStringList msgLogs ) {
+	messageBrowser->setHtml( msgLogs.join("") );
 }
 

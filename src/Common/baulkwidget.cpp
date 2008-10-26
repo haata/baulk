@@ -45,7 +45,7 @@ QStringList BaulkWidget::msgLogs() const {
 	return property("msgLogs").toStringList();
 }
 void BaulkWidget::setMsgLogs( QStringList msgLogs ) {
-	setProperty( "msgLogs", QVariant( msgLogs ) );
+	setProperty( "msgLogs", QVariant( property("msgLogs").toStringList() + msgLogs ) );
 	emit msgLogsUpdated( msgLogs );
 }
 
@@ -67,5 +67,6 @@ void BaulkWidget::setWindowTitleName( QString titleName ) {
 
 // Reimplemented QWidget Functions ****************************************************************
 void BaulkWidget::resizeEvent( QResizeEvent *event ) {
+	resize( event->size() );
 }
 

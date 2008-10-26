@@ -40,7 +40,7 @@ class Baulk : public QMainWindow {
 public:
 	Baulk( QWidget *parent = 0 );
 
-	void updatingMsgLogs( QStringList msgLogs );
+	bool updateMsgLogs( QStringList msgLogs );
 
 private:
 	BaulkWidget *controller;

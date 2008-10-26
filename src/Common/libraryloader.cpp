@@ -21,8 +21,12 @@
 #include "baulkxml.h"
 #include "libraryloader.h"
 
-// Constructor ************************************************************************************
+// Constructors ***********************************************************************************
 LibraryLoader::LibraryLoader( QObject *parent ) : QLibrary( parent ) {
+	setupLibraryLoader( parent );
+}
+
+void LibraryLoader::setupLibraryLoader( QObject *parent ) {
 	BaulkXML xmlConfig( "BaulkLibs", this );
 
 	// Default Library Directory Search - In order
@@ -98,28 +102,28 @@ void *LibraryLoader::lrResolve( QString symbol ) {
 	return tmp;
 }
 
-BaulkWidget *LibraryLoader::loadBaulkWidget( QString symbolBase ) {
+BaulkWidget *LibraryLoader::loadBaulkWidget( QString symbolBase, BaulkWidget *parent ) {
 	for ( int c = 0; c < symbolList().count(); ++c )
 		if ( symbolList()[c].contains( symbolBase ) )
-			return ( (BaulkWidget*(*)( QWidget* )) lrResolve( symbolList()[c] ) )( 0 );
+			return ( (BaulkWidget*(*)( QWidget* )) lrResolve( symbolList()[c] ) )( parent );
 
 	qCritical( QString("%1\n\tNo %2 symbol exists for BaulkWidget load").arg( errorName() ).arg( symbolBase ).toUtf8() );
 	return 0;
 }
 
-QAction *LibraryLoader::loadQAction( QString symbolBase ) {
+QAction *LibraryLoader::loadQAction( QString symbolBase, BaulkWidget *parent ) {
 	for ( int c = 0; c < symbolList().count(); ++c )
 		if ( symbolList()[c].contains( symbolBase ) )
-			return ( (QAction*(*)( QObject* )) lrResolve( symbolList()[c] ) )( 0 );
+			return ( (QAction*(*)( QObject* )) lrResolve( symbolList()[c] ) )( parent );
 
 	qCritical( QString("%1\n\tNo %2 symbol exists for QAction load").arg( errorName() ).arg( symbolBase ).toUtf8() );
 	return 0;
 }
 
-QObject *LibraryLoader::loadQObject( QString symbolBase ) {
+QObject *LibraryLoader::loadQObject( QString symbolBase, BaulkWidget *parent ) {
 	for ( int c = 0; c < symbolList().count(); ++c )
 		if ( symbolList()[c].contains( symbolBase ) )
-			return ( (QObject*(*)( QObject* )) lrResolve( symbolList()[c] ) )( 0 );
+			return ( (QObject*(*)( QObject* )) lrResolve( symbolList()[c] ) )( parent );
 
 	qCritical( QString("%1\n\tNo %2 symbol exists for QObject load").arg( errorName() ).arg( symbolBase ).toUtf8() );
 	return 0;

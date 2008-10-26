@@ -38,6 +38,9 @@ public:
 
 private:
 	QTextBrowser *messageBrowser;
+
+private slots:
+	void updateMsgLog( QStringList msgLogs );
 };
 
 #endif
