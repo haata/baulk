@@ -75,13 +75,13 @@ void InformationClient::incomingData() {
 	}
 
 	// Invalid Packet
-	qDebug( QString("InformationClient\n\t|Invalid Packet!\n\t\t%1").arg( data ).toUtf8() );
+	qDebug( QString("%1\n\tInvalid Packet!\n\t\t%2").arg( errorName() ).arg( data ).toUtf8() );
 }
 
 void InformationClient::newId( int newIdnum ) {
 	currentId = newIdnum;
 	// TODO emit signal for Controller to determine new Id
-	qDebug( QString("InformationClient\n\t|New Id || %1").arg( currentId ).toUtf8() );
+	qDebug( QString("%1\n\tNew Id || %2").arg( errorName() ).arg( currentId ).toUtf8() );
 }
 
 // All Outgoing Data goes through here

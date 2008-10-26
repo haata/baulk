@@ -47,7 +47,7 @@ LibraryLoader::LibraryLoader( QObject *parent ) : QLibrary( parent ) {
 		}
 
 	if ( libraryDirs.count() < 1 )
-		qCritical( tr("Library Loader\n\t|No library directories could be found").toUtf8() );
+		qCritical( tr("%1\n\tNo library directories could be found").arg( errorName() ).toUtf8() );
 
 	// Library Filters
 	libraryFilters = QStringList()
@@ -103,7 +103,7 @@ BaulkWidget *LibraryLoader::loadBaulkWidget( QString symbolBase ) {
 		if ( symbolList()[c].contains( symbolBase ) )
 			return ( (BaulkWidget*(*)( QWidget* )) lrResolve( symbolList()[c] ) )( 0 );
 
-	qCritical( QString("Library Loader\n\t|No %1 symbol exists for BaulkWidget load").arg( symbolBase ).toUtf8() );
+	qCritical( QString("%1\n\tNo %2 symbol exists for BaulkWidget load").arg( errorName() ).arg( symbolBase ).toUtf8() );
 	return 0;
 }
 
@@ -112,7 +112,7 @@ QAction *LibraryLoader::loadQAction( QString symbolBase ) {
 		if ( symbolList()[c].contains( symbolBase ) )
 			return ( (QAction*(*)( QObject* )) lrResolve( symbolList()[c] ) )( 0 );
 
-	qCritical( QString("Library Loader\n\t|No %1 symbol exists for QAction load").arg( symbolBase ).toUtf8() );
+	qCritical( QString("%1\n\tNo %2 symbol exists for QAction load").arg( errorName() ).arg( symbolBase ).toUtf8() );
 	return 0;
 }
 
@@ -121,7 +121,7 @@ QObject *LibraryLoader::loadQObject( QString symbolBase ) {
 		if ( symbolList()[c].contains( symbolBase ) )
 			return ( (QObject*(*)( QObject* )) lrResolve( symbolList()[c] ) )( 0 );
 
-	qCritical( QString("Library Loader\n\t|No %1 symbol exists for QObject load").arg( symbolBase ).toUtf8() );
+	qCritical( QString("%1\n\tNo %2 symbol exists for QObject load").arg( errorName() ).arg( symbolBase ).toUtf8() );
 	return 0;
 }
 
@@ -143,7 +143,7 @@ QString LibraryLoader::determineLibraryPath( QString libraryName ) {
 		if ( QLibrary::isLibrary( dir ) )
 			return dir;
 	}
-	qFatal( tr("Library Loader\n\t|Could not find specified Library\n\t||%1").arg( libraryName ).toUtf8() );
+	qFatal( tr("%1\n\tCould not find specified Library\n\t||%2").arg( errorName() ).arg( libraryName ).toUtf8() );
 	return "";
 }
 

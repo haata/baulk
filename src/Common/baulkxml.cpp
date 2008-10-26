@@ -48,7 +48,7 @@ bool BaulkXML::saveConfig() {
 		output << xmlDoc->toString();
 	}
 	else {
-		qWarning( tr("BaulkXML\n\t|Could not open config file\n\t||%1").arg( configFile.fileName() ).toUtf8() );
+		qWarning( tr("%1\n\tCould not open config file\n\t%2").arg( errorName() ).arg( configFile.fileName() ).toUtf8() );
 		return false;
 	}
 
@@ -60,12 +60,12 @@ bool BaulkXML::saveConfig() {
 bool BaulkXML::loadConfig( QString configName ) {
 	if ( configFile.open( QIODevice::ReadOnly ) ) {
 		if ( !xmlDoc->setContent( &configFile ) ) {
-			qCritical( tr("BaulkXML\n\t|Could not load XML document\n\t||%1").arg( configFile.fileName() ).toUtf8() );
+			qCritical( tr("%1\n\tCould not load XML document\n\t%2").arg( errorName() ).arg( configFile.fileName() ).toUtf8() );
 			return false;
 		}
 	}
 	else {
-		qCritical( tr("BaulkXML\n\t|Could not open config file\n\t||%1").arg( configFile.fileName() ).toUtf8() );
+		qWarning( tr("%1\n\tCould not load config file\n\t%2").arg( errorName() ).arg( configFile.fileName() ).toUtf8() );
 		return false;
 	}
 
@@ -87,7 +87,7 @@ QVariant BaulkXML::option( QString settingName, bool warnOnNotFound ) {
 			break;
 		}
 	if ( !found ) {
-		qWarning( tr("BaulkXML\n\t|Could not find setting\n\t||%1").arg( settingName ).toUtf8() );
+		qWarning( tr("%1\n\tCould not find setting\n\t%2").arg( errorName() ).arg( settingName ).toUtf8() );
 		return QVariant("");
 	}
 
@@ -98,7 +98,7 @@ QVariant BaulkXML::option( QString settingName, bool warnOnNotFound ) {
 
 	// Some Configurations option will want a null value
 	if ( warnOnNotFound )
-		qWarning( tr("BaulkXML\n\t|Could not load setting\n\t||%1").arg( settingName ).toUtf8() );
+		qWarning( tr("%1\n\tCould not load setting\n\t%2").arg( errorName() ).arg( settingName ).toUtf8() );
 
 	return QVariant("");
 }

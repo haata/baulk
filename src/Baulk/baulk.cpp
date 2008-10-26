@@ -47,7 +47,6 @@ void Baulk::closeEvent( QCloseEvent *event ) {
 	
 	// TODO - Send Event to Controller for quit/save message
 	// 		Use controller infoClient inorder to determine whether or not to kill the server
-	//infoServer->terminate();
 		
 	qDebug("Closing");
 	event->accept();

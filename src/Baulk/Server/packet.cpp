@@ -122,7 +122,7 @@ void Packet::encode() {
 	QString ids = QString("TO:%1|FROM:%2").arg( destinationIdS ).arg( senderIdS );
 
 	if ( dataFlagsS.count() != dataS.count() ) {
-		qWarning( tr("InformationPacket\n\t|There are not equal number(s) of Data Flags and Data").toUtf8() );
+		qWarning( tr("%1\n\tThere are not equal number(s) of Data Flags and Data").arg( errorName() ).toUtf8() );
 		ids = "INVALID";
 	}
 

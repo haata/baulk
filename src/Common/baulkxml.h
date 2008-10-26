@@ -58,6 +58,8 @@ private:
 	bool loadConfig( QString configName );
 	bool loaded;
 
+	QString errorName() const { return tr("BaulkXML"); }
+
 	QDir configDir;
 	QDomDocument *xmlDoc;
 	QDomElement xmlDocElementProfile;

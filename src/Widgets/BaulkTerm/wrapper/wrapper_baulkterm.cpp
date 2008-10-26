@@ -28,7 +28,7 @@ QStringList symbolList() {
 
 // Main *******************************************************************************************
 BaulkWidget *baulkterm_mainWidget( QWidget *parent ) {
-	qDebug("Loading");
+	qDebug("Loading BaulkTerm");
 
 	term = new BaulkTerm( 1, parent );
 	BaulkWidget *wrapper = new BaulkWidget( term, parent );

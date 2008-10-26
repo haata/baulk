@@ -61,10 +61,12 @@ public:
 	QObject *loadQObject( QString symbolBase );
 
 private:
+	QString errorName() const { return tr("Library Loader"); }
 	QString determineLibraryPath( QString libraryName );
 	QStringList symbolList();
 
 	void updateErrorList();
+
 
 	QStringList allErrors;
 	QStringList libraryDirs;

@@ -56,6 +56,8 @@ private:
 	QLocalSocket *socket;
 	QString serverName;
 
+	QString errorName() const { return tr("InformationClient"); }
+
 	void clientRequest();
 	void newId( int newId );
 	void outgoingData( QString data );

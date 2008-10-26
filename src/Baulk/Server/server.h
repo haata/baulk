@@ -63,6 +63,8 @@ private:
 	QVector<QLocalSocket*> clientList;
 	QList<int> emptyClientListEntries;
 
+	QString errorName() const { return tr("InformationServer"); }
+
 	void clientRedirect();
 	void outgoingData( QString data );
 	void requestId();

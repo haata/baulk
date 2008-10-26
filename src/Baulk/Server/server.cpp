@@ -33,7 +33,7 @@ InformationServer::InformationServer( QString listen, QObject *parent ) : QObjec
 		listenSocket = listen;
 		server = new QLocalServer( this );
 		if ( !server->listen( listenSocket ) ) 
-			qCritical( tr("InformationServer\n\t|Could not open listen socket\n\t||%1").arg( listenSocket ).toUtf8() );
+			qCritical( tr("%1\n\tCould not open listen socket\n\t%1").arg( errorName() ).arg( listenSocket ).toUtf8() );
 		connect( server, SIGNAL( newConnection() ), this, SLOT( connection() ) );
 		break;
 	// Server Already Running Case
@@ -51,7 +51,7 @@ InformationServer::~InformationServer() {
 }
 
 void InformationServer::clientRedirect() {
-	qDebug("InformationServer\n\t|Client Request (Server Redirect)");
+	qDebug( QString("%1\n\tClient Request (Server Redirect)").arg( errorName() ).toUtf8() );
 
 	QStringList flags = incomingPacket->dataFlags();
 	QStringList data = incomingPacket->data();
@@ -79,7 +79,7 @@ void InformationServer::incomingData() {
 	in >> data;
 
 	if ( data == "" ) {
-		qDebug( QString("InformationServer\n\t|Blank Packet!").toUtf8() );
+		qDebug( QString("%1\n\tBlank Packet!").arg( errorName() ).toUtf8() );
 		return;
 	}
 
@@ -98,7 +98,7 @@ void InformationServer::incomingData() {
 	}
 
 	// Invalid Packet
-	qDebug( QString("InformationServer\n\t|Invalid Packet!\n\t\t%1").arg( data ).toUtf8() );
+	qDebug( QString("%1\n\tInvalid Packet!\n\t\t%2").arg( errorName() ).arg( data ).toUtf8() );
 }
 
 void InformationServer::outgoingData( QString data ) {
@@ -139,7 +139,7 @@ void InformationServer::requestId() {
 }
 
 void InformationServer::serverRequest() {
-	qDebug("InformationServer\n\t|Server Request");
+	qDebug( QString("%1\n\tServer Request").arg( errorName() ).toUtf8() );
 	
 	QStringList flags = incomingPacket->dataFlags();
 	QStringList data = incomingPacket->data();
@@ -166,7 +166,7 @@ void InformationServer::serverRequest() {
 				if ( emptyClientListEntries.count() >= clientList.count() )
 					emptyClientListEntries.removeOne( clientList.count() );
 
-				qDebug( QString("InformationServer\n\t|Id Removed\n\t\t%1").arg( id ).toUtf8() );
+				qDebug( QString("%1\n\tId Removed\n\t\t%2").arg( errorName() ).arg( id ).toUtf8() );
 
 				--connectedClients;
 				if ( connectedClients < 1 )

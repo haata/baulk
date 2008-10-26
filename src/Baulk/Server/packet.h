@@ -139,6 +139,8 @@ private:
 	QRegExp dataCheck() const { return QRegExp("[:\\|]"); }
 	QRegExp idCheck() const { return QRegExp("^Screen\\{[0-9]*\\}Inc\\{[0-9]*\\}$"); }
 
+	QString errorName() const { return tr("Packet"); }
+
 	// Called on encode/decode failure
 	void debugOutput();
 
