@@ -42,6 +42,9 @@ private:
 
 protected:
 	virtual void resizeEvent( QResizeEvent *event );
+
+signals:
+	void finished();
 };
 
 #endif
