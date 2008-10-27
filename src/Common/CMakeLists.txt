@@ -23,6 +23,24 @@ set( LIB_BW
 )
 
 
+##| Baulk Dialog
+
+#| Sources
+set( SRCS_BD
+	./baulkdialog.cpp
+)
+
+#| Headers
+set( HDRS_BD
+	./baulkdialog.h
+)
+
+#| Library
+set( LIB_BD
+	BaulkDialog
+)
+
+
 ##| Library Loader
 
 #| Sources
@@ -76,6 +94,18 @@ else ( WIN32 )
 endif( WIN32 )
 
 target_link_libraries( ${LIB_BW} ${QT_LIBRARIES} )
+
+
+##| Baulk Dialog
+QT4_WRAP_CPP( MOC_SRCS_BW ${HDRS_BD} )
+
+if ( WIN32 )
+	add_library( ${LIB_BD} STATIC ${SRCS_BD} ${MOC_SRCS_BD} )
+else ( WIN32 )
+	add_library( ${LIB_BD} SHARED ${SRCS_BD} ${MOC_SRCS_BD} )
+endif( WIN32 )
+
+target_link_libraries( ${LIB_BD} ${QT_LIBRARIES} )
 
 
 ##| BaulkXML
