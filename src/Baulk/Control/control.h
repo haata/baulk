@@ -37,6 +37,8 @@
 #include <client.h>
 #include <libraryloader.h>
 
+#include "interfacedialog.h"
+
 class BaulkControl : public BaulkWidget {
 	Q_OBJECT
 
@@ -54,6 +56,16 @@ private:
 	// Dynamic Layout
 	QSplitter *dynTopLayout;
 	QSplitter *dynBotLayout;
+
+	// Global QActions
+	QAction *newWidget;
+
+	// Interface Dialog
+	BaulkInterfaceDialog *interfaceDialog;
+
+
+	// QAction Setup
+	void setupQActions();
 
 private slots:
 	// Dynamic Librariess

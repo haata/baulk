@@ -7,12 +7,14 @@ cmake_minimum_required( VERSION 2.6 )
 #| Sources
 set( SRCS
 	./control.cpp
+	./interfacedialog.cpp
         ./wrapper_control.cpp
 )
 
 #| Headers
 set( HDRS
 	./control.h
+	./interfacedialog.h
 )
 
 #| Executable

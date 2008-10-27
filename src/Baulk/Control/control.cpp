@@ -21,6 +21,9 @@
 #include "control.h"
 
 BaulkControl::BaulkControl( QWidget *parent ) : BaulkWidget( parent ) {
+	// Initialize Baulk Interface Dialog
+	interfaceDialog = new BaulkInterfaceDialog( this );
+
 	// Start Client if listen name is set
 	connect( this, SIGNAL( serverListenNameSet( QString ) ), this, SLOT( startInformationClient() ) );
 
@@ -49,6 +52,14 @@ BaulkControl::BaulkControl( QWidget *parent ) : BaulkWidget( parent ) {
 	loadLibraries();
 }
 
+// QAction Setup **********************************************************************************
+void BaulkControl::setupQActions() {
+	// Calls New Widget Dialog
+	newWidget = new QAction( this );
+	newWidget->setShortcut( tr("Alt+Meta+P") );
+
+}
+
 // Daemon Interaction *****************************************************************************
 void BaulkControl::startInformationClient() {
 	// Connection to the Daemon
@@ -62,9 +73,7 @@ void BaulkControl::loadLibraries() {
 	QStringList libraryList = LibraryLoader( this ).loadableLibraries();
 
 	for ( int c = 0; c < libraryList.count(); ++c ) {
-		qDebug( "AAA" );
 		if ( !libraryList[c].contains("BaulkControl") ) {
-		qDebug( libraryList[c].toUtf8() + "DD" );
 			LibraryLoader *library = new LibraryLoader( this );
 			library->loadLibrary( libraryList[c] );
 			preLoadSymbols( library );
