@@ -20,6 +20,9 @@
 
 #include "baulkdialog.h"
 
+// Constructors ***********************************************************************************
 BaulkDialog::BaulkDialog( QWidget *parent ) : QDialog( parent ) {
+	// Default Settings
+	setModal( true );
 }
 

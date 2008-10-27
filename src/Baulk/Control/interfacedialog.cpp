@@ -28,5 +28,21 @@ BaulkInterfaceDialog::BaulkInterfaceDialog( BaulkWidget *parent ) : QObject( par
 
 // Dialogs ****************************************************************************************
 void BaulkInterfaceDialog::newWidgetDialog() {
+	qCritical("BLA");
+	BaulkDialog *newWidgetDialog = new BaulkDialog( parentWidget );
+
+	// Window Title
+	newWidgetDialog->setWindowTitle( tr("New Widget") );
+
+	// Layout
+	QVBoxLayout *layout = new QVBoxLayout;
+	newWidgetDialog->setLayout( layout );
+
+	// Test
+	QPushButton *test = new QPushButton("TEST");
+	layout->addWidget( test );
+
+	// Show Dialog
+	newWidgetDialog->show();
 }
 

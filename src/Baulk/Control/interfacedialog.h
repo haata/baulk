@@ -25,6 +25,8 @@
 #define __INTERFACEDIALOG_H
 
 #include <QObject>
+#include <QPushButton>
+#include <QVBoxLayout>
 #include <QWidget>
 
 #include <baulkdialog.h>

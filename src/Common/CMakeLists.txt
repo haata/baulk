@@ -97,7 +97,7 @@ target_link_libraries( ${LIB_BW} ${QT_LIBRARIES} )
 
 
 ##| Baulk Dialog
-QT4_WRAP_CPP( MOC_SRCS_BW ${HDRS_BD} )
+QT4_WRAP_CPP( MOC_SRCS_BD ${HDRS_BD} )
 
 if ( WIN32 )
 	add_library( ${LIB_BD} STATIC ${SRCS_BD} ${MOC_SRCS_BD} )

@@ -50,6 +50,7 @@ BaulkControl::BaulkControl( QWidget *parent ) : BaulkWidget( parent ) {
 	dynBotLayout->setHandleWidth( 1 );
 	
 	loadLibraries();
+	setupQActions();
 }
 
 // QAction Setup **********************************************************************************
@@ -57,7 +58,8 @@ void BaulkControl::setupQActions() {
 	// Calls New Widget Dialog
 	newWidget = new QAction( this );
 	newWidget->setShortcut( tr("Alt+Meta+P") );
-
+	connect( newWidget, SIGNAL( triggered() ), interfaceDialog, SLOT( newWidgetDialog() ) );
+	addAction( newWidget );
 }
 
 // Daemon Interaction *****************************************************************************
