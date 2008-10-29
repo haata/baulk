@@ -78,6 +78,13 @@ void BaulkControl::loadLibraries() {
 		if ( !libraryList[c].contains("BaulkControl") ) {
 			LibraryLoader *library = new LibraryLoader( this );
 			library->loadLibrary( libraryList[c] );
+			if ( libList.name.count() != libList.library.count() )
+				qFatal( tr("BaulkControl\n\tLibList lengths do not match\n\tName: %1\n\tLibrary: %2")
+						.arg( libList.name.count() )
+						.arg( libList.library.count() )
+					.toUtf8() );
+			libList.name << libraryList[c];
+			libList.library << library;
 			preLoadSymbols( library );
 		}
 	}

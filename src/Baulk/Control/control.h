@@ -45,6 +45,13 @@ class BaulkControl : public BaulkWidget {
 public:
 	BaulkControl( QWidget *parent = 0 );
 
+	struct LibraryList {
+		QList<QString> name;
+		QList<LibraryLoader*> library;
+	};
+
+	LibraryList libraryList() const { return libList; }
+
 private:
 	// Main Layout
 	QHBoxLayout *topHLayout;
@@ -62,6 +69,9 @@ private:
 
 	// Interface Dialog
 	BaulkInterfaceDialog *interfaceDialog;
+
+	// Library List
+	LibraryList libList;
 
 
 	// QAction Setup
