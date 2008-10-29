@@ -24,13 +24,19 @@
 #ifndef __INTERFACEDIALOG_H
 #define __INTERFACEDIALOG_H
 
+#include <QLabel>
+#include <QListView>
+#include <QModelIndex>
 #include <QObject>
 #include <QPushButton>
+#include <QStringListModel>
+#include <QVariant>
 #include <QVBoxLayout>
 #include <QWidget>
 
 #include <baulkdialog.h>
 #include <baulkwidget.h>
+#include <libraryloader.h>
 
 class BaulkInterfaceDialog : public QObject {
 	Q_OBJECT
@@ -39,10 +45,20 @@ public:
 	BaulkInterfaceDialog( BaulkWidget *parent );
 
 public slots:
-	void newWidgetDialog();
+	void newWidgetDialogLoader();
 
 private:
+	BaulkDialog *newWidgetDialog;
 	BaulkWidget *parentWidget;
+
+	QListView *newListView;
+	QStringListModel *newListViewModel;
+
+private slots:
+	void newWidgetAccepted( QModelIndex index );
+
+signals:
+	void newWidget( LibraryLoader *library );
 };
 
 #endif

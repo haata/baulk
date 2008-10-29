@@ -48,9 +48,15 @@ BaulkControl::BaulkControl( QWidget *parent ) : BaulkWidget( parent ) {
 	topHLayout->setContentsMargins( 0,0,0,0 );
 	dynTopLayout->setHandleWidth( 1 );
 	dynBotLayout->setHandleWidth( 1 );
-	
+
 	loadLibraries();
 	setupQActions();
+
+	// Load Console Out
+	int index = libraryList().name.lastIndexOf( QRegExp(".*BaulkStatus.*") );
+	if ( index > -1 ) {
+		loadMainWidget( libraryList().library[index] );
+	}
 }
 
 // QAction Setup **********************************************************************************
@@ -58,7 +64,7 @@ void BaulkControl::setupQActions() {
 	// Calls New Widget Dialog
 	newWidget = new QAction( this );
 	newWidget->setShortcut( tr("Alt+Meta+P") );
-	connect( newWidget, SIGNAL( triggered() ), interfaceDialog, SLOT( newWidgetDialog() ) );
+	connect( newWidget, SIGNAL( triggered() ), interfaceDialog, SLOT( newWidgetDialogLoader() ) );
 	addAction( newWidget );
 }
 
@@ -76,23 +82,28 @@ void BaulkControl::loadLibraries() {
 
 	for ( int c = 0; c < libraryList.count(); ++c ) {
 		if ( !libraryList[c].contains("BaulkControl") ) {
+			QString libName = libraryList[c];
 			LibraryLoader *library = new LibraryLoader( this );
-			library->loadLibrary( libraryList[c] );
+			library->loadLibrary( libName );
+
+			// Prevent unbalanced lists
 			if ( libList.name.count() != libList.library.count() )
 				qFatal( tr("BaulkControl\n\tLibList lengths do not match\n\tName: %1\n\tLibrary: %2")
 						.arg( libList.name.count() )
 						.arg( libList.library.count() )
 					.toUtf8() );
-			libList.name << libraryList[c];
-			libList.library << library;
-			preLoadSymbols( library );
+
+			// Prevent Duplicates
+			if ( !libList.name.contains( libName ) ) {
+				libList.name << libName;
+				libList.library << library;
+			}
 		}
 	}
 }
 
-void BaulkControl::preLoadSymbols( LibraryLoader *library ) {
-	// For Widgets/Objects that need to loaded before an instance of the mainWidget is started
-	// ie. Configuration dialogs
+void BaulkControl::loadMainWidget( LibraryLoader *library ) {
+	// Loads the primary widget of a libray
 	BaulkWidget *widget = library->loadBaulkWidget( "mainWidget", this );
 	dynBotLayout->addWidget( widget );
 }

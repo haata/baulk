@@ -28,6 +28,7 @@
 
 #include <QAction>
 #include <QHBoxLayout>
+#include <QRegExp>
 #include <QSplitter>
 #include <QStackedWidget>
 #include <QVBoxLayout>
@@ -46,11 +47,14 @@ public:
 	BaulkControl( QWidget *parent = 0 );
 
 	struct LibraryList {
-		QList<QString> name;
+		QStringList name;
 		QList<LibraryLoader*> library;
 	};
 
 	LibraryList libraryList() const { return libList; }
+
+public slots:
+	void loadMainWidget( LibraryLoader *library );
 
 private:
 	// Main Layout
@@ -80,7 +84,6 @@ private:
 private slots:
 	// Dynamic Librariess
 	void loadLibraries();
-	void preLoadSymbols( LibraryLoader *library );
 
 	void startInformationClient();
 	
