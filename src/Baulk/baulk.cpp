@@ -30,9 +30,8 @@ Baulk::Baulk( QWidget *parent ) : QMainWindow( parent ) {
 	QTest::qSleep(100); // Leave Time for the Daemon to start
 
 	// Setup Controller Instance
-	LibraryLoader *library = new LibraryLoader( this );
-	library->loadLibrary( "BaulkControl" ); // TODO Add Version Control
-	controller = ( (BaulkWidget*(*)( QWidget* )) library->lrResolve("control_mainWidget") )( this );
+	LibraryLoader *library = new LibraryLoader( "BaulkControl", this );
+	controller = library->loadBaulkWidget( "mainWidget", (BaulkWidget*)this );
 	controller->setServerListenName( serverListenName );
 	setCentralWidget( controller );	
 

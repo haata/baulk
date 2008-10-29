@@ -27,6 +27,7 @@
 #define __CONTROL_H
 
 #include <QAction>
+#include <QCloseEvent>
 #include <QHBoxLayout>
 #include <QRegExp>
 #include <QSplitter>
@@ -53,6 +54,8 @@ public:
 
 	LibraryList libraryList() const { return libList; }
 
+	QList<QAction*> globalQActions() const { return glbQActions; }
+
 public slots:
 	void loadMainWidget( LibraryLoader *library );
 
@@ -69,7 +72,7 @@ private:
 	QSplitter *dynBotLayout;
 
 	// Global QActions
-	QAction *newWidget;
+	QList<QAction*> glbQActions;
 
 	// Interface Dialog
 	BaulkInterfaceDialog *interfaceDialog;
@@ -79,6 +82,7 @@ private:
 
 
 	// QAction Setup
+	QAction *addGlobalAction( QString title, QString keyShortcut );
 	void setupQActions();
 
 private slots:
@@ -86,6 +90,9 @@ private slots:
 	void loadLibraries();
 
 	void startInformationClient();
+
+protected:
+	virtual void closeEvent( QCloseEvent *event );
 	
 };
 

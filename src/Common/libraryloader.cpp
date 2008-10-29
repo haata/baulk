@@ -26,6 +26,11 @@ LibraryLoader::LibraryLoader( QObject *parent ) : QLibrary( parent ) {
 	setupLibraryLoader( parent );
 }
 
+LibraryLoader::LibraryLoader( QString libraryName, QObject *parent ) : QLibrary( parent ) {
+	setupLibraryLoader( parent );
+	loadLibrary( libraryName );
+}
+
 void LibraryLoader::setupLibraryLoader( QObject *parent ) {
 	BaulkXML xmlConfig( "BaulkLibs", this );
 

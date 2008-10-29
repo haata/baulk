@@ -45,13 +45,16 @@ void BaulkInterfaceDialog::newWidgetDialogLoader() {
 
 	// ListView
 	newListView = new QListView;
+	newListView->setEditTriggers( QAbstractItemView::NoEditTriggers );
 	newListViewModel = new QStringListModel( ( (BaulkControl*)parentWidget )->libraryList().name );
 	newListView->setModel( newListViewModel );
 	layout->addWidget( newListView );
 
 	// Connections
-	connect( newListView, SIGNAL( activated( QModelIndex ) ), this, SLOT( newWidgetAccepted( QModelIndex ) ) );
-	connect( this, SIGNAL( newWidget( LibraryLoader* ) ), (BaulkControl*)parentWidget, SLOT( loadMainWidget( LibraryLoader* ) ) );
+	connect( newListView, SIGNAL( activated( QModelIndex ) ), 
+			this, SLOT( newWidgetAccepted( QModelIndex ) ) );
+	connect( this, SIGNAL( newWidget( LibraryLoader* ) ), 
+			(BaulkControl*)parentWidget, SLOT( loadMainWidget( LibraryLoader* ) ) );
 
 	// Show Dialog
 	newWidgetDialog->show();
@@ -60,8 +63,14 @@ void BaulkInterfaceDialog::newWidgetDialogLoader() {
 // (Interface)Signal->Slot->Signal(Controller) ****************************************************
 void BaulkInterfaceDialog::newWidgetAccepted( QModelIndex index ) {
 	emit newWidget( ( (BaulkControl*)parentWidget )->libraryList().library[index.row()] );
+
+	// Close the dialog
 	newWidgetDialog->accept();
-	disconnect( newListView, SIGNAL( activated( QModelIndex ) ), this, SLOT( newWidgetAccepted( QModelIndex ) ) );
-	disconnect( this, SIGNAL( newWidget( LibraryLoader* ) ), (BaulkControl*)parentWidget, SLOT( loadMainWidget( LibraryLoader* ) ) );
+
+	// Disconnects, so the slots are not call again on the next widget select
+	disconnect( newListView, SIGNAL( activated( QModelIndex ) ), 
+			this, SLOT( newWidgetAccepted( QModelIndex ) ) );
+	disconnect( this, SIGNAL( newWidget( LibraryLoader* ) ), 
+			(BaulkControl*)parentWidget, SLOT( loadMainWidget( LibraryLoader* ) ) );
 }
 

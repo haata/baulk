@@ -35,6 +35,8 @@ class LibraryLoader : public QLibrary {
 
 public:
 	LibraryLoader( QObject *parent = 0 );
+	// Directory is assumed
+	LibraryLoader( QString libraryName, QObject *parent = 0 );
 
 	void setupLibraryLoader( QObject *parent );
 	

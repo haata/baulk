@@ -20,6 +20,7 @@
 
 #include "control.h"
 
+// Constructors ***********************************************************************************
 BaulkControl::BaulkControl( QWidget *parent ) : BaulkWidget( parent ) {
 	// Initialize Baulk Interface Dialog
 	interfaceDialog = new BaulkInterfaceDialog( this );
@@ -54,18 +55,24 @@ BaulkControl::BaulkControl( QWidget *parent ) : BaulkWidget( parent ) {
 
 	// Load Console Out
 	int index = libraryList().name.lastIndexOf( QRegExp(".*BaulkStatus.*") );
-	if ( index > -1 ) {
+	if ( index > -1 ) 
 		loadMainWidget( libraryList().library[index] );
-	}
 }
 
 // QAction Setup **********************************************************************************
 void BaulkControl::setupQActions() {
 	// Calls New Widget Dialog
-	newWidget = new QAction( this );
-	newWidget->setShortcut( tr("Alt+Meta+P") );
-	connect( newWidget, SIGNAL( triggered() ), interfaceDialog, SLOT( newWidgetDialogLoader() ) );
-	addAction( newWidget );
+	connect( addGlobalAction( tr("New Widget Dialog"), tr("Alt+Meta+P") ), SIGNAL( triggered() ), 
+			interfaceDialog, SLOT( newWidgetDialogLoader() ) );
+
+}
+
+QAction *BaulkControl::addGlobalAction( QString title, QString keyShortcut ) {
+	QAction *action = new QAction( title, this );
+	action->setShortcut( keyShortcut );
+	addAction( action );
+	glbQActions << action;
+	return action;
 }
 
 // Daemon Interaction *****************************************************************************
@@ -83,8 +90,7 @@ void BaulkControl::loadLibraries() {
 	for ( int c = 0; c < libraryList.count(); ++c ) {
 		if ( !libraryList[c].contains("BaulkControl") ) {
 			QString libName = libraryList[c];
-			LibraryLoader *library = new LibraryLoader( this );
-			library->loadLibrary( libName );
+			LibraryLoader *library = new LibraryLoader( libName, this );
 
 			// Prevent unbalanced lists
 			if ( libList.name.count() != libList.library.count() )
@@ -106,5 +112,9 @@ void BaulkControl::loadMainWidget( LibraryLoader *library ) {
 	// Loads the primary widget of a libray
 	BaulkWidget *widget = library->loadBaulkWidget( "mainWidget", this );
 	dynBotLayout->addWidget( widget );
+}
+
+// Reimplemented Functions ************************************************************************
+void BaulkControl::closeEvent( QCloseEvent *event ) {
 }
 
