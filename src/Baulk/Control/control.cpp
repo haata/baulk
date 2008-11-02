@@ -61,10 +61,21 @@ BaulkControl::BaulkControl( QWidget *parent ) : BaulkWidget( parent ) {
 
 // QAction Setup **********************************************************************************
 void BaulkControl::setupQActions() {
+	// ** Dialogs Hotkeys
+
 	// Calls New Widget Dialog
 	connect( addGlobalAction( tr("New Widget Dialog"), tr("Alt+Meta+P") ), SIGNAL( triggered() ), 
-			interfaceDialog, SLOT( newWidgetDialogLoader() ) );
+		interfaceDialog, SLOT( newWidgetDialogLoader() ) );
 
+	// ** Tile Manipulation Hotkeys
+	
+	// Swaps Layout Direction on the Bottom Layout
+	connect( addGlobalAction( tr("Orientation Swap Bottom Layout"), tr("Alt+Meta+Space") ), 
+		SIGNAL( triggered() ), this, SLOT( swapOrientationBot() ) );
+
+	// Swaps Layout Direction on the Top Layout
+	connect( addGlobalAction( tr("Orientation Swap Top Layout"), tr("Alt+Meta+Z") ),
+		SIGNAL( triggered() ), this, SLOT( swapOrientationTop() ) );
 }
 
 QAction *BaulkControl::addGlobalAction( QString title, QString keyShortcut ) {
@@ -112,6 +123,35 @@ void BaulkControl::loadMainWidget( LibraryLoader *library ) {
 	// Loads the primary widget of a libray
 	BaulkWidget *widget = library->loadBaulkWidget( "mainWidget", this );
 	dynBotLayout->addWidget( widget );
+}
+
+// Tile Manipulation Control **********************************************************************
+void BaulkControl::swapOrientationBot() {
+	switch ( dynBotLayout->orientation() ) {
+	case Qt::Horizontal:
+		dynBotLayout->setOrientation( Qt::Vertical );
+		break;
+	case Qt::Vertical:
+		dynBotLayout->setOrientation( Qt::Horizontal );
+		break;
+	default:
+		qCritical( tr("Invalid Orientation, Bottom Layout").toUtf8() );
+		break;
+	}
+}
+
+void BaulkControl::swapOrientationTop() {
+	switch ( dynTopLayout->orientation() ) {
+	case Qt::Horizontal:
+		dynTopLayout->setOrientation( Qt::Vertical );
+		break;
+	case Qt::Vertical:
+		dynTopLayout->setOrientation( Qt::Horizontal );
+		break;
+	default:
+		qCritical( tr("Invalid Orientation, Top Layout").toUtf8() );
+		break;
+	}
 }
 
 // Reimplemented Functions ************************************************************************

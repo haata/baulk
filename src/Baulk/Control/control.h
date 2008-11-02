@@ -91,6 +91,10 @@ private slots:
 
 	void startInformationClient();
 
+	// Tile Manipulation
+	void swapOrientationBot();
+	void swapOrientationTop();
+
 protected:
 	virtual void closeEvent( QCloseEvent *event );
 	
