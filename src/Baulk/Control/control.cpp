@@ -65,7 +65,8 @@ BaulkControl::BaulkControl( QWidget *parent ) : BaulkWidget( parent ) {
 	xmlConfig->saveConfig();
 }
 
-// QAction Setup **********************************************************************************
+// QAction ****************************************************************************************
+// ** Setup
 void BaulkControl::setupQActions() {
 	// ** Dialog Hotkeys
 
@@ -89,13 +90,13 @@ void BaulkControl::setupQActions() {
 		SIGNAL( triggered() ), this, SLOT( swapOrientationTop() ) );
 }
 
+// ** Add Action to Global List
 QAction *BaulkControl::addGlobalAction( QString title, QString keyShortcut ) {
 	// Check Config for Hotkey
 	QString key = xmlConfig->option( "hotkey", "name", QVariant( title ), false ).toString();
 	if ( key != "" ) 
 		key = keyShortcut;
-	else
-		xmlConfig->setOption( "hotkey", QVariant( keyShortcut ), "name", QVariant( title ) );
+	else xmlConfig->setOption( "hotkey", QVariant( keyShortcut ), "name", QVariant( title ) );
 
 	// Setup Hotkey
 	QAction *action = new QAction( title, this );
@@ -103,6 +104,16 @@ QAction *BaulkControl::addGlobalAction( QString title, QString keyShortcut ) {
 	addAction( action );
 	glbQActions << action;
 	return action;
+}
+
+// ** Modify Shortcut Key
+void BaulkControl::modifyGlobalKeyShortcut( int key, QString keyShortcut ) {
+	// Change Shortcut Key
+	glbQActions[key]->setShortcut( keyShortcut );
+
+	// Save Setting to Config
+	xmlConfig->setOption( "hotkey", QVariant( keyShortcut ), "name", QVariant( glbQActions[key]->text() ) );
+	xmlConfig->saveConfig();
 }
 
 // Daemon Interaction *****************************************************************************

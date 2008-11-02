@@ -73,6 +73,7 @@ private:
 private slots:
 	// Dialog -> Control Connectors
 	void actionsDialogHotkeyAccepted( int row, int column );
+	void actionsDialogHotkeyModified( int row, int column );
 	void newWidgetAccepted( QModelIndex index );
 
 	// Dialog Functionality

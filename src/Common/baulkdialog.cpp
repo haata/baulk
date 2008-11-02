@@ -26,3 +26,15 @@ BaulkDialog::BaulkDialog( QWidget *parent ) : QDialog( parent ) {
 	setModal( true );
 }
 
+BaulkDialog::~BaulkDialog() {
+}
+
+// Reimplemented Functions ************************************************************************
+void BaulkDialog::closeEvent( QCloseEvent *event ) {
+	//event->accept();
+	event->ignore();
+}
+
+void BaulkDialog::reject() {
+}
+

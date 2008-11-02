@@ -24,6 +24,7 @@
 #ifndef __BAULKDIALOG_H
 #define __BAULKDIALOG_H
 
+#include <QCloseEvent>
 #include <QDialog>
 #include <QWidget>
 
@@ -32,6 +33,16 @@ class BaulkDialog : public QDialog {
 
 public:
 	BaulkDialog( QWidget *parent = 0 );
+	~BaulkDialog();
+
+public slots:
+	virtual void reject();
+
+protected:
+	virtual void closeEvent( QCloseEvent *event );
+
+signals:
+	void closed();
 
 };
 

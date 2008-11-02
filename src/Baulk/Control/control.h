@@ -60,6 +60,7 @@ public:
 
 public slots:
 	void loadMainWidget( LibraryLoader *library );
+	void modifyGlobalKeyShortcut( int key, QString keyShortcut );
 
 private:
 	// Main Layout

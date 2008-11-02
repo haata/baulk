@@ -74,6 +74,8 @@ void BaulkInterfaceDialog::actionsDialogLoader() {
 		this, SLOT( actionsDialogHotkeyEdit( QTableWidgetItem* ) ) );
 	connect( actionsTableView, SIGNAL( cellActivated( int, int ) ), 
 		this, SLOT( actionsDialogHotkeyAccepted( int, int ) ) );
+	connect( actionsTableView, SIGNAL( cellChanged( int, int ) ),
+		this, SLOT( actionsDialogHotkeyModified( int, int ) ) );
 
 	// Show Dialog
 	actionsDialog->show();
@@ -106,22 +108,24 @@ void BaulkInterfaceDialog::newWidgetDialogLoader() {
 	newListView->setModel( newListViewModel );
 	layout->addWidget( newListView );
 
+	// Show Dialog
+	newWidgetDialog->show();
+
 	// Connections
 	connect( newListView, SIGNAL( activated( QModelIndex ) ), 
 		this, SLOT( newWidgetAccepted( QModelIndex ) ) );
 	connect( this, SIGNAL( newWidget( LibraryLoader* ) ), 
 		control, SLOT( loadMainWidget( LibraryLoader* ) ) );
-
-	// Show Dialog
-	newWidgetDialog->show();
 }
 
 // (Interface)Signal->Slot->Signal(Controller) ****************************************************
 // ** Hotkeys
 void BaulkInterfaceDialog::actionsDialogHotkeyAccepted( int row, int column ) {
 	// Impossible Case (at least should be)
-	if ( column == 2 )
+	if ( column == 2 ) {
 		qCritical( tr("%1\n\tBUG - You selected a hidden column").arg( errorName() ).toUtf8() );
+		return;
+	}
 
 	// Hotkey Edit
 	if ( column == 1 )
@@ -143,6 +147,19 @@ void BaulkInterfaceDialog::actionsDialogHotkeyAccepted( int row, int column ) {
 		// Activate Hotkey
 		list[actionsTableView->item( row, 2 )->text().toInt()]->trigger();
 	}
+}
+
+// ** Hotkey Modified
+void BaulkInterfaceDialog::actionsDialogHotkeyModified( int row, int column ) {
+	if ( column != 1 ) {
+		qCritical( tr("%1\n\tBUG - You should only be editing the Hotkey column").arg( errorName() ).toUtf8() );
+		return;
+	}
+
+	BaulkControl *control = (BaulkControl*)parentWidget;
+
+	// Modify Shortcut
+	control->modifyGlobalKeyShortcut( actionsTableView->item( row, 2 )->text().toInt(), actionsTableView->item( row, 1 )->text() );
 }
 
 // ** New Widget
