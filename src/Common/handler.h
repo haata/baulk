@@ -29,7 +29,9 @@
 #include <QRegExp>
 #include <QStringList>
 
+#ifdef BAULK
 QStringList msgLogs;
+#endif
 
 // Handles all messages sent by the application
 void handler( QtMsgType type, const char *msg ) {
@@ -95,9 +97,9 @@ void handler( QtMsgType type, const char *msg ) {
 		break;
 	}
 
+#ifdef BAULK
 	msgLogs << log;
 	
-#ifdef BAULK
 	if ( baulk != 0 ) {
 		if ( baulk->updateMsgLogs( msgLogs ) )
 			msgLogs.clear();

@@ -42,9 +42,16 @@ void LibraryLoader::setupLibraryLoader( QObject *parent ) {
 
 	// Override Library Search if Configuration Found
 	if ( xmlConfig.loadSuccessful() ) {
-		QVariant tmp;
-		tmp = xmlConfig.option("libraryList");
-		libraryDirs = tmp.isNull() ? libraryDirs : tmp.toStringList();
+		QStringList tmp;
+		tmp = xmlConfig.option("libraryList").toString().split(", ");
+		//libraryDirs = tmp.count() < 1 ? libraryDirs : tmp;
+	}
+	else {
+		// Save a Copy of the library directories
+		if ( libraryDirs.count() > 0 ) {
+			xmlConfig.setOption( "libraryList", QVariant( libraryDirs.join(", ") ) );
+			xmlConfig.saveConfig();
+		}
 	}
 
 	// Revise Library Directory List

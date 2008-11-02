@@ -20,6 +20,7 @@
 
 #include "baulkxml.h"
 
+// Constructors ***********************************************************************************
 BaulkXML::BaulkXML( QString configName, QObject *parent ) : QObject( parent ) {
 	// Prepare Config Directory
 	configDir.mkdir( QDir::homePath() + "/.config/Baulk");
@@ -32,6 +33,7 @@ BaulkXML::BaulkXML( QString configName, QObject *parent ) : QObject( parent ) {
 	// Default Profile
 	currentProfile = "default";
 
+	// Flag storing successful loading of the xml
 	loaded = loadConfig( configName );
 }
 
@@ -39,7 +41,7 @@ BaulkXML::~BaulkXML() {
 	delete xmlDoc;
 }
 
-// Saves the config to disk
+// Saves the config to disk ***********************************************************************
 bool BaulkXML::saveConfig() {
 	prepareConfig();
 
@@ -48,7 +50,10 @@ bool BaulkXML::saveConfig() {
 		output << xmlDoc->toString();
 	}
 	else {
-		qWarning( tr("%1\n\tCould not open config file\n\t%2").arg( errorName() ).arg( configFile.fileName() ).toUtf8() );
+		qWarning( tr("%1\n\tCould not open config file\n\t%2")
+				.arg( errorName() )
+				.arg( configFile.fileName() )
+			.toUtf8() );
 		return false;
 	}
 
@@ -56,16 +61,23 @@ bool BaulkXML::saveConfig() {
 	return true;
 }
 
-// Loads the config from disk
+// Loads the config from disk *********************************************************************
 bool BaulkXML::loadConfig( QString configName ) {
 	if ( configFile.open( QIODevice::ReadOnly ) ) {
 		if ( !xmlDoc->setContent( &configFile ) ) {
-			qCritical( tr("%1\n\tCould not load XML document\n\t%2").arg( errorName() ).arg( configFile.fileName() ).toUtf8() );
+			qCritical( tr("%1\n\tCould not load XML document\n\t%2")
+					.arg( errorName() )
+					.arg( configFile.fileName() )
+				.toUtf8() );
 			return false;
 		}
 	}
 	else {
-		qWarning( tr("%1\n\tCould not load config file\n\t%2").arg( errorName() ).arg( configFile.fileName() ).toUtf8() );
+		qWarning( tr("%1\n\tCould not load config file\n\t%2 - %3")
+				.arg( errorName() )
+				.arg( configFile.fileName() )
+				.arg( configFile.errorString() )
+			.toUtf8() );
 		return false;
 	}
 
@@ -73,7 +85,7 @@ bool BaulkXML::loadConfig( QString configName ) {
 	return true;
 }
 
-// Loads a setting by its name from the XML
+// Loads a setting by its name from the XML *******************************************************
 QVariant BaulkXML::option( QString settingName, bool warnOnNotFound ) {
 	prepareConfig();
 
@@ -87,7 +99,10 @@ QVariant BaulkXML::option( QString settingName, bool warnOnNotFound ) {
 			break;
 		}
 	if ( !found ) {
-		qWarning( tr("%1\n\tCould not find setting\n\t%2").arg( errorName() ).arg( settingName ).toUtf8() );
+		qWarning( tr("%1\n\tCould not find setting\n\t%2")
+				.arg( errorName() )
+				.arg( settingName )
+			.toUtf8() );
 		return QVariant("");
 	}
 
@@ -98,7 +113,10 @@ QVariant BaulkXML::option( QString settingName, bool warnOnNotFound ) {
 
 	// Some Configurations option will want a null value
 	if ( warnOnNotFound )
-		qWarning( tr("%1\n\tCould not load setting\n\t%2").arg( errorName() ).arg( settingName ).toUtf8() );
+		qWarning( tr("%1\n\tCould not load setting\n\t%2")
+				.arg( errorName() )
+				.arg( settingName )
+			.toUtf8() );
 
 	return QVariant("");
 }
@@ -107,7 +125,7 @@ bool BaulkXML::loadSuccessful() {
 	return loaded;
 }
 
-// XML Preparation
+// XML Preparation ********************************************************************************
 void BaulkXML::prepareConfig() {
 	// Find Root - Profiles
 	if ( xmlDoc->documentElement().tagName() != "Profiles" ) {
@@ -135,7 +153,7 @@ QString BaulkXML::profile() {
 	return currentProfile;
 }
 
-// Add/Update an option in the XML
+// Add/Update an option in the XML ****************************************************************
 void BaulkXML::setOption( QString settingName, QVariant value ) {
 	prepareConfig();
 
