@@ -189,7 +189,8 @@ void BaulkXML::setOption( QString settingName, QVariant value, QString propertyK
 	else xmlDocElementSettingText.setData( value.toString() );
 
 	// Set Attribute
-	xmlDocElementSetting.setAttribute( propertyKey, property.toString() );
+	if ( propertyKey != "" )
+		xmlDocElementSetting.setAttribute( propertyKey, property.toString() );
 }
 
 // Set Config Profile *****************************************************************************
