@@ -23,9 +23,15 @@
 // Constructors ***********************************************************************************
 BaulkXML::BaulkXML( QString configName, QObject *parent ) : QObject( parent ) {
 	// Prepare Config Directory
-	configDir.mkdir( QDir::homePath() + "/.config/Baulk");
+#ifdef Q_OS_WIN32
+	configDir.mkpath( QDir::homePath() + "/config/Baulk");
+	configDir.setPath( QDir::homePath() + "/config/Baulk");
+	configFile.setFileName( QString("%1/%2.xml").arg( configDir.path() ).arg( configName ) );
+#else
+	configDir.mkpath( QDir::homePath() + "/.config/Baulk");
 	configDir.setPath( QDir::homePath() + "/.config/Baulk");
 	configFile.setFileName( QString("%1/%2.xml").arg( configDir.path() ).arg( configName ) );
+#endif
 
 	// Loads the XML document
 	xmlDoc = new QDomDocument( configName );
