@@ -44,7 +44,7 @@ void LibraryLoader::setupLibraryLoader( QObject *parent ) {
 	if ( xmlConfig.loadSuccessful() ) {
 		QStringList tmp;
 		tmp = xmlConfig.option("libraryList").toString().split(", ");
-		//libraryDirs = tmp.count() < 1 ? libraryDirs : tmp;
+		libraryDirs = tmp.count() < 1 ? libraryDirs : tmp;
 	}
 	else {
 		// Save a Copy of the library directories
