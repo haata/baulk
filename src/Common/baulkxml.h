@@ -25,6 +25,7 @@
 #define __BAULKXML_H
 
 #include <QDir>
+#include <QDomAttr>
 #include <QDomDocument>
 #include <QDomElement>
 #include <QDomNode>
@@ -47,8 +48,8 @@ public:
 	bool loadSuccessful();
 
 	// Option
-	QVariant option( QString settingName, bool warnOnNotFound = true );
-	void setOption( QString settingName, QVariant value );
+	QVariant option( QString settingName, QString propertyKey = "", QVariant property = QVariant(""), bool warnOnNotFound = true );
+	void setOption( QString settingName, QVariant value, QString propertyKey = "", QVariant properties = QVariant("") );
 
 	// Profile
 	QString profile();
@@ -60,7 +61,10 @@ private:
 
 	QString errorName() const { return tr("BaulkXML"); }
 
+	bool settingSearch( QString settingName, QString propertyKey = "", QVariant property = QVariant("") );
+
 	QDir configDir;
+	QDomAttr xmlDocElementProperty;
 	QDomDocument *xmlDoc;
 	QDomElement xmlDocElementProfile;
 	QDomElement xmlDocElementRoot;

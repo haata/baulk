@@ -30,6 +30,8 @@
 #include <QObject>
 #include <QPushButton>
 #include <QStringListModel>
+#include <QTableWidget>
+#include <QTableWidgetItem>
 #include <QVariant>
 #include <QVBoxLayout>
 #include <QWidget>
@@ -45,19 +47,39 @@ public:
 	BaulkInterfaceDialog( BaulkWidget *parent );
 
 public slots:
+	// Control -> Dialog Connectors
+	void actionsDialogLoader();
 	void newWidgetDialogLoader();
 
 private:
+	// Dialogs
+	BaulkDialog *actionsDialog;
 	BaulkDialog *newWidgetDialog;
+
+	// Controller
 	BaulkWidget *parentWidget;
 
+	// New Widget List
 	QListView *newListView;
 	QStringListModel *newListViewModel;
 
+	// Hotkey List
+	QTableWidget *actionsTableView;
+
+
+	// Application Name for Errors
+	QString errorName() const { return tr("BaulkInterfaceDialog"); }
+
 private slots:
+	// Dialog -> Control Connectors
+	void actionsDialogHotkeyAccepted( int row, int column );
 	void newWidgetAccepted( QModelIndex index );
 
+	// Dialog Functionality
+	void actionsDialogHotkeyEdit( QTableWidgetItem *item );
+
 signals:
+	// Dialog -> Control Signals
 	void newWidget( LibraryLoader *library );
 };
 

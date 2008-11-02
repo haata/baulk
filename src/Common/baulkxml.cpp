@@ -86,32 +86,25 @@ bool BaulkXML::loadConfig( QString configName ) {
 }
 
 // Loads a setting by its name from the XML *******************************************************
-QVariant BaulkXML::option( QString settingName, bool warnOnNotFound ) {
+QVariant BaulkXML::option( QString settingName, QString propertyKey, QVariant property, bool warnOnNotFound ) {
 	prepareConfig();
 
-	// Find Setting
-	bool found = false;
-	for ( xmlDocElementSetting = xmlDocElementProfile.firstChild().toElement(); 
-			!xmlDocElementSetting.isNull();
-			xmlDocElementSetting = xmlDocElementSetting.nextSibling().toElement() )
-		if ( xmlDocElementSetting.tagName() == settingName ) {
-			found = true;
-			break;
-		}
-	if ( !found ) {
-		qWarning( tr("%1\n\tCould not find setting\n\t%2")
+	if ( !settingSearch( settingName, propertyKey, property ) ) {
+		qWarning( tr("%1\n\tCould not find setting\n\t%2 - %3 - %4")
 				.arg( errorName() )
 				.arg( settingName )
+				.arg( propertyKey )
+				.arg( property.toString() )
 			.toUtf8() );
 		return QVariant("");
 	}
-
+	
 	// Load Setting Data
 	xmlDocElementSettingText = xmlDocElementSetting.firstChild().toText();
 	if ( !xmlDocElementSettingText.isNull() )
 		return QVariant( xmlDocElementSettingText.data() );
 
-	// Some Configurations option will want a null value
+	// Some Configuration options will want a null value
 	if ( warnOnNotFound )
 		qWarning( tr("%1\n\tCould not load setting\n\t%2")
 				.arg( errorName() )
@@ -121,6 +114,24 @@ QVariant BaulkXML::option( QString settingName, bool warnOnNotFound ) {
 	return QVariant("");
 }
 
+// Prepares XML Variables for option/property extraction
+bool BaulkXML::settingSearch( QString settingName, QString propertyKey, QVariant property ) {
+	// Find Setting
+	for ( xmlDocElementSetting = xmlDocElementProfile.firstChild().toElement(); 
+			!xmlDocElementSetting.isNull();
+			xmlDocElementSetting = xmlDocElementSetting.nextSibling().toElement() )
+		if ( xmlDocElementSetting.tagName() == settingName ) {
+			if ( propertyKey == "" )
+				return true;
+			xmlDocElementProperty = xmlDocElementSetting.attributeNode( propertyKey );
+			if ( xmlDocElementProperty.value() == property.toString() )
+				return true;
+		}
+	// Not Found
+	return false;
+}
+
+// Successful Load of Config **********************************************************************
 bool BaulkXML::loadSuccessful() {
 	return loaded;
 }
@@ -154,19 +165,11 @@ QString BaulkXML::profile() {
 }
 
 // Add/Update an option in the XML ****************************************************************
-void BaulkXML::setOption( QString settingName, QVariant value ) {
+void BaulkXML::setOption( QString settingName, QVariant value, QString propertyKey, QVariant property ) {
 	prepareConfig();
 
 	// Find Setting
-	bool found = false;
-	for ( xmlDocElementSetting = xmlDocElementProfile.firstChild().toElement(); 
-			!xmlDocElementSetting.isNull();
-			xmlDocElementSetting = xmlDocElementSetting.nextSibling().toElement() )
-		if ( xmlDocElementSetting.tagName() == settingName ) {
-			found = true;
-			break;
-		}
-	if ( !found ) {
+	if ( !settingSearch( settingName, propertyKey, property ) ) {
 		xmlDocElementSetting = xmlDoc->createElement( settingName );
 		xmlDocElementProfile.appendChild( xmlDocElementSetting );
 	}
@@ -178,8 +181,12 @@ void BaulkXML::setOption( QString settingName, QVariant value ) {
 		xmlDocElementSetting.appendChild( xmlDocElementSettingText );
 	}
 	else xmlDocElementSettingText.setData( value.toString() );
+
+	// Set Attribute
+	xmlDocElementSetting.setAttribute( propertyKey, property.toString() );
 }
 
+// Set Config Profile *****************************************************************************
 void BaulkXML::setProfile( QString profileName ) {
 	currentProfile = profileName;
 }

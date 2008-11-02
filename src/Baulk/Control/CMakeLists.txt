@@ -31,6 +31,7 @@ include_directories(
 #| Misc Qt4
 add_definitions( -Wall -ggdb )
 find_package( Qt4 REQUIRED )
+set( QT_USE_QTXML 1 )
 include( ${QT_USE_FILE} )
 QT4_WRAP_CPP( MOC_SRCS ${HDRS} )
 
@@ -61,6 +62,7 @@ target_link_libraries( ${LIB}
 	${QT_LIBRARIES}
 	BaulkDialog	# From Common
 	BaulkWidget	# From Common
+	BaulkXML	# From Common
 	LibraryLoader	# From Common
 	BaulkClient	# From Server
 	BaulkLib	# From Baulk
@@ -70,6 +72,7 @@ target_link_libraries( ${LIB}
 	${QT_LIBRARIES}
 	BaulkDialog	# From Common
 	BaulkWidget	# From Common
+	BaulkXML	# From Common
 	LibraryLoader	# From Common
 	BaulkClient	# From Server
 )

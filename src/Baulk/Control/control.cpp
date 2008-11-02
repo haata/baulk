@@ -25,6 +25,9 @@ BaulkControl::BaulkControl( QWidget *parent ) : BaulkWidget( parent ) {
 	// Initialize Baulk Interface Dialog
 	interfaceDialog = new BaulkInterfaceDialog( this );
 
+	// Initialize BaulkXML for Config Loading/Saving
+	xmlConfig = new BaulkXML( "BaulkControl", this );
+
 	// Start Client if listen name is set
 	connect( this, SIGNAL( serverListenNameSet( QString ) ), this, SLOT( startInformationClient() ) );
 
@@ -57,15 +60,23 @@ BaulkControl::BaulkControl( QWidget *parent ) : BaulkWidget( parent ) {
 	int index = libraryList().name.lastIndexOf( QRegExp(".*BaulkStatus.*") );
 	if ( index > -1 ) 
 		loadMainWidget( libraryList().library[index] );
+
+	// Save BaulkXML Config
+	xmlConfig->saveConfig();
 }
 
 // QAction Setup **********************************************************************************
 void BaulkControl::setupQActions() {
-	// ** Dialogs Hotkeys
+	// ** Dialog Hotkeys
 
 	// Calls New Widget Dialog
 	connect( addGlobalAction( tr("New Widget Dialog"), tr("Alt+Meta+P") ), SIGNAL( triggered() ), 
 		interfaceDialog, SLOT( newWidgetDialogLoader() ) );
+
+	// Calls Hotkey Dialog
+	connect( addGlobalAction( tr("Available Actions Dialog"), tr("Alt+Meta+O") ),
+		SIGNAL( triggered() ), interfaceDialog, SLOT( actionsDialogLoader() ) );
+
 
 	// ** Tile Manipulation Hotkeys
 	
@@ -79,8 +90,16 @@ void BaulkControl::setupQActions() {
 }
 
 QAction *BaulkControl::addGlobalAction( QString title, QString keyShortcut ) {
+	// Check Config for Hotkey
+	QString key = xmlConfig->option( "hotkey", "name", QVariant( title ), false ).toString();
+	if ( key != "" ) 
+		key = keyShortcut;
+	else
+		xmlConfig->setOption( "hotkey", QVariant( keyShortcut ), "name", QVariant( title ) );
+
+	// Setup Hotkey
 	QAction *action = new QAction( title, this );
-	action->setShortcut( keyShortcut );
+	action->setShortcut( key );
 	addAction( action );
 	glbQActions << action;
 	return action;
@@ -105,7 +124,8 @@ void BaulkControl::loadLibraries() {
 
 			// Prevent unbalanced lists
 			if ( libList.name.count() != libList.library.count() )
-				qFatal( tr("BaulkControl\n\tLibList lengths do not match\n\tName: %1\n\tLibrary: %2")
+				qFatal( tr("%1\n\tLibList lengths do not match\n\tName: %2\n\tLibrary: %3")
+						.arg( errorName() )
 						.arg( libList.name.count() )
 						.arg( libList.library.count() )
 					.toUtf8() );
@@ -126,7 +146,8 @@ void BaulkControl::loadMainWidget( LibraryLoader *library ) {
 }
 
 // Tile Manipulation Control **********************************************************************
-void BaulkControl::swapOrientationBot() {
+// ** Orientation
+void BaulkControl::swapOrientationBot() { 
 	switch ( dynBotLayout->orientation() ) {
 	case Qt::Horizontal:
 		dynBotLayout->setOrientation( Qt::Vertical );
@@ -135,7 +156,7 @@ void BaulkControl::swapOrientationBot() {
 		dynBotLayout->setOrientation( Qt::Horizontal );
 		break;
 	default:
-		qCritical( tr("Invalid Orientation, Bottom Layout").toUtf8() );
+		qCritical( tr("%1\n\tInvalid Orientation, Bottom Layout").arg( errorName() ).toUtf8() );
 		break;
 	}
 }
@@ -149,7 +170,7 @@ void BaulkControl::swapOrientationTop() {
 		dynTopLayout->setOrientation( Qt::Horizontal );
 		break;
 	default:
-		qCritical( tr("Invalid Orientation, Top Layout").toUtf8() );
+		qCritical( tr("%1\n\tInvalid Orientation, Top Layout").arg( errorName() ).toUtf8() );
 		break;
 	}
 }

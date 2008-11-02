@@ -29,6 +29,7 @@
 #include <QAction>
 #include <QCloseEvent>
 #include <QHBoxLayout>
+#include <QHeaderView>
 #include <QRegExp>
 #include <QSplitter>
 #include <QStackedWidget>
@@ -36,6 +37,7 @@
 #include <QWidget>
 
 #include <baulkwidget.h>
+#include <baulkxml.h>
 #include <client.h>
 #include <libraryloader.h>
 
@@ -80,10 +82,16 @@ private:
 	// Library List
 	LibraryList libList;
 
+	// Baulk Config Loader/Saver
+	BaulkXML *xmlConfig;
+
 
 	// QAction Setup
 	QAction *addGlobalAction( QString title, QString keyShortcut );
 	void setupQActions();
+
+	// Application Name for Errors
+	QString errorName() const { return tr("BaulkControl"); }
 
 private slots:
 	// Dynamic Librariess
