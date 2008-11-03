@@ -49,7 +49,7 @@ void BaulkInterfaceDialog::actionsDialogLoader() {
 
 	// TableView
 	QList<QAction*> list = control->globalQActions();
-	actionsTableView = new QTableWidget( list.count(), 3 );
+	actionsTableView = new QTableWidget( list.count() + 1, 3 );
 	actionsTableView->setEditTriggers( QAbstractItemView::NoEditTriggers );
 	for ( int row = 0; row < list.count(); ++row ) {
 		// Hotkey Name
@@ -61,11 +61,19 @@ void BaulkInterfaceDialog::actionsDialogLoader() {
 	}
 	actionsTableView->hideColumn( 2 ); 		// Hide Key Column
 	actionsTableView->sortItems( 0 );		// Sort Items by the first Column
+
+	// Add Close Item
+	actionsTableView->setItem( list.count(), 0, new QTableWidgetItem( tr("Close Menu") ) );
+	actionsTableView->setItem( list.count(), 1, new QTableWidgetItem( tr("N/A") ) );
+	actionsTableView->setItem( list.count(), 2, new QTableWidgetItem( "Close" ) );
+
 	actionsTableView->setShowGrid( false );		// Hide Grid
 	actionsTableView->setWordWrap( true );		// Allow Word Wrap
 	actionsTableView->verticalHeader()->hide();	// Hide Vertical Headers
 	actionsTableView->horizontalHeader()->hide();	// Hide Horizontal Headers
 	actionsTableView->resizeColumnToContents( 1 );	// Resize Hotkey Column to optimal size
+	actionsTableView->setColumnWidth( 0,		// TODO Make resizing dynamic 
+		250 - actionsTableView->columnWidth( 1 ) );
 	actionsTableView->resizeRowsToContents();	// Resize Rows to allow for word wrap
 	layout->addWidget( actionsTableView );
 
@@ -104,7 +112,9 @@ void BaulkInterfaceDialog::newWidgetDialogLoader() {
 	// ListView
 	newListView = new QListView;
 	newListView->setEditTriggers( QAbstractItemView::NoEditTriggers );
-	newListViewModel = new QStringListModel( control->libraryList().name );
+	QStringList list = control->libraryList().name;
+	list << tr("Close Menu");
+	newListViewModel = new QStringListModel( list );
 	newListView->setModel( newListViewModel );
 	layout->addWidget( newListView );
 
@@ -145,7 +155,9 @@ void BaulkInterfaceDialog::actionsDialogHotkeyAccepted( int row, int column ) {
 			this, SLOT( actionsDialogHotkeyAccepted( int, int ) ) );
 
 		// Activate Hotkey
-		list[actionsTableView->item( row, 2 )->text().toInt()]->trigger();
+		QString index = actionsTableView->item( row, 2 )->text();
+		if ( index != "Close" )
+			list[index.toInt()]->trigger();
 	}
 }
 
@@ -166,7 +178,9 @@ void BaulkInterfaceDialog::actionsDialogHotkeyModified( int row, int column ) {
 void BaulkInterfaceDialog::newWidgetAccepted( QModelIndex index ) {
 	BaulkControl *control = (BaulkControl*)parentWidget;
 
-	emit newWidget( control->libraryList().library[index.row()] );
+	// Do not emit a signal if the index is outside the bounds of the list
+	if( index.row() < control->libraryList().name.count() )
+		emit newWidget( control->libraryList().library[index.row()] );
 
 	// Close the dialog
 	newWidgetDialog->accept();
@@ -181,8 +195,8 @@ void BaulkInterfaceDialog::newWidgetAccepted( QModelIndex index ) {
 // Dialog Functionality Slots *********************************************************************
 // ** Edit Hotkey
 void BaulkInterfaceDialog::actionsDialogHotkeyEdit( QTableWidgetItem *item ) {
-	// Only edit the item if it is a hotkey
-	if ( item->column() == 1 )
+	// Only edit the item if it is a hotkey and if it is not the Close Item
+	if ( item->column() == 1 && actionsTableView->item( item->row(), 2 )->text() != "Close" )
 		actionsTableView->editItem( item );
 }
 
