@@ -101,6 +101,10 @@ private slots:
 	void startInformationClient();
 
 	// Tile Manipulation
+	void focusDown();
+	void focusLeft();
+	void focusRight();
+	void focusUp();
 	void swapOrientationBot();
 	void swapOrientationTop();
 

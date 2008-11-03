@@ -73,7 +73,7 @@ void BaulkInterfaceDialog::actionsDialogLoader() {
 	actionsTableView->horizontalHeader()->hide();	// Hide Horizontal Headers
 	actionsTableView->resizeColumnToContents( 1 );	// Resize Hotkey Column to optimal size
 	actionsTableView->setColumnWidth( 0,		// TODO Make resizing dynamic 
-		250 - actionsTableView->columnWidth( 1 ) );
+		220 - actionsTableView->columnWidth( 1 ) );
 	actionsTableView->resizeRowsToContents();	// Resize Rows to allow for word wrap
 	layout->addWidget( actionsTableView );
 

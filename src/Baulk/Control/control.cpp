@@ -81,6 +81,22 @@ void BaulkControl::setupQActions() {
 
 	// ** Tile Manipulation Hotkeys
 	
+	// Shifts Focus Down
+	connect( addGlobalAction( tr("Shift Focus Down"), tr("Alt+Meta+J") ),
+		SIGNAL( triggered() ), this, SLOT( focusDown() ) );
+
+	// Shifts Focus Left
+	connect( addGlobalAction( tr("Shift Focus Right"), tr("Alt+Meta+L") ),
+		SIGNAL( triggered() ), this, SLOT( focusRight() ) );
+
+	// Shifts Focus Right
+	connect( addGlobalAction( tr("Shift Focus Left"), tr("Alt+Meta+H") ),
+		SIGNAL( triggered() ), this, SLOT( focusLeft() ) );
+
+	// Shifts Focus Up
+	connect( addGlobalAction( tr("Shift Focus Up"), tr("Alt+Meta+K") ),
+		SIGNAL( triggered() ), this, SLOT( focusUp() ) );
+	
 	// Swaps Layout Direction on the Bottom Layout
 	connect( addGlobalAction( tr("Orientation Swap Bottom Layout"), tr("Alt+Meta+Space") ), 
 		SIGNAL( triggered() ), this, SLOT( swapOrientationBot() ) );
@@ -94,9 +110,10 @@ void BaulkControl::setupQActions() {
 QAction *BaulkControl::addGlobalAction( QString title, QString keyShortcut ) {
 	// Check Config for Hotkey
 	QString key = xmlConfig->option( "hotkey", "name", QVariant( title ), false ).toString();
-	if ( key != "" ) 
+	if ( key == "" ) {
 		key = keyShortcut;
-	else xmlConfig->setOption( "hotkey", QVariant( keyShortcut ), "name", QVariant( title ) );
+		xmlConfig->setOption( "hotkey", QVariant( key ), "name", QVariant( title ) );
+	}
 
 	// Setup Hotkey
 	QAction *action = new QAction( title, this );
@@ -154,6 +171,7 @@ void BaulkControl::loadMainWidget( LibraryLoader *library ) {
 	// Loads the primary widget of a libray
 	BaulkWidget *widget = library->loadBaulkWidget( "mainWidget", this );
 	dynBotLayout->addWidget( widget );
+	widget->setFocus();
 }
 
 // Tile Manipulation Control **********************************************************************
@@ -184,6 +202,59 @@ void BaulkControl::swapOrientationTop() {
 		qCritical( tr("%1\n\tInvalid Orientation, Top Layout").arg( errorName() ).toUtf8() );
 		break;
 	}
+}
+
+// ** Focus Control
+//  Note: Incrementing the coordinate is only needed on max value cases due to how Qt
+//  	calculates max x and y, see Qt docs for more details
+void BaulkControl::focusDown() {
+	QRect widgetFocus = focusWidget()->geometry();
+	QPoint search = mapFromParent( QPoint( widgetFocus.width() / 2, widgetFocus.bottom() ) );
+	search.ry() = search.ry() + 3;
+
+	QWidget *widget = childAt( search );
+	// If no widget can be found, don't switch focus
+	if ( widget != 0 ) 
+		widget->setFocus();
+
+	qDebug( QString("Down - x: %1, y: %2").arg( search.x() ).arg( search.y() ).toUtf8() );
+}
+
+void BaulkControl::focusLeft() {
+	QRect widgetFocus = focusWidget()->geometry();
+	QPoint search = mapFromParent( QPoint( 0, widgetFocus.height() / 2 ) );
+
+	QWidget *widget = childAt( search );
+	// If no widget can be found, don't switch focus
+	if ( widget != 0 )
+		widget->setFocus();
+
+	qDebug( QString("Left - x: %1, y: %2").arg( search.x() ).arg( search.y() ).toUtf8() );
+}
+
+void BaulkControl::focusRight() {
+	QRect widgetFocus = focusWidget()->geometry();
+	QPoint search = mapFromParent( QPoint( widgetFocus.right(), widgetFocus.height() / 2 ) );
+	search.rx() = search.rx() + 3;
+
+	QWidget *widget = childAt( search );
+	// If no widget can be found, don't switch focus
+	if ( widget != 0 )
+		widget->setFocus();
+
+	qDebug( QString("Right - x: %1, y: %2").arg( search.x() ).arg( search.y() ).toUtf8() );
+}
+
+void BaulkControl::focusUp() {
+	QRect widgetFocus = focusWidget()->geometry();
+	QPoint search = mapFromParent( QPoint( widgetFocus.width() / 2, 0 ) );
+
+	QWidget *widget = childAt( search );
+	// If no widget can be found, don't switch focus
+	if ( widget != 0 )
+		widget->setFocus();
+
+	qDebug( QString("Up - x: %1, y: %2").arg( search.x() ).arg( search.y() ).toUtf8() );
 }
 
 // Reimplemented Functions ************************************************************************
