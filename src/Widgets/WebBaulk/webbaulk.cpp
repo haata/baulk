@@ -27,6 +27,7 @@ WebBaulk::WebBaulk( QWidget *parent ) : BaulkWidget( parent ) {
 
 	webview = new QWebView( parent );
 	webview->load( QUrl("http://google.ca") );
+	setFocusProxy( webview );
 
 	layout->addWidget( webview );
 }

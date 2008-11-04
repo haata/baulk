@@ -32,6 +32,8 @@ BaulkStatus::BaulkStatus( BaulkWidget *parent ) : BaulkWidget( parent ) {
 			"selection-background-color: darkgray;"
 			"}");
 	layout->addWidget( messageBrowser );
+	setFocusProxy( messageBrowser );
+
 	connect( parent, SIGNAL( msgLogsUpdated( QStringList ) ), this, SLOT( updateMsgLog( QStringList ) ) );
 }
 

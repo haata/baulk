@@ -171,7 +171,13 @@ void BaulkControl::loadMainWidget( LibraryLoader *library ) {
 	// Loads the primary widget of a libray
 	BaulkWidget *widget = library->loadBaulkWidget( "mainWidget", this );
 	dynBotLayout->addWidget( widget );
-	widget->setFocus();
+
+	// Focus Setting
+	if ( dynBotLayout->count() == 1 )
+		dynBotLayout->widget( 0 )->setFocus();
+	else
+		//dynBotLayout->widget( dynBotIndex() + 1 )->setFocus();
+		dynBotLayout->widget( 1 )->setFocus();
 }
 
 // Tile Manipulation Control **********************************************************************
@@ -207,54 +213,136 @@ void BaulkControl::swapOrientationTop() {
 // ** Focus Control
 //  Note: Incrementing the coordinate is only needed on max value cases due to how Qt
 //  	calculates max x and y, see Qt docs for more details
+void BaulkControl::focusDec() {
+	int curPos = dynBotIndex();
+
+	// Do nothing if at the top of the layout
+	// Boundary Case
+	if( curPos == 0 )
+		return;
+
+	// Decrement Focus
+	dynBotLayout->widget( curPos - 1 )->setFocus();
+}
+
 void BaulkControl::focusDown() {
-	QRect widgetFocus = focusWidget()->geometry();
-	QPoint search = mapFromParent( QPoint( widgetFocus.width() / 2, widgetFocus.bottom() ) );
-	search.ry() = search.ry() + 3;
+	switch ( dynBotLayout->orientation() ) {
+	case Qt::Horizontal:
+		focusLayoutInc();
+		break;
+	case Qt::Vertical:
+		focusInc();
+		break;
+	default:
+		qCritical( tr("%1\n\tInvalid Orientation, Focus Down").arg( errorName() ).toUtf8() );
+		break;
+	}
+}
 
-	QWidget *widget = childAt( search );
-	// If no widget can be found, don't switch focus
-	if ( widget != 0 ) 
-		widget->setFocus();
+void BaulkControl::focusInc() {
+	int curPos = dynBotIndex();
 
-	qDebug( QString("Down - x: %1, y: %2").arg( search.x() ).arg( search.y() ).toUtf8() );
+	// Do nothing if at the bottom of the layout
+	// Boundary Case
+	if( curPos == dynBotLayout->count() - 1 )
+		return;
+
+	// Increment Focus
+	dynBotLayout->widget( curPos + 1 )->setFocus();
+}
+
+void BaulkControl::focusLayoutDec() {
+	int curPos = dynBotIndex();
+	int curLayoutPos = dynTopLayout->indexOf( dynBotLayout );
+
+	// Boundary Case
+	if ( curLayoutPos == 0 )
+		return;
+
+	// Decrement Layout
+	dynBotLayout = qobject_cast<QSplitter*>( dynTopLayout->widget( curLayoutPos - 1 ) );
+
+	// Set Focus
+	if ( curPos >=  dynBotLayout->count() )
+		curPos = dynBotLayout->count() - 1;
+	dynBotLayout->widget( curPos )->setFocus();
+}
+
+void BaulkControl::focusLayoutInc() {
+	int curPos = dynBotIndex();
+	int curLayoutPos = dynTopLayout->indexOf( dynBotLayout );
+
+	// Boundary Case
+	if ( curLayoutPos == dynTopLayout->count() - 1 )
+		return;
+
+	// Increment Layout
+	dynBotLayout = qobject_cast<QSplitter*>( dynTopLayout->widget( curLayoutPos + 1 ) );
+
+	// Set Focus
+	if ( curPos >=  dynBotLayout->count() )
+		curPos = dynBotLayout->count() - 1;
+	dynBotLayout->widget( curPos )->setFocus();
 }
 
 void BaulkControl::focusLeft() {
-	QRect widgetFocus = focusWidget()->geometry();
-	QPoint search = mapFromParent( QPoint( 0, widgetFocus.height() / 2 ) );
-
-	QWidget *widget = childAt( search );
-	// If no widget can be found, don't switch focus
-	if ( widget != 0 )
-		widget->setFocus();
-
-	qDebug( QString("Left - x: %1, y: %2").arg( search.x() ).arg( search.y() ).toUtf8() );
+	switch ( dynBotLayout->orientation() ) {
+	case Qt::Horizontal:
+		focusDec();
+		break;
+	case Qt::Vertical:
+		focusLayoutDec();
+		break;
+	default:
+		qCritical( tr("%1\n\tInvalid Orientation, Focus Left").arg( errorName() ).toUtf8() );
+		break;
+	}
 }
 
 void BaulkControl::focusRight() {
-	QRect widgetFocus = focusWidget()->geometry();
-	QPoint search = mapFromParent( QPoint( widgetFocus.right(), widgetFocus.height() / 2 ) );
-	search.rx() = search.rx() + 3;
-
-	QWidget *widget = childAt( search );
-	// If no widget can be found, don't switch focus
-	if ( widget != 0 )
-		widget->setFocus();
-
-	qDebug( QString("Right - x: %1, y: %2").arg( search.x() ).arg( search.y() ).toUtf8() );
+	switch ( dynBotLayout->orientation() ) {
+	case Qt::Horizontal:
+		focusInc();
+		break;
+	case Qt::Vertical:
+		focusLayoutInc();
+		break;
+	default:
+		qCritical( tr("%1\n\tInvalid Orientation, Focus Right").arg( errorName() ).toUtf8() );
+		break;
+	}
 }
 
 void BaulkControl::focusUp() {
-	QRect widgetFocus = focusWidget()->geometry();
-	QPoint search = mapFromParent( QPoint( widgetFocus.width() / 2, 0 ) );
+	switch ( dynBotLayout->orientation() ) {
+	case Qt::Horizontal:
+		focusLayoutDec();
+		break;
+	case Qt::Vertical:
+		focusDec();
+		break;
+	default:
+		qCritical( tr("%1\n\tInvalid Orientation, Focus Up").arg( errorName() ).toUtf8() );
+		break;
+	}
+}
 
-	QWidget *widget = childAt( search );
-	// If no widget can be found, don't switch focus
-	if ( widget != 0 )
-		widget->setFocus();
+// Widget Finders *********************************************************************************
+int BaulkControl::dynBotIndex() {
+	// Search through Current Bottom Layout First
+	for ( int count = 0; count < dynBotLayout->count(); ++count )
+		if ( dynBotLayout->widget( count )->hasFocus() )
+			return count;
 
-	qDebug( QString("Up - x: %1, y: %2").arg( search.x() ).arg( search.y() ).toUtf8() );
+	// Search through all App Widgets as a bonus this will fix column focus
+	for ( int cur = 0; cur < dynTopLayout->count(); ++cur ) {
+		dynBotLayout = qobject_cast<QSplitter*>( dynTopLayout->widget( cur ) );
+		for ( int count = 0; count < dynBotLayout->count(); ++count )
+			if ( dynBotLayout->widget( count )->hasFocus() )
+				return count;
+	}
+
+	return 0;
 }
 
 // Reimplemented Functions ************************************************************************

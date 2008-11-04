@@ -31,6 +31,8 @@ BaulkWidget::BaulkWidget( QWidget *wrapWidget, QWidget *parent ) : QWidget( pare
 	layout->addWidget( wrapWidget );
 	setLayout( layout );
 
+	setFocusProxy( wrapWidget );
+
 	widgetSetup();
 }
 

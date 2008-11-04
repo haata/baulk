@@ -27,6 +27,7 @@
 #define __CONTROL_H
 
 #include <QAction>
+#include <QApplication>
 #include <QCloseEvent>
 #include <QHBoxLayout>
 #include <QHeaderView>
@@ -94,6 +95,9 @@ private:
 	// Application Name for Errors
 	QString errorName() const { return tr("BaulkControl"); }
 
+	// Widget Finders
+	int dynBotIndex();
+
 private slots:
 	// Dynamic Librariess
 	void loadLibraries();
@@ -101,8 +105,12 @@ private slots:
 	void startInformationClient();
 
 	// Tile Manipulation
+	void focusDec();
 	void focusDown();
+	void focusInc();
 	void focusLeft();
+	void focusLayoutDec();
+	void focusLayoutInc();
 	void focusRight();
 	void focusUp();
 	void swapOrientationBot();

@@ -28,6 +28,7 @@ BaulkTerm::BaulkTerm( int startNow, QWidget *parent ) : BaulkWidget( parent ) {
 
 	term = new QTermWidget( startNow, this );
 	layout->addWidget( term );
+	setFocusProxy( term );
 	connect( term, SIGNAL( finished() ), this, SIGNAL( finished() ) );
 	connect( term, SIGNAL( finished() ), this, SLOT( close() ) );
 }
