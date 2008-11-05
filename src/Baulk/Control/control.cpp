@@ -183,9 +183,14 @@ void BaulkControl::loadMainWidget( LibraryLoader *library ) {
 	BaulkWidget *widget = library->loadBaulkWidget( "mainWidget", this );
 	dynBotLayout->addWidget( widget );
 
-	// Focus Setting
+	// Focus Index
 	int index = lastKnownGoodIndex < dynBotLayout->count() ? lastKnownGoodIndex + 1 : 0;
 
+	// Do not use a focus index if it does not exist
+	if ( index >= dynBotLayout->count() - 1 )
+		index = dynBotLayout->count() - 1;
+
+	// Set Widget Focus
 	if ( dynBotIndex() == 0 && index == -1 )
 		dynBotLayout->widget( 0 )->setFocus();
 	else dynBotLayout->widget( index )->setFocus();
