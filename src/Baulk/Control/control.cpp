@@ -216,7 +216,6 @@ void BaulkControl::swapOrientationTop() {
 void BaulkControl::focusDec() {
 	int curPos = dynBotIndex();
 
-	// Do nothing if at the top of the layout
 	// Boundary Case
 	if( curPos == 0 )
 		return;
@@ -228,7 +227,14 @@ void BaulkControl::focusDec() {
 void BaulkControl::focusDown() {
 	switch ( dynBotLayout->orientation() ) {
 	case Qt::Horizontal:
-		focusLayoutInc();
+		// If Layout is Horizontal/Horizontal then do nothing
+		switch ( dynTopLayout->orientation() ) {
+		case Qt::Vertical:
+			focusLayoutInc();
+			break;
+		default:
+			break;
+		}
 		break;
 	case Qt::Vertical:
 		focusInc();
@@ -242,7 +248,6 @@ void BaulkControl::focusDown() {
 void BaulkControl::focusInc() {
 	int curPos = dynBotIndex();
 
-	// Do nothing if at the bottom of the layout
 	// Boundary Case
 	if( curPos == dynBotLayout->count() - 1 )
 		return;
@@ -290,8 +295,15 @@ void BaulkControl::focusLeft() {
 	case Qt::Horizontal:
 		focusDec();
 		break;
-	case Qt::Vertical:
-		focusLayoutDec();
+	case Qt::Vertical: 
+		// If Layout is Vertical/Vertical then do nothing
+		switch ( dynTopLayout->orientation() ) {
+		case Qt::Horizontal:
+			focusLayoutDec();
+			break;
+		default:
+			break;
+		}
 		break;
 	default:
 		qCritical( tr("%1\n\tInvalid Orientation, Focus Left").arg( errorName() ).toUtf8() );
@@ -304,8 +316,15 @@ void BaulkControl::focusRight() {
 	case Qt::Horizontal:
 		focusInc();
 		break;
-	case Qt::Vertical:
-		focusLayoutInc();
+	case Qt::Vertical: 
+		// If Layout is Vertical/Vertical then do nothing
+		switch ( dynTopLayout->orientation() ) {
+		case Qt::Horizontal:
+			focusLayoutInc();
+			break;
+		default:
+			break;
+		}
 		break;
 	default:
 		qCritical( tr("%1\n\tInvalid Orientation, Focus Right").arg( errorName() ).toUtf8() );
@@ -316,7 +335,14 @@ void BaulkControl::focusRight() {
 void BaulkControl::focusUp() {
 	switch ( dynBotLayout->orientation() ) {
 	case Qt::Horizontal:
-		focusLayoutDec();
+		// If Layout is Horizontal/Horizontal then do nothing
+		switch ( dynTopLayout->orientation() ) {
+		case Qt::Vertical:
+			focusLayoutDec();
+			break;
+		default:
+			break;
+		}
 		break;
 	case Qt::Vertical:
 		focusDec();
