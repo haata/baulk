@@ -107,6 +107,10 @@ void BaulkControl::setupQActions() {
 	// Swaps Layout Direction on the Top Layout
 	connect( addGlobalAction( tr("Orientation Swap Top Layout"), tr("Alt+Meta+Z") ),
 		SIGNAL( triggered() ), this, SLOT( swapOrientationTop() ) );
+
+	// Remove Focused Widget
+	connect( addGlobalAction( tr("Remove Widget"), tr("Alt+Meta+C") ),
+		SIGNAL( triggered() ), this, SLOT( removeWidget() ) );
 }
 
 // ** Add Action to Global List
@@ -360,6 +364,49 @@ void BaulkControl::focusUp() {
 	}
 }
 
+// ** Widget Removal
+void BaulkControl::removeWidget() {
+	int curPos = dynBotIndex();
+	int curBotLayout = dynTopIndex();
+	QWidget *widget = dynBotLayout->widget( curPos );
+
+	// Remove the Widget completely from the layout
+	widget->hide();
+	topVLayout->addWidget( widget );
+	widget->close();
+
+	// No more Widgets in bottom layout
+	if ( dynBotLayout->count() == 0 ) {
+		// Do not close the last dynBotLayout
+		bool lastLayout = true;
+		if ( dynTopLayout->count() > 1 ) {
+			dynTopLayout->widget( curBotLayout )->close();
+			lastLayout = false;
+		}
+
+		// Set Focus after removing dynBotLayout
+		if ( dynTopLayout->count() != 0 ) {
+			int index = dynTopLayout->count() != 1 ? curBotLayout - 1 : 0;
+			dynBotLayout = qobject_cast<QSplitter*>( dynTopLayout->widget( index ) ); 
+			if ( dynBotLayout->count() > 0 )
+				dynBotLayout->widget( 0 )->setFocus();
+		}
+
+		// Load Default Widget if all all closed
+		if ( lastLayout ) {
+			int index = libraryList().name.lastIndexOf( QRegExp(".*BaulkStatus.*") );
+			if ( index > -1 ) 
+				loadMainWidget( libraryList().library[index] );
+		}
+	}
+	else {
+		// Set the focus to the same index if available, else use the last widget
+		if ( curPos + 1 <= dynBotLayout->count() )
+			dynBotLayout->widget( curPos )->setFocus();
+		else dynBotLayout->widget( dynBotLayout->count() - 1 )->setFocus();
+	}
+}
+
 // Widget Finders *********************************************************************************
 int BaulkControl::dynBotIndex() {
 	// Search through Current Bottom Layout First
@@ -375,6 +422,15 @@ int BaulkControl::dynBotIndex() {
 				return count;
 	}
 
+	return 0;
+}
+
+int BaulkControl::dynTopIndex() {
+	// Search through all the dynBotLayouts for the current one
+	for ( int count = 0; count < dynTopLayout->count(); ++count )
+		if( dynBotLayout == qobject_cast<QSplitter*>( dynTopLayout->widget( count ) ) )
+			return count;
+	
 	return 0;
 }
 

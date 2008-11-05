@@ -28,9 +28,9 @@ QStringList symbolList() {
 
 // Main *******************************************************************************************
 BaulkWidget *baulkstatus_mainWidget( BaulkWidget *parent ) {
-	qDebug("Loading BaulkStatus");
-
 	status = new BaulkStatus( parent );
+
+	qDebug("Loading BaulkStatus");
 
 	return status;
 }

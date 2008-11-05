@@ -98,6 +98,7 @@ private:
 
 	// Widget Finders
 	int dynBotIndex();
+	int dynTopIndex();
 
 private slots:
 	// Dynamic Librariess
@@ -106,6 +107,7 @@ private slots:
 	void startInformationClient();
 
 	// Tile Manipulation
+	// ** Focus
 	void focusDec();
 	void focusDown();
 	void focusInc();
@@ -114,8 +116,11 @@ private slots:
 	void focusLayoutInc();
 	void focusRight();
 	void focusUp();
+	// ** Orientation
 	void swapOrientationBot();
 	void swapOrientationTop();
+	// ** Removal
+	void removeWidget();
 
 	// Assistive Functions
 	void globalActionTriggered();
