@@ -178,12 +178,12 @@ void BaulkInterfaceDialog::actionsDialogHotkeyModified( int row, int column ) {
 void BaulkInterfaceDialog::newWidgetAccepted( QModelIndex index ) {
 	BaulkControl *control = (BaulkControl*)parentWidget;
 
+	// Close the dialog
+	newWidgetDialog->accept();
+
 	// Do not emit a signal if the index is outside the bounds of the list
 	if( index.row() < control->libraryList().name.count() )
 		emit newWidget( control->libraryList().library[index.row()] );
-
-	// Close the dialog
-	newWidgetDialog->accept();
 
 	// Disconnects, so the slots are not call again on the next widget select
 	disconnect( newListView, SIGNAL( activated( QModelIndex ) ), 

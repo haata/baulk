@@ -74,6 +74,7 @@ private:
 	// Dynamic Layout
 	QSplitter *dynTopLayout;
 	QSplitter *dynBotLayout;
+	int lastKnownGoodIndex;
 
 	// Global QActions
 	QList<QAction*> glbQActions;
@@ -89,7 +90,7 @@ private:
 
 
 	// QAction Setup
-	QAction *addGlobalAction( QString title, QString keyShortcut );
+	QAction *addGlobalAction( QString title, QString keyShortcut, bool globalConnect = false );
 	void setupQActions();
 
 	// Application Name for Errors
@@ -115,6 +116,9 @@ private slots:
 	void focusUp();
 	void swapOrientationBot();
 	void swapOrientationTop();
+
+	// Assistive Functions
+	void globalActionTriggered();
 
 protected:
 	virtual void closeEvent( QCloseEvent *event );

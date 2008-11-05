@@ -56,6 +56,9 @@ BaulkControl::BaulkControl( QWidget *parent ) : BaulkWidget( parent ) {
 	loadLibraries();
 	setupQActions();
 
+	// Set Index Fallback default
+	lastKnownGoodIndex = -1;
+
 	// Load Console Out
 	int index = libraryList().name.lastIndexOf( QRegExp(".*BaulkStatus.*") );
 	if ( index > -1 ) 
@@ -71,7 +74,7 @@ void BaulkControl::setupQActions() {
 	// ** Dialog Hotkeys
 
 	// Calls New Widget Dialog
-	connect( addGlobalAction( tr("New Widget Dialog"), tr("Alt+Meta+P") ), SIGNAL( triggered() ), 
+	connect( addGlobalAction( tr("New Widget Dialog"), tr("Alt+Meta+P"), true ), SIGNAL( triggered() ), 
 		interfaceDialog, SLOT( newWidgetDialogLoader() ) );
 
 	// Calls Hotkey Dialog
@@ -107,7 +110,7 @@ void BaulkControl::setupQActions() {
 }
 
 // ** Add Action to Global List
-QAction *BaulkControl::addGlobalAction( QString title, QString keyShortcut ) {
+QAction *BaulkControl::addGlobalAction( QString title, QString keyShortcut, bool globalConnect ) {
 	// Check Config for Hotkey
 	QString key = xmlConfig->option( "hotkey", "name", QVariant( title ), false ).toString();
 	if ( key == "" ) {
@@ -120,6 +123,10 @@ QAction *BaulkControl::addGlobalAction( QString title, QString keyShortcut ) {
 	action->setShortcut( key );
 	addAction( action );
 	glbQActions << action;
+
+	if ( globalConnect )
+		connect( action, SIGNAL( triggered() ), this, SLOT( globalActionTriggered() ) );
+
 	return action;
 }
 
@@ -173,11 +180,11 @@ void BaulkControl::loadMainWidget( LibraryLoader *library ) {
 	dynBotLayout->addWidget( widget );
 
 	// Focus Setting
-	if ( dynBotLayout->count() == 1 )
+	int index = lastKnownGoodIndex < dynBotLayout->count() ? lastKnownGoodIndex + 1 : 0;
+
+	if ( dynBotIndex() == 0 && index == -1 )
 		dynBotLayout->widget( 0 )->setFocus();
-	else
-		//dynBotLayout->widget( dynBotIndex() + 1 )->setFocus();
-		dynBotLayout->widget( 1 )->setFocus();
+	else dynBotLayout->widget( index )->setFocus();
 }
 
 // Tile Manipulation Control **********************************************************************
@@ -357,7 +364,7 @@ void BaulkControl::focusUp() {
 int BaulkControl::dynBotIndex() {
 	// Search through Current Bottom Layout First
 	for ( int count = 0; count < dynBotLayout->count(); ++count )
-		if ( dynBotLayout->widget( count )->hasFocus() )
+		if ( dynBotLayout->widget( count )->hasFocus() ) 
 			return count;
 
 	// Search through all App Widgets as a bonus this will fix column focus
@@ -369,6 +376,12 @@ int BaulkControl::dynBotIndex() {
 	}
 
 	return 0;
+}
+
+// Assistive Functions
+void BaulkControl::globalActionTriggered() {
+	// Keeps track of the last widget focus
+	lastKnownGoodIndex = dynBotIndex();
 }
 
 // Reimplemented Functions ************************************************************************
