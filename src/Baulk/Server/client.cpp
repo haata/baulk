@@ -35,6 +35,11 @@ InformationClient::~InformationClient() {
 				QStringList() << "RemoveId",
 				QStringList() << "True");
 	outgoingData( removePacket.packet() );
+#ifdef Q_OS_WIN32
+	// Since Windows cuts corners, I have to force it to keep the 
+	//  window open until the very end
+	qCritical("Client Closing");
+#endif
 }
 
 void InformationClient::clientRequest() {
