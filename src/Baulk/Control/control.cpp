@@ -111,6 +111,23 @@ void BaulkControl::setupQActions() {
 	// Remove Focused Widget
 	connect( addGlobalAction( tr("Remove Widget"), tr("Alt+Meta+C") ),
 		SIGNAL( triggered() ), this, SLOT( removeWidget() ) );
+
+	// Move Widget Down
+	connect( addGlobalAction( tr("Move Widget Down"), tr("Alt+Shift+J") ),
+		SIGNAL( triggered() ), this, SLOT( moveDown() ) );
+
+	// Move Widget Left
+	connect( addGlobalAction( tr("Move Widget Left"), tr("Alt+Shift+H") ),
+		SIGNAL( triggered() ), this, SLOT( moveLeft() ) );
+
+	// Move Widget Right
+	connect( addGlobalAction( tr("Move Widget Right"), tr("Alt+Shift+L") ),
+		SIGNAL( triggered() ), this, SLOT( moveRight() ) );
+
+	// Move Widget Up
+	connect( addGlobalAction( tr("Move Widget Up"), tr("Alt+Shift+K") ),
+		SIGNAL( triggered() ), this, SLOT( moveUp() ) );
+
 }
 
 // ** Add Action to Global List
@@ -409,6 +426,103 @@ void BaulkControl::removeWidget() {
 		if ( curPos + 1 <= dynBotLayout->count() )
 			dynBotLayout->widget( curPos )->setFocus();
 		else dynBotLayout->widget( dynBotLayout->count() - 1 )->setFocus();
+	}
+}
+
+// ** Widget Moving
+void BaulkControl::moveDec() {
+}
+
+void BaulkControl::moveDown() {
+	switch ( dynBotLayout->orientation() ) {
+	case Qt::Horizontal:
+		// If Layout is Horizontal/Horizontal then do nothing
+		switch ( dynTopLayout->orientation() ) {
+		case Qt::Vertical:
+			moveLayoutInc();
+			break;
+		default:
+			break;
+		}
+		break;
+	case Qt::Vertical:
+		moveInc();
+		break;
+	default:
+		qCritical( tr("%1\n\tInvalid Orientation, Move Down").arg( errorName() ).toUtf8() );
+		break;
+	}
+}
+
+void BaulkControl::moveInc() {
+}
+
+void BaulkControl::moveLayoutDec() {
+}
+
+void BaulkControl::moveLayoutInc() {
+}
+
+void BaulkControl::moveLeft() {
+	switch ( dynBotLayout->orientation() ) {
+	case Qt::Horizontal:
+		moveDec();
+		break;
+	case Qt::Vertical: 
+		// If Layout is Vertical/Vertical then do nothing
+		switch ( dynTopLayout->orientation() ) {
+		case Qt::Horizontal:
+			moveLayoutDec();
+			break;
+		default:
+			break;
+		}
+		break;
+	default:
+		qCritical( tr("%1\n\tInvalid Orientation, Move Left").arg( errorName() ).toUtf8() );
+		break;
+	}
+}
+
+void BaulkControl::moveRight() {
+	switch ( dynBotLayout->orientation() ) {
+	case Qt::Horizontal:
+		moveInc();
+		break;
+	case Qt::Vertical: 
+		// If Layout is Vertical/Vertical then do nothing
+		switch ( dynTopLayout->orientation() ) {
+		case Qt::Horizontal:
+			moveLayoutInc();
+			break;
+		default:
+			break;
+		}
+		break;
+	default:
+		qCritical( tr("%1\n\tInvalid Orientation, Move Right").arg( errorName() ).toUtf8() );
+		break;
+	}
+}
+
+void BaulkControl::moveUp() {
+	switch ( dynBotLayout->orientation() ) {
+	case Qt::Horizontal:
+		// If Layout is Horizontal/Horizontal then do nothing
+		switch ( dynTopLayout->orientation() ) {
+		case Qt::Vertical:
+			moveLayoutDec();
+			break;
+		default:
+			break;
+		}
+		break;
+	case Qt::Vertical:
+		moveDec();
+		break;
+	default:
+		qCritical( tr("%1\n\tInvalid Orientation, Move Up").arg( errorName() ).toUtf8() );
+		break;
 	}
 }
 

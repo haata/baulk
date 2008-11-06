@@ -116,6 +116,15 @@ private slots:
 	void focusLayoutInc();
 	void focusRight();
 	void focusUp();
+	// ** Moving
+	void moveDec();
+	void moveDown();
+	void moveInc();
+	void moveLeft();
+	void moveLayoutDec();
+	void moveLayoutInc();
+	void moveRight();
+	void moveUp();
 	// ** Orientation
 	void swapOrientationBot();
 	void swapOrientationTop();
