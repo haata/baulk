@@ -431,6 +431,15 @@ void BaulkControl::removeWidget() {
 
 // ** Widget Moving
 void BaulkControl::moveDec() {
+	int index = dynBotIndex();
+
+	// Nothing to do if there is only one widget in the dynBotLayout
+	//  or if the widget is at the bottom of the layout
+	if ( dynBotLayout->count() == 1 || index == 0 )
+		return;
+
+	// Decrement Widget Position
+	dynBotLayout->insertWidget( index - 1, dynBotLayout->widget( index ) );
 }
 
 void BaulkControl::moveDown() {
@@ -455,12 +464,55 @@ void BaulkControl::moveDown() {
 }
 
 void BaulkControl::moveInc() {
+	int index = dynBotIndex();
+
+	// Nothing to do if there is only one widget in the dynBotLayout
+	//  or if the widget is already at the top of the layout
+	if ( dynBotLayout->count() == 1 || index == dynBotLayout->count() - 1 )
+		return;
+
+	// Increment Widget Position
+	dynBotLayout->insertWidget( index + 1, dynBotLayout->widget( index ) );
 }
 
 void BaulkControl::moveLayoutDec() {
+	int curPos = dynBotIndex();
+	int curLayoutPos = dynTopLayout->indexOf( dynBotLayout );
+	QWidget *widget = dynTopLayout->widget( curPos );
+
+	// Last Layout, and more than one widget
+	if ( curLayoutPos == 0 ) {
+		// Only Widget in Layout
+		if ( dynBotLayout->count() == 1 )
+			return;
+
+		// 
+
+	}
+
+	// Normal Case
+	QSplitter *prevLayout = dynBotLayout;
+	dynBotLayout = qobject_cast<QSplitter*>( dynTopLayout->widget( curLayoutPos - 1 ) );
+
+	// Widget Placement, use same index if possible
+	if ( curPos >= dynBotLayout->count() - 1 )
+		curPos = dynBotLayout->count() - 1;
+	dynBotLayout->insertWidget( curPos, widget );
+
+	// First Layout, and only Widget
+	if ( prevLayout->count() == 0 ) {
+		prevLayout->hide();
+		topVLayout->addWidget( prevLayout );
+		prevLayout->close();
+	}
 }
 
 void BaulkControl::moveLayoutInc() {
+	int curPos = dynBotIndex();
+	int curLayoutPos = dynTopLayout->indexOf( dynBotLayout );
+	QWidget *widget = dynTopLayout->widget( curPos );
+
+	// Last Column
 }
 
 void BaulkControl::moveLeft() {
