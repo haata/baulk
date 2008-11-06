@@ -21,17 +21,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// Naming Guide
-//
-// Note: The <name>_ portion of the name is not required.
-//
-// 	<name>_mainWidget	- Central (or main) BaulkWidget (Which is a glorified QWidget) or QWidget
-// 	<name>_mainObject	- Central (or main) QObject 
-//
-// 
-// Each used symbol MUST be added to the symbolList. This allows, for
-// non-destructive error messages on a mis-load
-
 #ifndef __WRAPPER_CONTROL_H
 #define __WRAPPER_CONTROL_H
 

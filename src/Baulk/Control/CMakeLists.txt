@@ -17,7 +17,7 @@ set( HDRS
 	./interfacedialog.h
 )
 
-#| Executable
+#| Library
 set( LIB
 	BaulkControl
 )
@@ -29,11 +29,14 @@ include_directories(
 )
 
 #| Misc Qt4
-add_definitions( -Wall -ggdb )
+add_definitions( 
+	-Wall 
+	-ggdb 
+)
 find_package( Qt4 REQUIRED )
 set( QT_USE_QTXML 1 )
 include( ${QT_USE_FILE} )
-QT4_WRAP_CPP( MOC_SRCS ${HDRS} )
+QT4_WRAP_CPP( aMOC_SRCS ${HDRS} )
 
 ###| Library Versioning
 set( cat_prog cat )
@@ -50,7 +53,7 @@ set( LIBRARY_VERSION
 )
 
 #| Create the Library
-add_library( ${LIB} SHARED ${SRCS} ${MOC_SRCS} )
+add_library( ${LIB} SHARED ${SRCS} ${aMOC_SRCS} )
 set( LIBRARY_OUTPUT_PATH
 	${PROJECT_BINARY_DIR}/../../../bin/BaulkLibs
 )
