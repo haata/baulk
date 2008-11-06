@@ -485,9 +485,12 @@ void BaulkControl::moveLayoutDec() {
 		// Only Widget in Layout
 		if ( dynBotLayout->count() == 1 )
 			return;
+		
+		// Create New Layout
+		dynTopLayout->insertWidget( 0, new QSplitter( Qt::Vertical ) );
 
-		// 
-
+		// Current Layout will now be an index of 1 rather than 0
+		curLayoutPos = 1;
 	}
 
 	// Normal Case
