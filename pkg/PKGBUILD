@@ -1,39 +1,22 @@
+#| Local Source PKGBUILD
 pkgname=baulk
-pkgver=20081106
+pkgver=0.1
 pkgrel=1
 pkgdesc="Baulk is a cross-platform native application tiling management tool written in Qt4. An emphasis is made on making all major components a separate dynamic library, for modularity."
 arch=('i686' 'x86_64')
 url="http://baulk.sf.net"
 license=('GPL')
 depends=('qt')
-makedepends=('git' 'cmake>=2.6.0' 'pkgconfig' 'cvs')
+makedepends=('cmake>=2.6.0' 'pkgconfig' 'cvs')
 provides=('baulk')
 conflicts=('baulk')
 source=()
 md5sums=()
 
-_gitroot="git://gitorious.org/baulk/mainline.git"
-_gitname="baulk"
-
 build() {
-	cd $srcdir
-
-	msg "Perusing git handles..."
-	if [[ -d $_gitname ]]; then
-		( cd $_gitname && git pull origin )
-	else
-		git clone $_gitroot $_gitname
-	fi
-
-	msg "Git tea is ready, or it spilt all over you."
-	msg "Building..."
-
-	rm -rf $_gitname-build
-	cp -r $_gitname $_gitname-build
-	cd $_gitname-build
-
-	cmake -DCMAKE_INSTALL_PREFIX=/usr || return 1
-	make || return 1
+	cmake -DCMAKE_INSTALL_PREFIX=/usr .. || return 1
+	make clean || return 1
+	make -j10 || return 1
 	make DESTDIR=$pkgdir install || return 1
 }
 

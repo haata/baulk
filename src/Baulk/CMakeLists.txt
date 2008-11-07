@@ -69,3 +69,9 @@ target_link_libraries( ${EXEC}
 	BaulkWidget	# From Common
 )
 
+#| Installation
+install(
+	TARGETS baulk
+	RUNTIME DESTINATION bin
+)
+

@@ -5,6 +5,6 @@ project( BaulkPKGLEVEL )
 cmake_minimum_required( VERSION 2.6 )
 
 subdirs(
-	../src
+	${PROJECT_SOURCE_DIR}/../src
 )
 

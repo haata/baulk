@@ -71,3 +71,8 @@ target_link_libraries( ${LIB}
 	qtermwidget	# From qtermwidget CVS
 )
 
+#| Installation
+install( TARGETS BaulkTerm
+	DESTINATION lib/BaulkLibs
+)
+
