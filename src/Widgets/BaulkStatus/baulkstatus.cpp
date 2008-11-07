@@ -22,10 +22,12 @@
 
 // Constructors ***********************************************************************************
 BaulkStatus::BaulkStatus( BaulkWidget *parent ) : BaulkWidget( parent ) {
+	// Layout
 	QVBoxLayout *layout = new QVBoxLayout;
 	layout->setContentsMargins( 0,0,0,0 );
 	setLayout( layout );
 
+	// Text Browser
 	messageBrowser = new QTextBrowser;
 	messageBrowser->setStyleSheet("QTextBrowser {"
 			"background: black;"
@@ -34,12 +36,21 @@ BaulkStatus::BaulkStatus( BaulkWidget *parent ) : BaulkWidget( parent ) {
 	layout->addWidget( messageBrowser );
 	setFocusProxy( messageBrowser );
 
+	// Connections
 	connect( parent, SIGNAL( msgLogsUpdated( QStringList ) ), this, SLOT( updateMsgLog( QStringList ) ) );
 }
 
 
 // Private Slots **********************************************************************************
 void BaulkStatus::updateMsgLog( QStringList msgLogs ) {
-	messageBrowser->setHtml( msgLogs.join("") );
+	QStringList temp = current;
+	if ( current.count() < msgLogs.count() )
+		for ( int c = current.count(); c < msgLogs.count(); ++c )
+			temp.append( msgLogs[c] );
+	else
+		qCritical("BaulkStatus\n\tYour logs are disappearing?!");
+
+	current = temp;
+	messageBrowser->setHtml( current.join("") );
 }
 

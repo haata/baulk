@@ -37,6 +37,8 @@ public:
 	BaulkStatus( BaulkWidget *parent = 0 );
 
 private:
+	QStringList current;
+
 	QTextBrowser *messageBrowser;
 
 private slots:
