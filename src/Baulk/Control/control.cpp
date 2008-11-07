@@ -478,10 +478,12 @@ void BaulkControl::moveInc() {
 void BaulkControl::moveLayoutDec() {
 	int curPos = dynBotIndex();
 	int curLayoutPos = dynTopLayout->indexOf( dynBotLayout );
+	int newPos = curPos;
 	QWidget *widget = dynTopLayout->widget( curPos );
 
 	// Last Layout, and more than one widget
 	if ( curLayoutPos == 0 ) {
+		qCritical("BLA");
 		// Only Widget in Layout
 		if ( dynBotLayout->count() == 1 )
 			return;
@@ -493,17 +495,23 @@ void BaulkControl::moveLayoutDec() {
 		curLayoutPos = 1;
 	}
 
+		qCritical("BLA1");
 	// Normal Case
 	QSplitter *prevLayout = dynBotLayout;
 	dynBotLayout = qobject_cast<QSplitter*>( dynTopLayout->widget( curLayoutPos - 1 ) );
 
+		qCritical("BLA2 - %d", curPos );
 	// Widget Placement, use same index if possible
-	if ( curPos >= dynBotLayout->count() - 1 )
-		curPos = dynBotLayout->count() - 1;
-	dynBotLayout->insertWidget( curPos, widget );
+	if ( curPos >= dynBotLayout->count() - 1 ) {
+		newPos = newPos <= 0 ? 0 : dynBotLayout->count() - 1;
+		qCritical("BLAa");
+	}
+	dynBotLayout->insertWidget( newPos, prevLayout->widget( curPos ) );
 
+		qCritical("BLA3");
 	// First Layout, and only Widget
 	if ( prevLayout->count() == 0 ) {
+		qCritical("BLA4");
 		prevLayout->hide();
 		topVLayout->addWidget( prevLayout );
 		prevLayout->close();
