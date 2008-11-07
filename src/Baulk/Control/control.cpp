@@ -207,8 +207,13 @@ void BaulkControl::loadMainWidget( LibraryLoader *library ) {
 	if ( index >= dynBotLayout->count() - 1 )
 		index = dynBotLayout->count() - 1;
 
+	// Check Focus Index, but maintain current Layout
+	QSplitter *tmp = dynBotLayout;
+	int check = dynBotIndex();
+	dynBotLayout = tmp;
+
 	// Set Widget Focus
-	if ( dynBotIndex() == 0 && index == -1 )
+	if ( check == 0 && index == -1 )
 		dynBotLayout->widget( 0 )->setFocus();
 	else dynBotLayout->widget( index )->setFocus();
 }
@@ -402,13 +407,18 @@ void BaulkControl::removeWidget() {
 		// Do not close the last dynBotLayout
 		bool lastLayout = true;
 		if ( dynTopLayout->count() > 1 ) {
-			dynTopLayout->widget( curBotLayout )->close();
+			QWidget *layout = dynTopLayout->widget( curBotLayout );
+			layout->hide();
+			topVLayout->addWidget( layout );
+			layout->close();
 			lastLayout = false;
 		}
 
 		// Set Focus after removing dynBotLayout
 		if ( dynTopLayout->count() != 0 ) {
-			int index = dynTopLayout->count() != 1 ? curBotLayout - 1 : 0;
+			int index = curBotLayout - 1;
+			if ( index < 0 )
+				index = 0;
 			dynBotLayout = qobject_cast<QSplitter*>( dynTopLayout->widget( index ) ); 
 			if ( dynBotLayout->count() > 0 )
 				dynBotLayout->widget( 0 )->setFocus();
@@ -448,9 +458,11 @@ void BaulkControl::moveDown() {
 		// If Layout is Horizontal/Horizontal then do nothing
 		switch ( dynTopLayout->orientation() ) {
 		case Qt::Vertical:
+			qCritical("Down Vert");
 			moveLayoutInc();
 			break;
 		default:
+			qCritical("Down Horz");
 			break;
 		}
 		break;
@@ -479,7 +491,6 @@ void BaulkControl::moveLayoutDec() {
 	int curPos = dynBotIndex();
 	int curLayoutPos = dynTopLayout->indexOf( dynBotLayout );
 	int newPos = curPos;
-	QWidget *widget = dynTopLayout->widget( curPos );
 
 	// Last Layout, and more than one widget
 	if ( curLayoutPos == 0 ) {
@@ -489,7 +500,9 @@ void BaulkControl::moveLayoutDec() {
 			return;
 		
 		// Create New Layout
-		dynTopLayout->insertWidget( 0, new QSplitter( Qt::Vertical ) );
+		QSplitter *layout = new QSplitter( Qt::Vertical );
+		layout->setHandleWidth( 1 );
+		dynTopLayout->insertWidget( 0, layout );
 
 		// Current Layout will now be an index of 1 rather than 0
 		curLayoutPos = 1;
@@ -503,9 +516,14 @@ void BaulkControl::moveLayoutDec() {
 		qCritical("BLA2 - %d", curPos );
 	// Widget Placement, use same index if possible
 	if ( curPos >= dynBotLayout->count() - 1 ) {
-		newPos = newPos <= 0 ? 0 : dynBotLayout->count() - 1;
+		newPos = dynBotLayout->count() - 1;
+		if ( newPos < 0 )
+			newPos = 0;
 		qCritical("BLAa");
 	}
+
+		qCritical("BL - %d", newPos );
+	// Insert Widget
 	dynBotLayout->insertWidget( newPos, prevLayout->widget( curPos ) );
 
 		qCritical("BLA3");
@@ -516,14 +534,61 @@ void BaulkControl::moveLayoutDec() {
 		topVLayout->addWidget( prevLayout );
 		prevLayout->close();
 	}
+
+	// Set Widget Focus
+	dynBotLayout->widget( newPos )->setFocus();
 }
 
 void BaulkControl::moveLayoutInc() {
 	int curPos = dynBotIndex();
 	int curLayoutPos = dynTopLayout->indexOf( dynBotLayout );
-	QWidget *widget = dynTopLayout->widget( curPos );
+	int newPos = curPos;
+	
+	qCritical("TO");
+	// Last Layout, and more than one widget
+	if ( curLayoutPos == dynTopLayout->count() - 1 ) {
+	qCritical("TO1");
+		// Only Widget in Layout
+		if ( dynBotLayout->count() == 1 )
+			return;
+		
+		// Create New Layout
+		QSplitter *layout = new QSplitter( Qt::Vertical );
+		layout->setHandleWidth( 1 );
+		dynTopLayout->addWidget( layout );
+	}
 
-	// Last Column
+	qCritical("TO4");
+	// Normal Case
+	QSplitter *prevLayout = dynBotLayout;
+	dynBotLayout = qobject_cast<QSplitter*>( dynTopLayout->widget( curLayoutPos + 1 ) );
+
+	qCritical("TO5 - %d", curLayoutPos);
+	// Widget Placement, use same index if possible
+	if ( curPos >= dynBotLayout->count() - 1 ) {
+	qCritical("TO6");
+		newPos = dynBotLayout->count() - 1;
+		if ( newPos < 0 )
+			newPos = 0;
+	}
+
+	qCritical("TO8");
+	// Insert Widget
+	dynBotLayout->insertWidget( newPos, prevLayout->widget( curPos ) );
+
+	qCritical("TO9");
+	// First Layout, and only Widget
+	if ( prevLayout->count() == 0 ) {
+	qCritical("TO10");
+		prevLayout->hide();
+		topVLayout->addWidget( prevLayout );
+		prevLayout->close();
+	}
+
+	qCritical("TO11");
+	// Set Widget Focus
+	dynBotLayout->widget( newPos )->setFocus();
+	qCritical("TO12");
 }
 
 void BaulkControl::moveLeft() {
@@ -535,9 +600,11 @@ void BaulkControl::moveLeft() {
 		// If Layout is Vertical/Vertical then do nothing
 		switch ( dynTopLayout->orientation() ) {
 		case Qt::Horizontal:
+			qCritical("Left Horz");
 			moveLayoutDec();
 			break;
 		default:
+			qCritical("Left Vert");
 			break;
 		}
 		break;
@@ -556,9 +623,11 @@ void BaulkControl::moveRight() {
 		// If Layout is Vertical/Vertical then do nothing
 		switch ( dynTopLayout->orientation() ) {
 		case Qt::Horizontal:
+			qCritical("Right Horz");
 			moveLayoutInc();
 			break;
 		default:
+			qCritical("Right Vert");
 			break;
 		}
 		break;
@@ -574,9 +643,11 @@ void BaulkControl::moveUp() {
 		// If Layout is Horizontal/Horizontal then do nothing
 		switch ( dynTopLayout->orientation() ) {
 		case Qt::Vertical:
+			qCritical("Up Vert");
 			moveLayoutDec();
 			break;
 		default:
+			qCritical("Up Horz");
 			break;
 		}
 		break;
