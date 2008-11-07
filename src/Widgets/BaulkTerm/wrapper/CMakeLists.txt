@@ -31,7 +31,10 @@ include_directories(
 
 
 #| Misc Qt4
-add_definitions( -Wall )
+add_definitions( 
+	-Wall 
+	-ggdb
+)
 find_package( Qt4 REQUIRED )
 include( ${QT_USE_FILE} )
 QT4_WRAP_CPP( MOC_SRCS ${HDRS} )

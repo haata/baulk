@@ -1,0 +1,12 @@
+Source: baulk
+Section: dev
+Priority: extra
+Maintainer: Jacob Alexander <haata@users.sf.net>
+Build-Depends: debhelper (>= 5)
+Standards-Version: 3.7.2
+
+Package: baulk
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Baulk is a cross-platform native application tiling management tool written in Qt4. An emphasis is made on making all major components a separate dynamic library, for modularity.
+

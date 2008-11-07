@@ -40,7 +40,10 @@ include_directories(
 include_directories( Server )
 
 #| Misc Qt4
-add_definitions( -Wall -ggdb )
+add_definitions( 
+	-Wall 
+	-ggdb 
+)
 find_package( Qt4 REQUIRED )
 set( QT_USE_QTNETWORK 1 )
 set( QT_USE_QTTEST 1 )

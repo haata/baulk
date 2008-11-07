@@ -78,7 +78,10 @@ set( LIB_BXML
 
 
 ###| Misc Qt4
-add_definitions( -Wall )
+add_definitions( 
+	-Wall 
+	-ggdb 
+)
 find_package( Qt4 REQUIRED )
 set( QT_USE_QTXML 1 )
 include( ${QT_USE_FILE} )
