@@ -264,18 +264,18 @@ void BaulkControl::focusDec() {
 void BaulkControl::focusDecBorder() {
 	int curPos = dynBotIndex();
 
-	// Use Inverted Index
-	invertIndex = true;
-
 	// Boundary Case
-	if ( curPos == 0 )
+	if ( curPos == 0 ) {
+		// Use Inverted Index
+		invertIndex = true;
+
 		focusLayoutDec();
 
-	// Revert Inverted Index
-	invertIndex = false;
-
+		// Revert Inverted Index
+		invertIndex = false;
+	}
 	// Normal Case
-	focusDec();
+	else focusDec();
 }
 
 void BaulkControl::focusDown() {
@@ -320,18 +320,18 @@ void BaulkControl::focusInc() {
 void BaulkControl::focusIncBorder() {
 	int curPos = dynBotIndex();
 
-	// Use Inverted Index
-	invertIndex = true;
-
 	// Boundary Case
-	if ( curPos == dynBotLayout->count() - 1 )
+	if ( curPos == dynBotLayout->count() - 1 ) {
+		// Use Inverted Index
+		invertIndex = true;
+
 		focusLayoutInc();
 
-	// Revert Inverted Index
-	invertIndex = false;
-
+		// Revert Inverted Index
+		invertIndex = false;
+	}
 	// Normal Case
-	focusInc();
+	else focusInc();
 }
 
 void BaulkControl::focusLayoutDec() {
@@ -351,7 +351,7 @@ void BaulkControl::focusLayoutDec() {
 
 	// Orientation Case
 	if ( invertIndex )
-		curPos = 0;
+		curPos = dynBotLayout->count() - 1;
 
 	dynBotLayout->widget( curPos )->setFocus();
 }
@@ -368,8 +368,13 @@ void BaulkControl::focusLayoutInc() {
 	dynBotLayout = qobject_cast<QSplitter*>( dynTopLayout->widget( curLayoutPos + 1 ) );
 
 	// Set Focus
-	if ( curPos >=  dynBotLayout->count() )
+	if ( curPos >= dynBotLayout->count() )
 		curPos = dynBotLayout->count() - 1;
+
+	// Orientation Case
+	if ( invertIndex )
+		curPos = 0;
+
 	dynBotLayout->widget( curPos )->setFocus();
 }
 
@@ -407,6 +412,7 @@ void BaulkControl::focusRight() {
 		switch( dynTopLayout->orientation() ) {
 		case Qt::Horizontal:
 			focusIncBorder();
+			break;
 		default:
 			focusInc();
 			break;
