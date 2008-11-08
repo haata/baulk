@@ -381,7 +381,7 @@ void BaulkControl::focusLayoutInc() {
 void BaulkControl::focusLeft() {
 	switch ( dynBotLayout->orientation() ) {
 	case Qt::Horizontal:
-		switch( dynTopLayout->orientation() ) {
+		switch ( dynTopLayout->orientation() ) {
 		case Qt::Horizontal:
 			focusDecBorder();
 			break;
@@ -409,7 +409,7 @@ void BaulkControl::focusLeft() {
 void BaulkControl::focusRight() {
 	switch ( dynBotLayout->orientation() ) {
 	case Qt::Horizontal:
-		switch( dynTopLayout->orientation() ) {
+		switch ( dynTopLayout->orientation() ) {
 		case Qt::Horizontal:
 			focusIncBorder();
 			break;
@@ -524,6 +524,20 @@ void BaulkControl::moveDec() {
 }
 
 void BaulkControl::moveDecBorder() {
+	int curPos = dynBotIndex();
+
+	// Boundary Case
+	if ( curPos == 0 ) {
+		// Use Inverted Index
+		invertIndex = true;
+
+		moveLayoutDec();
+
+		// Revert Inverted Index
+		invertIndex = false;
+	}
+	// Normal Case
+	else moveDec();
 }
 
 void BaulkControl::moveDown() {
@@ -532,16 +546,21 @@ void BaulkControl::moveDown() {
 		// If Layout is Horizontal/Horizontal then do nothing
 		switch ( dynTopLayout->orientation() ) {
 		case Qt::Vertical:
-			qCritical("Down Vert");
 			moveLayoutInc();
 			break;
 		default:
-			qCritical("Down Horz");
 			break;
 		}
 		break;
 	case Qt::Vertical:
-		moveInc();
+		switch ( dynTopLayout->orientation() ) {
+		case Qt::Vertical:
+			moveIncBorder();
+			break;
+		default:
+			moveInc();
+			break;
+		}
 		break;
 	default:
 		qCritical( tr("%1\n\tInvalid Orientation, Move Down").arg( errorName() ).toUtf8() );
@@ -562,6 +581,20 @@ void BaulkControl::moveInc() {
 }
 
 void BaulkControl::moveIncBorder() {
+	int curPos = dynBotIndex();
+
+	// Boundary Case
+	if ( curPos == dynBotLayout->count() - 1 ) {
+		// Use Inverted Index
+		invertIndex = true;
+
+		moveLayoutInc();
+
+		// Revert Inverted Index
+		invertIndex = false;
+	}
+	// Normal Case
+	else moveInc();
 }
 
 void BaulkControl::moveLayoutDec() {
@@ -571,7 +604,6 @@ void BaulkControl::moveLayoutDec() {
 
 	// Last Layout, and more than one widget
 	if ( curLayoutPos == 0 ) {
-		qCritical("BLA");
 		// Only Widget in Layout
 		if ( dynBotLayout->count() == 1 )
 			return;
@@ -585,28 +617,26 @@ void BaulkControl::moveLayoutDec() {
 		curLayoutPos = 1;
 	}
 
-		qCritical("BLA1");
 	// Normal Case
 	QSplitter *prevLayout = dynBotLayout;
 	dynBotLayout = qobject_cast<QSplitter*>( dynTopLayout->widget( curLayoutPos - 1 ) );
 
-		qCritical("BLA2 - %d", curPos );
 	// Widget Placement, use same index if possible
 	if ( curPos >= dynBotLayout->count() - 1 ) {
 		newPos = dynBotLayout->count() - 1;
 		if ( newPos < 0 )
 			newPos = 0;
-		qCritical("BLAa");
 	}
 
-		qCritical("BL - %d", newPos );
+	// Orientation Case
+	if ( invertIndex )
+		newPos = dynBotLayout->count();
+
 	// Insert Widget
 	dynBotLayout->insertWidget( newPos, prevLayout->widget( curPos ) );
 
-		qCritical("BLA3");
 	// First Layout, and only Widget
 	if ( prevLayout->count() == 0 ) {
-		qCritical("BLA4");
 		prevLayout->hide();
 		topVLayout->addWidget( prevLayout );
 		prevLayout->close();
@@ -621,10 +651,8 @@ void BaulkControl::moveLayoutInc() {
 	int curLayoutPos = dynTopLayout->indexOf( dynBotLayout );
 	int newPos = curPos;
 	
-	qCritical("TO");
 	// Last Layout, and more than one widget
 	if ( curLayoutPos == dynTopLayout->count() - 1 ) {
-	qCritical("TO1");
 		// Only Widget in Layout
 		if ( dynBotLayout->count() == 1 )
 			return;
@@ -635,53 +663,54 @@ void BaulkControl::moveLayoutInc() {
 		dynTopLayout->addWidget( layout );
 	}
 
-	qCritical("TO4");
 	// Normal Case
 	QSplitter *prevLayout = dynBotLayout;
 	dynBotLayout = qobject_cast<QSplitter*>( dynTopLayout->widget( curLayoutPos + 1 ) );
 
-	qCritical("TO5 - %d", curLayoutPos);
 	// Widget Placement, use same index if possible
 	if ( curPos >= dynBotLayout->count() - 1 ) {
-	qCritical("TO6");
 		newPos = dynBotLayout->count() - 1;
 		if ( newPos < 0 )
 			newPos = 0;
 	}
 
-	qCritical("TO8");
+	// Orientation Case
+	if ( invertIndex )
+		newPos = 0;
+
 	// Insert Widget
 	dynBotLayout->insertWidget( newPos, prevLayout->widget( curPos ) );
 
-	qCritical("TO9");
 	// First Layout, and only Widget
 	if ( prevLayout->count() == 0 ) {
-	qCritical("TO10");
 		prevLayout->hide();
 		topVLayout->addWidget( prevLayout );
 		prevLayout->close();
 	}
 
-	qCritical("TO11");
 	// Set Widget Focus
 	dynBotLayout->widget( newPos )->setFocus();
-	qCritical("TO12");
 }
 
 void BaulkControl::moveLeft() {
 	switch ( dynBotLayout->orientation() ) {
 	case Qt::Horizontal:
-		moveDec();
+		switch ( dynTopLayout->orientation() ) {
+		case Qt::Horizontal:
+			moveDecBorder();
+			break;
+		default:
+			moveDec();
+			break;
+		}
 		break;
 	case Qt::Vertical: 
 		// If Layout is Vertical/Vertical then do nothing
 		switch ( dynTopLayout->orientation() ) {
 		case Qt::Horizontal:
-			qCritical("Left Horz");
 			moveLayoutDec();
 			break;
 		default:
-			qCritical("Left Vert");
 			break;
 		}
 		break;
@@ -694,17 +723,22 @@ void BaulkControl::moveLeft() {
 void BaulkControl::moveRight() {
 	switch ( dynBotLayout->orientation() ) {
 	case Qt::Horizontal:
-		moveInc();
+		switch ( dynTopLayout->orientation() ) {
+		case Qt::Horizontal:
+			moveIncBorder();
+			break;
+		default:
+			moveInc();
+			break;
+		}
 		break;
 	case Qt::Vertical: 
 		// If Layout is Vertical/Vertical then do nothing
 		switch ( dynTopLayout->orientation() ) {
 		case Qt::Horizontal:
-			qCritical("Right Horz");
 			moveLayoutInc();
 			break;
 		default:
-			qCritical("Right Vert");
 			break;
 		}
 		break;
@@ -720,17 +754,22 @@ void BaulkControl::moveUp() {
 		// If Layout is Horizontal/Horizontal then do nothing
 		switch ( dynTopLayout->orientation() ) {
 		case Qt::Vertical:
-			qCritical("Up Vert");
 			moveLayoutDec();
 			break;
 		default:
-			qCritical("Up Horz");
 			break;
 		}
 		break;
 	case Qt::Vertical:
-		moveDec();
+		switch ( dynTopLayout->orientation() ) {
+		case Qt::Vertical:
+			moveDecBorder();
+			break;
+		default:
+			moveDec();
+			break;
 		break;
+		}
 	default:
 		qCritical( tr("%1\n\tInvalid Orientation, Move Up").arg( errorName() ).toUtf8() );
 		break;
