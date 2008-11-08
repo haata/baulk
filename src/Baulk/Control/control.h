@@ -75,6 +75,7 @@ private:
 	QSplitter *dynTopLayout;
 	QSplitter *dynBotLayout;
 	int lastKnownGoodIndex;
+	bool invertIndex;
 
 	// Global QActions
 	QList<QAction*> glbQActions;
@@ -109,8 +110,10 @@ private slots:
 	// Tile Manipulation
 	// ** Focus
 	void focusDec();
+	void focusDecBorder();
 	void focusDown();
 	void focusInc();
+	void focusIncBorder();
 	void focusLeft();
 	void focusLayoutDec();
 	void focusLayoutInc();
@@ -118,8 +121,10 @@ private slots:
 	void focusUp();
 	// ** Moving
 	void moveDec();
+	void moveDecBorder();
 	void moveDown();
 	void moveInc();
+	void moveIncBorder();
 	void moveLeft();
 	void moveLayoutDec();
 	void moveLayoutInc();

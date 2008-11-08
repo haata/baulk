@@ -46,6 +46,7 @@ BaulkControl::BaulkControl( QWidget *parent ) : BaulkWidget( parent ) {
 	dynBotLayout = new QSplitter( Qt::Vertical );
 	tabLayer->addWidget( dynTopLayout );
 	dynTopLayout->addWidget( dynBotLayout );
+	invertIndex = false;
 
 	// Layout Property Setup
 	topVLayout->setContentsMargins( 0,0,0,0 );
@@ -249,8 +250,6 @@ void BaulkControl::swapOrientationTop() {
 }
 
 // ** Focus Control
-//  Note: Incrementing the coordinate is only needed on max value cases due to how Qt
-//  	calculates max x and y, see Qt docs for more details
 void BaulkControl::focusDec() {
 	int curPos = dynBotIndex();
 
@@ -260,6 +259,23 @@ void BaulkControl::focusDec() {
 
 	// Decrement Focus
 	dynBotLayout->widget( curPos - 1 )->setFocus();
+}
+
+void BaulkControl::focusDecBorder() {
+	int curPos = dynBotIndex();
+
+	// Use Inverted Index
+	invertIndex = true;
+
+	// Boundary Case
+	if ( curPos == 0 )
+		focusLayoutDec();
+
+	// Revert Inverted Index
+	invertIndex = false;
+
+	// Normal Case
+	focusDec();
 }
 
 void BaulkControl::focusDown() {
@@ -275,7 +291,14 @@ void BaulkControl::focusDown() {
 		}
 		break;
 	case Qt::Vertical:
-		focusInc();
+		switch ( dynTopLayout->orientation() ) {
+		case Qt::Vertical:
+			focusIncBorder();
+			break;
+		default:
+			focusInc();
+			break;
+		}
 		break;
 	default:
 		qCritical( tr("%1\n\tInvalid Orientation, Focus Down").arg( errorName() ).toUtf8() );
@@ -294,6 +317,23 @@ void BaulkControl::focusInc() {
 	dynBotLayout->widget( curPos + 1 )->setFocus();
 }
 
+void BaulkControl::focusIncBorder() {
+	int curPos = dynBotIndex();
+
+	// Use Inverted Index
+	invertIndex = true;
+
+	// Boundary Case
+	if ( curPos == dynBotLayout->count() - 1 )
+		focusLayoutInc();
+
+	// Revert Inverted Index
+	invertIndex = false;
+
+	// Normal Case
+	focusInc();
+}
+
 void BaulkControl::focusLayoutDec() {
 	int curPos = dynBotIndex();
 	int curLayoutPos = dynTopLayout->indexOf( dynBotLayout );
@@ -306,8 +346,13 @@ void BaulkControl::focusLayoutDec() {
 	dynBotLayout = qobject_cast<QSplitter*>( dynTopLayout->widget( curLayoutPos - 1 ) );
 
 	// Set Focus
-	if ( curPos >=  dynBotLayout->count() )
+	if ( curPos >= dynBotLayout->count() )
 		curPos = dynBotLayout->count() - 1;
+
+	// Orientation Case
+	if ( invertIndex )
+		curPos = 0;
+
 	dynBotLayout->widget( curPos )->setFocus();
 }
 
@@ -331,7 +376,14 @@ void BaulkControl::focusLayoutInc() {
 void BaulkControl::focusLeft() {
 	switch ( dynBotLayout->orientation() ) {
 	case Qt::Horizontal:
-		focusDec();
+		switch( dynTopLayout->orientation() ) {
+		case Qt::Horizontal:
+			focusDecBorder();
+			break;
+		default:
+			focusDec();
+			break;
+		}
 		break;
 	case Qt::Vertical: 
 		// If Layout is Vertical/Vertical then do nothing
@@ -352,7 +404,13 @@ void BaulkControl::focusLeft() {
 void BaulkControl::focusRight() {
 	switch ( dynBotLayout->orientation() ) {
 	case Qt::Horizontal:
-		focusInc();
+		switch( dynTopLayout->orientation() ) {
+		case Qt::Horizontal:
+			focusIncBorder();
+		default:
+			focusInc();
+			break;
+		}
 		break;
 	case Qt::Vertical: 
 		// If Layout is Vertical/Vertical then do nothing
@@ -383,7 +441,14 @@ void BaulkControl::focusUp() {
 		}
 		break;
 	case Qt::Vertical:
-		focusDec();
+		switch( dynTopLayout->orientation() ) {
+		case Qt::Vertical:
+			focusDecBorder();
+			break;
+		default:
+			focusDec();
+			break;
+		}
 		break;
 	default:
 		qCritical( tr("%1\n\tInvalid Orientation, Focus Up").arg( errorName() ).toUtf8() );
@@ -452,6 +517,9 @@ void BaulkControl::moveDec() {
 	dynBotLayout->insertWidget( index - 1, dynBotLayout->widget( index ) );
 }
 
+void BaulkControl::moveDecBorder() {
+}
+
 void BaulkControl::moveDown() {
 	switch ( dynBotLayout->orientation() ) {
 	case Qt::Horizontal:
@@ -485,6 +553,9 @@ void BaulkControl::moveInc() {
 
 	// Increment Widget Position
 	dynBotLayout->insertWidget( index + 1, dynBotLayout->widget( index ) );
+}
+
+void BaulkControl::moveIncBorder() {
 }
 
 void BaulkControl::moveLayoutDec() {
