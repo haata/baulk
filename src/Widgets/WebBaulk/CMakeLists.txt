@@ -68,3 +68,8 @@ target_link_libraries( ${LIB}
 	BaulkWidget	# From Common
 )
 
+#| Installation
+install( TARGETS WebBaulk
+	DESTINATION lib/BaulkLibs
+)
+

@@ -66,3 +66,8 @@ target_link_libraries( ${LIB}
 	BaulkWidget	# From Common
 )
 
+#| Installation
+install( TARGETS BaulkStatus 
+	DESTINATION lib/BaulkLibs
+)
+
