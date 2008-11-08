@@ -3,6 +3,7 @@
 #| Project
 project( BaulkStatus )
 cmake_minimum_required( VERSION 2.6 )
+set( HEAD_DIR ${PROJECT_SOURCE_DIR}/../../.. )
 
 
 #| Sources
@@ -24,7 +25,7 @@ set( LIB
 
 #| Baulk Common Libraries
 include_directories(
-	${PROJECT_SOURCE_DIR}/../../Common
+	${HEAD_DIR}/src/Common
 )
 
 
@@ -45,7 +46,7 @@ if( WIN32 )
 endif( WIN32 )
 
 exec_program( ${cat_prog} 
-	ARGS ${PROJECT_SOURCE_DIR}/../../Common/VERSION 
+	ARGS ${HEAD_DIR}/src/Common/VERSION 
 	OUTPUT_VARIABLE VERSION 
 )
 set( LIBRARY_VERSION
@@ -56,7 +57,7 @@ set( LIBRARY_VERSION
 #| Create the Library
 add_library( ${LIB} SHARED ${SRCS} ${MOC_SRCS} )
 set( LIBRARY_OUTPUT_PATH
-        ${PROJECT_BINARY_DIR}/../../../bin/BaulkLibs
+        ${HEAD_DIR}/bin/BaulkLibs
 )
 set_target_properties( ${LIB} PROPERTIES VERSION ${LIBRARY_VERSION} )
 
@@ -67,7 +68,7 @@ target_link_libraries( ${LIB}
 )
 
 #| Installation
-install( TARGETS BaulkStatus 
+install( TARGETS ${LIB}
 	DESTINATION lib/BaulkLibs
 )
 
