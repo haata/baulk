@@ -25,6 +25,8 @@ Oct 19 2008 - "Baulk Daemons poised to rule the world", in other news, Baulk Dae
 
 Oct 25 2008 - Win32 officially supported in Baulk
 
+Nov 7  2008 - Baulk attains basic tiling functionality
+
 
 // Dependencies ***********************************************************************************
 
@@ -37,6 +39,11 @@ Build Dependencies:
 
 Qt 4.4 Dev
 cmake 2.6
+
+(Optional)
+
+doxygen
+graphviz
 
 
 Linux Build Dependencies:
