@@ -2,12 +2,6 @@
 //
 // Baulk - Copyright (C) 2008 - Jacob Alexander
 //
-//  File:	FILENAME
-//  Author(s):	Jacob Alexander (HaaTa)
-//
-//  Description: 
-//	DLL Wrapper for Baulk Information Server
-//
 //  Baulk is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation; either version 2 of the License, or
@@ -31,6 +25,8 @@
 // 
 // Each used symbol MUST be added to the symbolList. This allows, for
 // non-destructive error messages on a mis-load
+//
+// Note: Please remove this section when using the template
 
 #ifndef __WRAPPER_NAME_H
 #define __WRAPPER_NAME_H
@@ -46,6 +42,12 @@
 
 #include <baulkwidget.h>
 
+
+/**
+ * @author Jacob Alexander (HaaTa)
+ *
+ * INSERT DESCRIPTION HERE
+ */
 // Exported Symbols *******************************************************************************
 extern "C" EXPORTDLL {
 	QStringList symbolList();

@@ -2,12 +2,6 @@
 //
 // Baulk - Copyright (C) 2008 - Jacob Alexander
 //
-//  File:	handler.h
-//  Author(s):	Jacob Alexander (HaaTa)
-//
-//  Description: 
-//	Process all console output in Baulk Executables
-//
 //  Baulk is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation; either version 2 of the License, or
@@ -33,7 +27,22 @@
 QStringList msgLogs;
 #endif
 
-// Handles all messages sent by the application
+/**
+ * @author Jacob Alexander (HaaTa)
+ *
+ * Handles all messages sent by the application
+ *
+ * Baulk
+ * - QDebug only sends messages into Baulk
+ * - QWarning only sends messages into Baulk
+ * - QCritical sends messages both to Standard Out and into Baulk
+ * - QFatal sends messages both to Standard Out and into Baulk
+ *  however, if a QFatal message occurs the application has usually closed
+ *  already.
+ *
+ * All other executables (ie. InformationServer)
+ * - All messages currently go to Standout Out
+ */
 void handler( QtMsgType type, const char *msg ) {
 	QString log = "";
 	QString logPlain = "";

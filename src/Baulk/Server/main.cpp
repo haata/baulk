@@ -2,13 +2,6 @@
 //
 // Baulk - Copyright (C) 2008  Jacob Alexander
 //
-//  File:	main.cpp
-//  Author(s):	Jacob Alexander (HaaTa)
-//
-//  Description: 
-//  	Baulk Server daemon.
-//  	Processes all the information sent from the Baulk Clients.
-//
 //  Baulk is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation; either version 2 of the License, or
@@ -28,15 +21,28 @@
 
 #include "server.h"
 
+/**
+ * @author Jacob Alexander (HaaTa)
+ *
+ * Baulk Server Daemon
+ *
+ * Executable for instanciating the Daemon. 
+ * Uses the message handler to enable Message Output formatting.
+ */
 int main( int argc, char *argv[] ) {
-	qInstallMsgHandler( handler ); // Message Handler
+	// Message Handler
+	qInstallMsgHandler( handler );
+
+	// Qt Command Line Argument Handling
 	QApplication *app = new QApplication( argc, argv );
 
+	// Use default listen socket if none is specified via the command line
 	QString listenSocket = "BaulkServ";
 	for ( int c = 1; c < argc; ++c ) {
 		listenSocket = argv[c];
 	}
 
+	// Daemon Quit Event Connection
 	InformationServer *serv = new InformationServer( listenSocket );
 	QObject::connect( serv, SIGNAL( destroyed() ), app, SLOT( quit() ));
 

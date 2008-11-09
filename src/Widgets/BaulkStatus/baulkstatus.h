@@ -2,13 +2,6 @@
 //
 // Baulk - Copyright (C) 2008 - Jacob Alexander
 //
-//  File:	baulkstatus.h
-//  Author(s):	Jacob Alexander (HaaTa)
-//
-//  Description: 
-//	Provides information to the user on running information of Baulk Control 
-//	and the window instance that houses it.
-//
 //  Baulk is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation; either version 2 of the License, or
@@ -30,6 +23,14 @@
 
 #include <baulkwidget.h>
 
+/**
+ * @author Jacob Alexander (HaaTa)
+ *
+ * Console Output Viewer for Baulk
+ *
+ * Provides information to the user on running information of Baulk Control 
+ *  and the window instance that houses it.
+ */
 class BaulkStatus : public BaulkWidget {
 	Q_OBJECT
 

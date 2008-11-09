@@ -2,12 +2,6 @@
 //
 // Baulk - Copyright (C) 2008 - Jacob Alexander
 //
-//  File:	baulkdialog.h
-//  Author(s):	Jacob Alexander (HaaTa)
-//
-//  Description: 
-//	Baulk reimplementation of QDialog
-//
 //  Baulk is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation; either version 2 of the License, or
@@ -28,6 +22,11 @@
 #include <QDialog>
 #include <QWidget>
 
+/**
+ * @author Jacob Alexander (HaaTa)
+ *
+ * Baulk reimplementation of QDialog
+ */
 class BaulkDialog : public QDialog {
 	Q_OBJECT
 

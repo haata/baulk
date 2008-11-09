@@ -2,12 +2,6 @@
 //
 // Baulk - Copyright (C) 2008 - Jacob Alexander
 //
-//  File:	baulkwidget.h
-//  Author(s):	Jacob Alexander (HaaTa)
-//
-//  Description: 
-//	A QWidget, but a lot more useful.
-//
 //  Baulk is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation; either version 2 of the License, or
@@ -29,6 +23,11 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
+/**
+ * @author Jacob Alexander (HaaTa)
+ *
+ * QWidget Reimplementation for Baulk
+ */
 class BaulkWidget : public QWidget {
 	Q_OBJECT
 

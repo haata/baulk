@@ -17,7 +17,7 @@ if( CVS_FOUND AND NOT EXISTS ${PROJECT_SOURCE_DIR}/qtermwidget/qtermwidget.h )
 		WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 	)
 	message(" -------------------------------- ")
-	message(" | CVS qtermwidget source ready | ")
+	message(" | CVS QTermWidget source ready | ")
 	message(" -------------------------------- ")
 
 endif( CVS_FOUND AND NOT EXISTS ${PROJECT_SOURCE_DIR}/qtermwidget/qtermwidget.h )

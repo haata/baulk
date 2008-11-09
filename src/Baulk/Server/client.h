@@ -2,13 +2,6 @@
 //
 // Baulk - Copyright (C) 2008 - Jacob Alexander
 //
-//  File:	client.h
-//  Author(s):	Jacob Alexander (HaaTa)
-//
-//  Description: 
-//	Primarily for passing data between instances of Baulk.
-//	The client accepts the information from the server.
-//
 //  Baulk is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation; either version 2 of the License, or
@@ -33,6 +26,14 @@
 
 #include "packet.h"
 
+/**
+ * @author Jacob Alexander (HaaTa)
+ *
+ * Responsible for Communicating with the InformationServer
+ *
+ * Provides an interface for sending/recieving information to/from
+ *  different instances of Baulk.
+ */
 class InformationClient : public QObject {
 	Q_OBJECT
 

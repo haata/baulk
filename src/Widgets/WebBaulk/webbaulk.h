@@ -2,12 +2,6 @@
 //
 // Baulk - Copyright (C) 2008 - Jacob Alexander
 //
-//  File:	webbaulk.h
-//  Author(s):	Jacob Alexander (HaaTa)
-//
-//  Description: 
-//	A WebKit browser for Baulk, using a vim control scheme
-//
 //  Baulk is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation; either version 2 of the License, or
@@ -30,6 +24,11 @@
 
 #include <baulkwidget.h>
 
+/**
+ * @author Jacob Alexander (HaaTa)
+ *
+ * A WebKit browser for Baulk, using a vim control scheme
+ */
 class WebBaulk : public BaulkWidget {
 	Q_OBJECT
 

@@ -5,9 +5,6 @@
 //  File:	wrapper_control.h
 //  Author(s):	Jacob Alexander (HaaTa)
 //
-//  Description: 
-//	DLL Wrapper for Baulk Information Server
-//
 //  Baulk is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation; either version 2 of the License, or
@@ -37,7 +34,12 @@
 
 #include "control.h"
 
-// Exported Symbols
+/**
+ * @author Jacob Alexander (HaaTa)
+ *
+ * DLL Wrapper for BaulkControl
+ */
+// Exported Symbols *******************************************************************************
 extern "C" EXPORTDLL {
 	QStringList symbolList();
 
@@ -45,7 +47,7 @@ extern "C" EXPORTDLL {
 	BaulkWidget *control_mainWidget( QWidget *parent = 0 );
 }
 
-// Misc Declarations
+// Misc Declarations ******************************************************************************
 BaulkControl *control;
 
 #endif

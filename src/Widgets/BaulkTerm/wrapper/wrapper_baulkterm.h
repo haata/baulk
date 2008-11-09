@@ -2,12 +2,6 @@
 //
 // Baulk - Copyright (C) 2008 - Jacob Alexander
 //
-//  File:	wrapper_baulkterm.h
-//  Author(s):	Jacob Alexander (HaaTa)
-//
-//  Description: 
-//	DLL Wrapper for qtermwidget, for use in Baulk.
-//
 //  Baulk is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation; either version 2 of the License, or
@@ -38,6 +32,11 @@
 
 #include "baulkterm.h"
 
+/**
+ * @author Jacob Alexander (HaaTa)
+ *
+ * DLL Wrapper for qtermwidget, for use in Baulk.
+ */
 // Exported Symbols *******************************************************************************
 extern "C" EXPORTDLL {
 	QStringList symbolList();

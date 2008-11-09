@@ -2,36 +2,6 @@
 //
 // Baulk - Copyright (C) 2008 - Jacob Alexander
 //
-//  File:	packet.h
-//  Author(s):	Jacob Alexander (HaaTa)
-//
-//  Description: 
-//	Encodes/Decodes BaulkPackets for use with the Baulk Information
-//	Server.
-//
-//
-//  Packet Details:
-//
-//  TO:<destination ID>|FROM:<source ID>|<data flag>:<data>
-//
-//  or
-//
-//  TO:<destination ID>|FROM:<source ID>|<data flag>:<data>|<data flag2>
-//  	:<data>|<data flag3>:<data>| etc...
-//
-//
-//  TO/FROM Id Details:
-//
-//  Screen{<screen number>}Inc{<increment>}
-//  	ie. Screen{0}Inc{2} for the second window on Screen Zero
-//
-//	If the first window is deleted ( Screen{0}Inc{1} ), then the next window 
-//		created will be Screen{0}Inc{1}
-//
-//	The Increment is not defined by the screen. It is the global increment (so 
-//		for the above ie. there will be no Screen{1}Inc{2})
-//
-//  
 //  Baulk is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation; either version 2 of the License, or
@@ -53,6 +23,35 @@
 #include <QRegExp>
 #include <QStringList>
 
+/**
+ * @author Jacob Alexander (HaaTa)
+ *
+ * Encodes/Decodes BaulkPackets for use with InformationServer.
+ *
+ * <b>Packet Details:</b>
+ *
+ *  - TO:"destination ID"|FROM:"source ID"|"data flag":"data"
+ *
+ *  or
+ *
+ *  - TO:"destination ID"|FROM:"source ID"|"data flag":"data"|"data flag2"
+ *  	:"data"|"data flag3":"data"| etc...
+ *
+ *
+ *  <b> TO/FROM Id Details:</b>
+ *
+ *  - Screen{"screen number"}Inc{"increment"}
+ *
+ *  	ie. Screen{0}Inc{2} for the second window on Screen Zero
+ *
+ *  \b Note:
+ *
+ *  - If the first window is deleted ( Screen{0}Inc{1} ), then the next window 
+ *		created will be Screen{0}Inc{1}
+ *
+ *  - The Increment is not defined by the screen. It is the global increment (so 
+ *		for the above ie. there will be no Screen{1}Inc{2})
+ */
 class Packet : public QObject {
 	Q_OBJECT
 

@@ -2,12 +2,6 @@
 //
 // Baulk - Copyright (C) 2008 - Jacob Alexander
 //
-//  File:	libraryloader.h
-//  Author(s):	Jacob Alexander (HaaTa)
-//
-//  Description: 
-//	Streamlined Library Loader for Baulk
-//
 //  Baulk is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation; either version 2 of the License, or
@@ -30,6 +24,11 @@
 
 #include "baulkwidget.h"
 
+/**
+ * @author Jacob Alexander (HaaTa)
+ *
+ * Streamlined Library Loader for Baulk
+ */
 class LibraryLoader : public QLibrary {
 	Q_OBJECT
 

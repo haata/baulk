@@ -2,14 +2,6 @@
 //
 // Baulk - Copyright (C) 2008 - Jacob Alexander
 //
-//  File:	control.h
-//  Author(s):	Jacob Alexander (HaaTa)
-//
-//  Description: 
-//	The main control for Baulk. Handles most, if not
-//	all user interaction for Baulk, minus, what is
-//	provided by each Widget.
-//
 //  Baulk is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation; either version 2 of the License, or
@@ -44,6 +36,14 @@
 
 #include "interfacedialog.h"
 
+/**
+ * @author Jacob Alexander (HaaTa)
+ *
+ * The main control for Baulk. 
+ *
+ * Handles most, if not all user interaction for Baulk, minus, what is
+ *  provided by each Widget.
+ */
 class BaulkControl : public BaulkWidget {
 	Q_OBJECT
 

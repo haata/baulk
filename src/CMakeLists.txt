@@ -14,6 +14,6 @@ subdirs(
 #| Doxygen
 find_package( Doxygen ) 
 if( DOXYGEN_FOUND )
-	execute_process( COMMAND ${DOXYGEN_EXECUTABLE} ${HEAD_DIR}/docs )
+	execute_process( COMMAND ${DOXYGEN_EXECUTABLE} WORKING_DIRECTORY ${HEAD_DIR}/docs )
 endif( DOXYGEN_FOUND )
 

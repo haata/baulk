@@ -2,12 +2,6 @@
 //
 // Baulk - Copyright (C) 2008 - Jacob Alexander
 //
-//  File:	baulkxml.h
-//  Author(s):	Jacob Alexander (HaaTa)
-//
-//  Description: 
-//	Reads/Writes custom XML Configuration files for Baulk.
-//
 //  Baulk is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation; either version 2 of the License, or
@@ -34,6 +28,11 @@
 #include <QTextStream>
 #include <QVariant>
 
+/**
+ * @author Jacob Alexander (HaaTa)
+ *
+ * Reads/Writes custom XML Configuration files for Baulk.
+ */
 class BaulkXML : public QObject {
 	Q_OBJECT
 

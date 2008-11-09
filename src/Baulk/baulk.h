@@ -2,13 +2,6 @@
 //
 // Baulk - Copyright (C) 2008 - Jacob Alexander
 //
-//  File:	baulk.h
-//  Author(s):	Jacob Alexander (HaaTa)
-//
-//  Description: 
-//	Loads first libraries, and decides whether to run in Server/Client
-//	Mode (Multiple Windows) or Single App Mode.
-//
 //  Baulk is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation; either version 2 of the License, or
@@ -34,21 +27,42 @@
 #include <baulkwidget.h>
 #include <libraryloader.h>
 
+/**
+ * @author Jacob Alexander (HaaTa)
+ *
+ * Main GUI Entrance class for Baulk.
+ *
+ * Handles:
+ * - Loading BaulkControl Shared Library
+ * - Connecting message output to BaulkControl
+ * - Connecting the Window Titling setting to BaulkControl.
+ */
 class Baulk : public QMainWindow {
 	Q_OBJECT
 
 public:
+	/// Baulk Constructor
 	Baulk( QWidget *parent = 0 );
 
+	/**
+	 * This public function allows \link void handler() \endlink
+	 * to pass Console Out Messages into Baulk 
+	 */
 	bool updateMsgLogs( QStringList msgLogs );
 
 private:
+	/// BaulkControl Pointer
 	BaulkWidget *controller;
 
 private slots:
+	/// Allows BaulkControl to change the Window Title
 	void setWindowTitleName( QString windowTitle );
 
 protected:
+	/** 
+	 * Reimplemented QWidget Event that handles the application
+	 * Quit Event
+	 */ 
 	virtual void closeEvent( QCloseEvent *event );
 };
 
