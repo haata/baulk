@@ -45,7 +45,7 @@ public:
 	Baulk( QWidget *parent = 0 );
 
 	/**
-	 * This public function allows \link void handler() \endlink
+	 * This public function allows \link handler() \endlink
 	 * to pass Console Out Messages into Baulk 
 	 */
 	bool updateMsgLogs( QStringList msgLogs );
