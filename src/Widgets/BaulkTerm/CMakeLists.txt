@@ -6,9 +6,9 @@ cmake_minimum_required( VERSION 2.6 )
 
 #| Prepares the qtermwidget cvs code
 find_package( CVS REQUIRED )
-if( NOT EXISTS ${PROJECT_SOURCE_DIR}/qtermwidget/qtermwidget.h )
+if( CVS_FOUND AND NOT EXISTS ${PROJECT_SOURCE_DIR}/qtermwidget/qtermwidget.h )
 	execute_process( 
-		COMMAND cvs 
+		COMMAND ${CVS_EXECUTABLE}
 			-z3	
 			-d:pserver:anonymous@qtermwidget.cvs.sourceforge.net:/cvsroot/qtermwidget
 			co 
@@ -20,7 +20,7 @@ if( NOT EXISTS ${PROJECT_SOURCE_DIR}/qtermwidget/qtermwidget.h )
 	message(" | CVS qtermwidget source ready | ")
 	message(" -------------------------------- ")
 
-endif( NOT EXISTS ${PROJECT_SOURCE_DIR}/qtermwidget/qtermwidget.h )
+endif( CVS_FOUND AND NOT EXISTS ${PROJECT_SOURCE_DIR}/qtermwidget/qtermwidget.h )
 
 subdirs(
 	qtermwidget
