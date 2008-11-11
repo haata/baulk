@@ -19,13 +19,23 @@
 
 // Constructors ***********************************************************************************
 BaulkTerm::BaulkTerm( int startNow, QWidget *parent ) : BaulkWidget( parent ) {
+	term = new QTermWidget( startNow, this );
+
+	// term Settings
+	QFont font = QFont( "Terminus" );
+	font.setPointSize( 12 );
+	term->setTerminalFont( font );
+
+	// Layout
 	QVBoxLayout *layout = new QVBoxLayout;
 	layout->setContentsMargins( 0,0,0,0 );
+	layout->addWidget( term );
+
+	// Widget Settings
+	setFocusProxy( term );
 	setLayout( layout );
 
-	term = new QTermWidget( startNow, this );
-	layout->addWidget( term );
-	setFocusProxy( term );
+	// Connections
 	connect( term, SIGNAL( finished() ), this, SIGNAL( finished() ) );
 	connect( term, SIGNAL( finished() ), this, SLOT( close() ) );
 }

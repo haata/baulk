@@ -18,6 +18,7 @@
 #ifndef __BAULKTERM_H
 #define __BAULKTERM_H
 
+#include <QFont>
 #include <QResizeEvent>
 #include <QVBoxLayout>
 #include <QWidget>
