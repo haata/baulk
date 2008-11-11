@@ -7,6 +7,7 @@ cmake_minimum_required( VERSION 2.6 )
 if ( UNIX )
 	subdirs(
 		BaulkStatus
+		BaulkSwallow
 		BaulkTerm
 		WebBaulk
 	)

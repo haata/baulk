@@ -3,6 +3,7 @@
 #| Project
 project( baulk )
 cmake_minimum_required( VERSION 2.6 )
+set( HEAD_DIR ${PROJECT_SOURCE_DIR}/../.. )
 
 subdirs(
 	Server
@@ -33,7 +34,7 @@ set( LIB
 
 #| Baulk Common Libraries
 include_directories(
-	${PROJECT_SOURCE_DIR}/../Common
+	${HEAD_DIR}/src/Common
 )
 
 #| Baulk Information Server Libraries
@@ -53,7 +54,7 @@ QT4_WRAP_CPP( MOC_SRCS ${HDRS} )
 #| Create the Executable
 add_executable( ${EXEC} ${SRCS} ${MOC_SRCS} )
 set( EXECUTABLE_OUTPUT_PATH
-	${PROJECT_BINARY_DIR}/../../bin
+        ${HEAD_DIR}/bin
 )
 
 #| Library for Win32
@@ -71,7 +72,7 @@ target_link_libraries( ${EXEC}
 
 #| Installation
 install(
-	TARGETS baulk
+	TARGETS ${EXEC}
 	RUNTIME DESTINATION bin
 )
 

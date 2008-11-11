@@ -3,6 +3,7 @@
 ###| Project
 project( BaulkServerClient )
 cmake_minimum_required( VERSION 2.6 )
+set( HEAD_DIR ${PROJECT_SOURCE_DIR}/../../.. )
 
 
 ##| Baulk Server
@@ -67,7 +68,7 @@ set( LIB_PED
 
 ###| Baulk Common Libraries
 include_directories(
-	${PROJECT_SOURCE_DIR}/../../Common
+	${HEAD_DIR}/src/Common
 )
 
 ###| Misc Qt4

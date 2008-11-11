@@ -1,25 +1,25 @@
-###| CMAKE BaulkStatus |###
+###| CMAKE BaulkSwallow |###
 
-#| Project
-project( BaulkStatus )
+###| Project
+project( BaulkSwallow )
 cmake_minimum_required( VERSION 2.6 )
 set( HEAD_DIR ${PROJECT_SOURCE_DIR}/../../.. )
 
 
 #| Sources
 set( SRCS
-        ./baulkstatus.cpp
-	./wrapper_baulkstatus.cpp
+	./baulkswallow.cpp
+        ./wrapper_baulkswallow.cpp
 )
 
 #| Headers
 set( HDRS
-	./baulkstatus.h
+	./baulkswallow.h
 )
 
 #| Library
 set( LIB
-	BaulkStatus
+	BaulkSwallow
 )
 
 
@@ -29,11 +29,8 @@ include_directories(
 )
 
 
-#| Misc Qt4
-add_definitions( 
-	-Wall 
-	-ggdb
-)
+###| Misc Qt4
+add_definitions( -Wall )
 find_package( Qt4 REQUIRED )
 include( ${QT_USE_FILE} )
 QT4_WRAP_CPP( MOC_SRCS ${HDRS} )
@@ -61,7 +58,7 @@ set( LIBRARY_OUTPUT_PATH
 )
 set_target_properties( ${LIB} PROPERTIES VERSION ${LIBRARY_VERSION} )
 
-#| Link Needed Libraries
+#| Link Needed Libraries to Library
 target_link_libraries( ${LIB} 
 	${QT_LIBRARIES} 
 	BaulkWidget	# From Common
