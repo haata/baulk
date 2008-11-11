@@ -29,13 +29,6 @@ set ( HDRS
 	qtermwidget.h
 )
 
-#| Library Output
-#|	CMake supports out-of-source builds, so the binary dir is not
-#|	necessarily the same as the source directory
-set ( LIBRARY_OUTPUT_PATH
-	${PROJECT_BINARY_DIR}/../.
-)
-
 #| Library Versioning
 #|	Libraries are not versioned by default
 set ( qtermwidget_VERSION_MAJOR "0" )
@@ -61,20 +54,12 @@ add_definitions ( -DHAVE_POSIX_OPENPT )
 #| Create the Library
 add_library ( qtermwidget SHARED ${SRCS} ${MOC_SRCS} )
 
-#| Set Build Type
-set ( CMAKE_BUILD_TYPE
-	#"release"
-	"relwithdebinfo" # Default
-	#"debug"
-	#"debugfull"
-)
-
-#| Library Properties
-set_target_properties ( qtermwidget PROPERTIES
-	SOVERSION ${qtermwidget_VERSION_MAJOR}
-	VERSION ${qtermwidget_VERSION}
-)
-
 #| Link Qt4 Libraries
 target_link_libraries ( qtermwidget ${QT_LIBRARIES} )
+
+
+#|Installation
+install( TARGETS qtermwidget
+	DESTINATION lib
+)
 

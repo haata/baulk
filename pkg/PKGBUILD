@@ -7,7 +7,7 @@ arch=('i686' 'x86_64')
 url="http://baulk.sf.net"
 license=('GPL')
 depends=('qt')
-makedepends=('cmake>=2.6.0' 'pkgconfig' 'cvs' 'doxygen' 'graphviz')
+makedepends=('cmake>=2.6.0' 'pkgconfig' 'doxygen' 'graphviz')
 provides=('baulk')
 conflicts=('baulk')
 source=()

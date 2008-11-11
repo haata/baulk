@@ -116,3 +116,14 @@ target_link_libraries( 	${LIB_BC}
 			${LIB_PED}
 )
 
+#| Installation
+install( TARGETS
+	${LIB_BC}
+	${LIB_PED}
+	DESTINATION lib
+)
+install( TARGETS
+	${EXEC_BS}
+	DESTINATION bin
+)
+

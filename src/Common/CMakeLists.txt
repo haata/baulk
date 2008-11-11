@@ -139,3 +139,11 @@ target_link_libraries( ${LIB_LL}
 	${LIB_BW}
 )
 
+#| Installation
+install( TARGETS 
+	${LIB_BW} 
+	${LIB_BD} 
+	${LIB_BXML} 
+	${LIB_LL}
+	DESTINATION lib
+)

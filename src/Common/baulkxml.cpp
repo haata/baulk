@@ -92,6 +92,8 @@ bool BaulkXML::loadConfig( QString configName ) {
 QVariant BaulkXML::option( QString settingName, QString propertyKey, QVariant property, bool warnOnNotFound ) {
 	prepareConfig();
 
+	qCritical( settingName.toUtf8() );
+
 	if ( !settingSearch( settingName, propertyKey, property ) ) {
 		qWarning( tr("%1\n\tCould not find setting\n\t%2 - %3 - %4")
 				.arg( errorName() )

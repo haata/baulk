@@ -58,7 +58,13 @@ BaulkControl::BaulkControl( QWidget *parent ) : BaulkWidget( parent ) {
 	lastKnownGoodIndex = -1;
 
 	// Load Console Out
-	int index = libraryList().name.lastIndexOf( QRegExp(".*BaulkStatus.*") );
+	QString loadName = xmlConfig->option("initialWidget").toString();
+
+	if ( loadName == "" ) {
+		loadName = "BaulkStatus";
+		xmlConfig->setOption( "initialWidget", QVariant( loadName ) );
+	}
+	int index = libraryList().name.lastIndexOf( QRegExp(".*" + loadName + ".*") );
 	if ( index > -1 ) 
 		loadMainWidget( libraryList().library[index] );
 

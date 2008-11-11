@@ -22,7 +22,12 @@ Baulk::Baulk( QWidget *parent ) : QMainWindow( parent ) {
 	QString serverListenName = "BaulkServ"; // TODO Put in config
 
 	// Start Daemon - Automatically closes if Daemon is already running
-	QString program = QString("./baulkServ %1").arg( serverListenName );
+	QString program;
+	if ( QFile::exists("./baulkServ") )
+		program = QString("./baulkServ %1").arg( serverListenName );
+	else
+		program = QString("baulkServ %1").arg( serverListenName );
+
 	QProcess::startDetached( program );
 	QTest::qSleep(100); // Leave Time for the Daemon to start
 

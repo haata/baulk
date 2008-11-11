@@ -26,7 +26,6 @@ set( LIB
 #| Baulk Common and qtermwidget Libraries
 include_directories(
 	${HEAD_DIR}/src/Common
-	${HEAD_DIR}/src/Widgets/BaulkTerm
 	${HEAD_DIR}/src/Widgets/BaulkTerm/qtermwidget
 )
 
