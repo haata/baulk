@@ -20,6 +20,47 @@
 
 #include "baulkswallow.h"
 
+// Constructor ************************************************************************************
 BaulkSwallow::BaulkSwallow( BaulkWidget *parent ) : BaulkWidget( parent ) {
+	swallow = new QX11EmbedContainer;
+
+	infoLabel = new QLabel( tr("Window ID:") );
+
+	infoLineEdit = new QLineEdit;
+
+	// Window ID Information
+	infoLayout = new QHBoxLayout;
+	infoLayout->addWidget( infoLabel );
+	infoLayout->addWidget( infoLineEdit );
+	infoLayout->addStretch();
+
+	// Main Layout
+	layout = new QVBoxLayout;
+	layout->addLayout( infoLayout );
+	layout->addWidget( swallow );
+	layout->setContentsMargins( 0,0,0,0 );
+
+	setLayout( layout );
+	setFocusProxy( swallow );
+
+	// Window ID is only final after the layout creation is finished
+	infoLineEdit->setText( QString("%1").arg( (int) swallow->winId() ) );
+
+	// Connections
+	connect( swallow, SIGNAL( clientIsEmbedded() ), this, SLOT( windowSwallowed() ) );
+	connect( swallow, SIGNAL( clientClosed() ), this, SLOT( windowCoughed() ) );
+}
+
+// Cough / Swallow Slots **************************************************************************
+void BaulkSwallow::windowCoughed() {
+	// Show Window ID Info
+	for ( int c = 0; c < infoHBLayout->count() - 1; ++c ) 
+		infoHBLayout->itemAt( c )->widget()->show();
+}
+
+void BaulkSwallow::windowSwallowed() {
+	// Hide Window ID Info
+	for ( int c = 0; c < infoHBLayout->count() - 1; ++c ) 
+		infoHBLayout->itemAt( c )->widget()->hide();
 }
 

@@ -24,6 +24,12 @@
 #ifndef __BAULKSWALLOW_H
 #define __BAULKSWALLOW_H
 
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QLineEdit>
+#include <QVBoxLayout>
+#include <QX11EmbedContainer>
+
 #include <baulkwidget.h>
 
 class BaulkSwallow : public BaulkWidget {
@@ -31,6 +37,17 @@ class BaulkSwallow : public BaulkWidget {
 
 public:
 	BaulkSwallow( BaulkWidget *parent = 0 );
+
+private:
+	QHBoxLayout *infoLayout;
+	QLabel *infoLabel;
+	QLineEdit *infoLineEdit;
+	QVBoxLayout *layout;
+	QX11EmbedContainer *swallow;
+
+private slots:
+	void windowCoughed();
+	void windowSwallowed();
 };
 
 #endif

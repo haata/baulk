@@ -28,5 +28,10 @@ QStringList symbolList() {
 
 // Main *******************************************************************************************
 BaulkWidget *baulkswallow_mainWidget( QWidget *parent ) {
+	swallow = new BaulkSwallow( (BaulkWidget*)parent );
+
+	qDebug("Loading BaulkSwallow");
+
+	return swallow;
 }
 

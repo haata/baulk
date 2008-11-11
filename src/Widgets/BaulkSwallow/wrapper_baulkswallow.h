@@ -41,10 +41,11 @@
 extern "C" EXPORTDLL {
 	QStringList symbolList();
 
-	BaulkWidget *mainWidget( QWidget *parent );
+	BaulkWidget *baulkswallow_mainWidget( QWidget *parent );
 }
 
 // Misc Declarations ******************************************************************************
+BaulkSwallow *swallow;
 
 #endif
 
