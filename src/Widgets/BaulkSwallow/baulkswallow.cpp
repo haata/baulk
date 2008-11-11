@@ -54,13 +54,13 @@ BaulkSwallow::BaulkSwallow( BaulkWidget *parent ) : BaulkWidget( parent ) {
 // Cough / Swallow Slots **************************************************************************
 void BaulkSwallow::windowCoughed() {
 	// Show Window ID Info
-	for ( int c = 0; c < infoHBLayout->count() - 1; ++c ) 
-		infoHBLayout->itemAt( c )->widget()->show();
+	for ( int c = 0; c < infoLayout->count() - 1; ++c ) 
+		infoLayout->itemAt( c )->widget()->show();
 }
 
 void BaulkSwallow::windowSwallowed() {
 	// Hide Window ID Info
-	for ( int c = 0; c < infoHBLayout->count() - 1; ++c ) 
-		infoHBLayout->itemAt( c )->widget()->hide();
+	for ( int c = 0; c < infoLayout->count() - 1; ++c ) 
+		infoLayout->itemAt( c )->widget()->hide();
 }
 
