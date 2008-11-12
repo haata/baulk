@@ -30,3 +30,14 @@ BaulkWidget *control_mainWidget( QWidget *parent ) {
 	return control;
 }
 
+// Quit Event
+bool allowQuit() {
+	if ( QMessageBox::warning( control, "Quit?",
+				"Are you sure you want to quit?", 
+				QMessageBox::Yes | QMessageBox::No, 
+				QMessageBox::No ) 
+			== QMessageBox::Yes )
+		return true;
+	return false;
+}
+

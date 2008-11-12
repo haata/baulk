@@ -29,6 +29,7 @@
 
 
 #include <QWidget>
+#include <QMessageBox>
 
 #include <baulkwidget.h>
 
@@ -45,6 +46,9 @@ extern "C" EXPORTDLL {
 
 	// Main Widget
 	BaulkWidget *control_mainWidget( QWidget *parent = 0 );
+
+	// Quit Event
+	bool allowQuit();
 }
 
 // Misc Declarations ******************************************************************************

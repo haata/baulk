@@ -32,7 +32,7 @@ Baulk::Baulk( QWidget *parent ) : QMainWindow( parent ) {
 	QTest::qSleep(100); // Leave Time for the Daemon to start
 
 	// Setup Controller Instance
-	LibraryLoader *library = new LibraryLoader( "BaulkControl", this );
+	library = new LibraryLoader( "BaulkControl", this );
 	controller = library->loadBaulkWidget( "mainWidget", (BaulkWidget*)this );
 	controller->setServerListenName( serverListenName );
 	setCentralWidget( controller );	
@@ -49,8 +49,14 @@ void Baulk::closeEvent( QCloseEvent *event ) {
 	// TODO - Send Event to Controller for quit/save message
 	// 		Use controller infoClient inorder to determine whether or not to kill the server
 		
-	qDebug("Closing");
-	event->accept();
+	bool (*allowQuit)();
+	allowQuit = (bool(*)()) library->lrResolve("allowQuit");
+
+	if ( allowQuit() ) {
+		qDebug("Closing");
+		event->accept();
+	}
+	else event->ignore();
 }
 
 // Log Update *************************************************************************************

@@ -54,6 +54,9 @@ private:
 	/// BaulkControl Pointer
 	BaulkWidget *controller;
 
+	/// BaulkControl Library Pointer
+	LibraryLoader *library;
+
 private slots:
 	/// Allows BaulkControl to change the Window Title
 	void setWindowTitleName( QString windowTitle );
