@@ -18,11 +18,22 @@
 #ifndef __WEBBAULK_H
 #define __WEBBAULK_H
 
-#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QLineEdit>
+#include <QSplitter>
+#include <QStackedWidget>
+#include <QStringListModel>
+#include <QTreeView>
 #include <QtWebKit>
+#include <QVBoxLayout>
+#include <QWebHistory>
+#include <QWebSettings>
 #include <QWebView>
 
 #include <baulkwidget.h>
+
+#include "common.h"
 
 /**
  * @author Jacob Alexander (HaaTa)
@@ -36,7 +47,50 @@ public:
 	WebBaulk( QWidget *parent = 0 );
 
 private:
+	// Current WebView
 	QWebView *webview;
+
+	// Convenience Widgets
+	QLabel *loadLabel;
+	QLineEdit *addressBarLineEdit;
+	ToolButton *backToolButton;
+	ToolButton *nextToolButton;
+	ToolButton *refreshToolButton;
+	ToolButton *stopToolButton;
+	ToolButton *newTabToolButton;
+	ToolButton *nextTabToolButton;
+	ToolButton *previousTabToolButton;
+
+	// Information Viewer
+	QStackedWidget *infoLayer;
+	QTreeView *tabTree;
+	QStringListModel *tabList;
+
+	// Tabs
+	QStackedWidget *tabLayer;
+
+	// Misc
+	QSplitter *subLayout;
+	QVBoxLayout *mainLayout;
+
+	// Top Bar Setup
+	void topBarSetup();
+
+	// Information Viewer Setup
+	void infoViewerSetup();
+
+private slots:
+	// URL
+	void acceptUrl();
+	void updateUrl( QUrl url );
+
+	// Status
+	void statusUpdate( int progress );
+
+	// Tabs
+	void nextTab();
+	void prevTab();
+	void newTab();
 };
 
 #endif

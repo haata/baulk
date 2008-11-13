@@ -8,12 +8,14 @@ set( HEAD_DIR ${PROJECT_SOURCE_DIR}/../../.. )
 
 #| Sources
 set( SRCS
+	./common.cpp
         ./webbaulk.cpp
 	./wrapper_webbaulk.cpp
 )
 
 #| Headers
 set( HDRS
+	./common.h
 	./webbaulk.h
 )
 
