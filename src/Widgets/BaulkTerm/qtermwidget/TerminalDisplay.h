@@ -78,6 +78,8 @@ public:
     const ColorEntry* colorTable() const;
     /** Sets the terminal color palette used by the display. */
     void setColorTable(const ColorEntry table[]);
+    /** Sets an Entry in the ColorTable */
+    void setColorTableEntry( int colorEntry, QColor color, bool transparency, bool bold );
     /**
      * Sets the seed used to generate random colors for the display
      * (in color schemes that support them).

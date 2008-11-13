@@ -177,6 +177,11 @@ void QTermWidget::setColorScheme(int scheme)
     };
 }
 
+void QTermWidget::setColor( int colorNumber, QColor color, bool transparency, bool bold ) 
+{
+	m_impl->m_terminalDisplay->setColorTableEntry( colorNumber, color, transparency, bold );
+}
+
 void QTermWidget::setSize(int h, int v)
 {
     if (!m_impl->m_terminalDisplay)

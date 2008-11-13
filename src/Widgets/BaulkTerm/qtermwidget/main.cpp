@@ -27,6 +27,9 @@ int main( int argc, char *argv[] ) {
 	QTermWidget *term = new QTermWidget;
 	term->show();
 
+	term->setColor( 0, QColor( 70, 70, 0 ), 0, 0 );
+	term->setColor( 1, QColor( 0, 0, 0 ), 0, 0 );
+
 	QObject::connect( term, SIGNAL( finished() ), app, SLOT( quit() ) );
 
 	// Event-Loop	

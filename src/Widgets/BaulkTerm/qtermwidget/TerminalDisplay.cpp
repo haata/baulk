@@ -124,6 +124,13 @@ void TerminalDisplay::setColorTable(const ColorEntry table[])
   update();
 }
 
+void TerminalDisplay::setColorTableEntry( int colorEntry, QColor color, bool transparency, bool bold ) 
+{
+  ColorEntry table[TABLE_COLORS] = _colorTable;
+  table[colorEntry] = ColorEntry( color, transparency, bold );
+  setColorTable( table );
+}
+
 /* ------------------------------------------------------------------------- */
 /*                                                                           */
 /*                                   Font                                    */

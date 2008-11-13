@@ -96,6 +96,10 @@ public:
      * when the flow control stop key (Ctrl+S) is pressed.
      */
     void setFlowControlWarningEnabled(bool enabled);
+
+    // Individual Colour Control
+    //  See ColorTables.h for numbers
+    void setColor( int colorNumber, QColor color, bool transparency, bool bold );
             
 signals:
     void finished();
