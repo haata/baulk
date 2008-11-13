@@ -85,6 +85,10 @@ void BaulkControl::setupQActions() {
 	connect( addGlobalAction( tr("Available Actions Dialog"), tr("Alt+Meta+O") ),
 		SIGNAL( triggered() ), interfaceDialog, SLOT( actionsDialogLoader() ) );
 
+	// Calls Configuration Dialog
+	connect( addGlobalAction( tr("Widget Configuration Dialog"), tr("Alt+Meta+I") ),
+		SIGNAL( triggered() ), interfaceDialog, SLOT( configurationDialogLoader() ) );
+
 
 	// ** Tile Manipulation Hotkeys
 	

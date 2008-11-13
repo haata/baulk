@@ -48,11 +48,13 @@ public:
 public slots:
 	// Control -> Dialog Connectors
 	void actionsDialogLoader();
+	void configurationDialogLoader();
 	void newWidgetDialogLoader();
 
 private:
 	// Dialogs
 	BaulkDialog *actionsDialog;
+	BaulkDialog *configurationDialog;
 	BaulkDialog *newWidgetDialog;
 
 	// Controller
