@@ -20,9 +20,20 @@
 // Symbol List ************************************************************************************
 QStringList symbolList() {
 	return QStringList()
-		<< "webbaulk_mainWidget";
+		<< "webbaulk_configWidget"
+		<< "webbaulk_mainWidget"
+		<< "webbaulk_widgetName";
 }
 
+// Configuration Widget ***************************************************************************
+BaulkWidget *webbaulk_configWidget( QWidget *parent ) {
+	return new BaulkWidget( parent );
+}
+
+// Name *******************************************************************************************
+QString webbaulk_widgetName() {
+	return QObject::tr("WebBaulk");
+}
 
 // Main *******************************************************************************************
 BaulkWidget *webbaulk_mainWidget( QWidget *parent ) {

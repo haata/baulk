@@ -1,4 +1,4 @@
-// Baulk - WebBaulk - DLL Wrapper
+// Baulk - Common functions and classes for WebBaulk
 //
 // Baulk - Copyright (C) 2008 - Jacob Alexander
 //
@@ -15,39 +15,10 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __WRAPPER_WEBBAULK_H
-#define __WRAPPER_WEBBAULK_H
+#include "common.h"
 
-#ifdef Q_WS_WIN
-	#define EXPORTDLL __declspec(dllexport)
-#else
-	#define EXPORTDLL
-#endif
-
-
-#include <QWidget>
-
-#include <baulkwidget.h>
-
-#include "webbaulk.h"
-
-/**
- * @author Jacob Alexander (HaaTa)
- *
- * DLL Wrapper for WebBaulk
- */
-// Exported Symbols
-extern "C" EXPORTDLL {
-	QStringList symbolList();
-
-	BaulkWidget *webbaulk_configWidget( QWidget *parent );
-	BaulkWidget *webbaulk_mainWidget( QWidget *parent );
-
-	QString webbaulk_widgetName();
+// ToolButton *************************************************************************************
+ToolButton::ToolButton( QString text, QWidget *parent ) : QToolButton( parent ) {
+	setText( text );
 }
-
-// Misc Declarations
-WebBaulk *browser;
-
-#endif
 

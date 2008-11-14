@@ -23,7 +23,19 @@
 // Symbol List ************************************************************************************
 QStringList symbolList() {
 	return QStringList()
-		<< "baulkswallow_mainWidget";
+		<< "baulkswallow_configWidget"
+		<< "baulkswallow_mainWidget"
+		<< "baulkswallow_widgetName";
+}
+
+// Configuration Widget ***************************************************************************
+BaulkWidget *baulkswallow_configWidget( QWidget *parent ) {
+	return new BaulkWidget( parent );
+}
+
+// Name *******************************************************************************************
+QString baulkswallow_widgetName() {
+	return QObject::tr("Baulk Swallow");
 }
 
 // Main *******************************************************************************************

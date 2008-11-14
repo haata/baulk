@@ -1,4 +1,4 @@
-// Baulk - Baulk Terminal - Terminal for Baulk using qtermwidget
+// Baulk - Common Functions and Classes for WebBaulk
 //
 // Baulk - Copyright (C) 2008 - Jacob Alexander
 //
@@ -15,40 +15,24 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef __WRAPPER_BAULKTERM_H
-#define __WRAPPER_BAULKTERM_H
-
-#ifdef Q_WS_WIN
-	#define EXPORTDLL __declspec(dllexport)
-#else
-	#define EXPORTDLL
-#endif
-
-
-#include <QVBoxLayout>
-#include <QWidget>
-
-#include <baulkwidget.h>
-
-#include "baulkterm.h"
-
 /**
  * @author Jacob Alexander (HaaTa)
  *
- * DLL Wrapper for qtermwidget, for use in Baulk.
+ * Common Functions and Classes for WebBaulk
  */
-// Exported Symbols *******************************************************************************
-extern "C" EXPORTDLL {
-	QStringList symbolList();
 
-	BaulkWidget *baulkterm_configWidget( QWidget *parent );
-	BaulkWidget *baulkterm_mainWidget( QWidget *parent );
+#ifndef __COMMON_H
+#define __COMMON_H
 
-	QString baulkterm_widgetName();
-}
+#include <QToolButton>
+#include <QTreeWidget>
 
-// Misc Declarations ******************************************************************************
-BaulkTerm *term;
+class ToolButton : public QToolButton {
+	Q_OBJECT
+
+public:
+	ToolButton( QString text, QWidget *parent = 0 );
+};
 
 #endif
 

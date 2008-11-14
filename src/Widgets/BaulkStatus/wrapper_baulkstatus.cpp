@@ -20,7 +20,19 @@
 // Symbol List ************************************************************************************
 QStringList symbolList() {
 	return QStringList()
-		<< "baulkstatus_mainWidget";
+		<< "baulkstatus_configWidget"
+		<< "baulkstatus_mainWidget"
+		<< "baulkstatus_widgetName";
+}
+
+// Configuration Widget ***************************************************************************
+BaulkWidget *baulkstatus_configWidget( QWidget *parent ) {
+	return new BaulkWidget( parent );
+}
+
+// Name *******************************************************************************************
+QString baulkstatus_widgetName() {
+	return QObject::tr("Baulk Status");
 }
 
 // Main *******************************************************************************************
