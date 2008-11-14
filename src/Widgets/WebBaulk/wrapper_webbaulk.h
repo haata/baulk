@@ -40,7 +40,10 @@
 extern "C" EXPORTDLL {
 	QStringList symbolList();
 
+	BaulkWidget *webbaulk_configWidget( QWidget *parent );
 	BaulkWidget *webbaulk_mainWidget( QWidget *parent );
+
+	QString webbaulk_widgetName();
 }
 
 // Misc Declarations
