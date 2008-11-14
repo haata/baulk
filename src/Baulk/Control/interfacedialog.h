@@ -26,6 +26,7 @@
 #include <QStringListModel>
 #include <QTableWidget>
 #include <QTableWidgetItem>
+#include <QTreeWidget>
 #include <QVariant>
 #include <QVBoxLayout>
 #include <QWidget>
@@ -63,6 +64,9 @@ private:
 	// New Widget List
 	QListView *newListView;
 	QStringListModel *newListViewModel;
+
+	// Configuration Tree
+	QTreeWidget *configurationTree;
 
 	// Hotkey List
 	QTableWidget *actionsTableView;

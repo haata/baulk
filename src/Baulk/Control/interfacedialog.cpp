@@ -93,12 +93,12 @@ void BaulkInterfaceDialog::configurationDialogLoader() {
 	BaulkControl *control = (BaulkControl*)parentWidget;
 
 	// Window Title
-	newWidgetDialog->setWindowTitle( tr("Widget Configuration") );
+	configurationDialog->setWindowTitle( tr("Widget Configuration") );
 
 	// Layout
 	QVBoxLayout *layout = new QVBoxLayout;
 	layout->setContentsMargins( 0,0,0,0 );
-	newWidgetDialog->setLayout( layout );
+	configurationDialog->setLayout( layout );
 
 	// Title
 	QLabel *title = new QLabel( tr("<big><b>Configs:</b></big>") );
@@ -107,7 +107,7 @@ void BaulkInterfaceDialog::configurationDialogLoader() {
 	layout->addWidget( title );
 
 	// Show Dialog
-	newWidgetDialog->show();
+	configurationDialog->show();
 }
 
 // ** New Widget Dialog
