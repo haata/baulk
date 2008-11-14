@@ -23,8 +23,9 @@
 #include <QLineEdit>
 #include <QSplitter>
 #include <QStackedWidget>
-#include <QStringListModel>
-#include <QTreeView>
+#include <QStringList>
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
 #include <QtWebKit>
 #include <QVBoxLayout>
 #include <QWebHistory>
@@ -63,8 +64,7 @@ private:
 
 	// Information Viewer
 	QStackedWidget *infoLayer;
-	QTreeView *tabTree;
-	QStringListModel *tabList;
+	QTreeWidget *tabTree;
 
 	// Tabs
 	QStackedWidget *tabLayer;
@@ -91,6 +91,9 @@ private slots:
 	void nextTab();
 	void prevTab();
 	void newTab();
+
+	// Title
+	void updateTabTitle( QString title );
 };
 
 #endif

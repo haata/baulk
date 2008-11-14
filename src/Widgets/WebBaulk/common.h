@@ -25,6 +25,7 @@
 #define __COMMON_H
 
 #include <QToolButton>
+#include <QTreeWidget>
 
 class ToolButton : public QToolButton {
 	Q_OBJECT

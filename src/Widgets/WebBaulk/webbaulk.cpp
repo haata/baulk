@@ -59,6 +59,11 @@ void WebBaulk::newTab() {
 
 	// Set View
 	tabLayer->setCurrentIndex( newIndex );
+
+	// Add to InfoViewer
+	if ( tabTree != 0 ) {
+		connect( webview, SIGNAL( titleChanged( QString ) ), this, SLOT( updateTabTitle( QString ) ) );
+	}
 }
 
 void WebBaulk::nextTab() {
@@ -138,11 +143,18 @@ void WebBaulk::infoViewerSetup() {
 	infoLayer = new QStackedWidget;
 	subLayout->insertWidget( 0, infoLayer );
 
-	tabTree = new QTreeView;
-	tabList = new QStringListModel( QStringList() << webview->title() << "NA" );
-	tabTree->setModel( tabList );
+	tabTree = new QTreeWidget;
+	tabTree->setColumnCount( 1 );
 
-	//infoLayer->addWidget( tabTree );
+	for ( int c = 0; c < tabLayer->count(); ++c ) {
+		QTreeWidgetItem *tab = new QTreeWidgetItem();
+		QWebView *curWebView = (QWebView*)( tabLayer->widget( c ) );
+		tab->setText( 0, curWebView->title() );
+		tabTree->addTopLevelItem( tab );
+		connect( curWebView, SIGNAL( titleChanged( QString ) ), this, SLOT( updateTabTitle( QString ) ) );
+	}
+
+	infoLayer->addWidget( tabTree );
 }
 
 // URL ********************************************************************************************
@@ -167,5 +179,12 @@ void WebBaulk::acceptUrl() {
 
 void WebBaulk::updateUrl( QUrl url ) {
 	addressBarLineEdit->setText( url.toString() );
+}
+
+// Title ******************************************************************************************
+void WebBaulk::updateTabTitle( QString title ) {
+	for ( int c = 0; c < tabLayer->count(); ++c ) {
+	//	if ( ( (QWebView*) tabLayer->widget( c ) )->title() = title )
+	}
 }
 
