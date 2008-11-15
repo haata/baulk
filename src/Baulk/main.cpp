@@ -25,6 +25,7 @@
 Baulk *baulk;
 
 #include <handler.h>
+#include <compositing.h> // Used in X11 only
 
 /**
  * @author Jacob Alexander (HaaTa)
@@ -36,8 +37,20 @@ int main( int argc, char *argv[] ) {
 	// Message Handler
 	qInstallMsgHandler( handler );
 
+#ifdef Q_WS_X11
+	// Compositing Information
+	Display* display = 0;
+	Visual* visual = 0;
+	Colormap colormap = 0;
+	getDisplayInformation( display, visual, colormap );
+
+	// Qt GUI Application start with compositing information
+	QApplication *app = new QApplication( display, argc, argv, (Qt::HANDLE)visual, (Qt::HANDLE)colormap );
+#else
 	// Typical Qt GUI application start
 	QApplication *app = new QApplication( argc, argv );
+#endif
+
 	baulk = new Baulk;
 	baulk->show();
 
