@@ -65,7 +65,8 @@ using namespace Konsole;
 
 // static
 bool TerminalDisplay::_antialiasText = true;
-bool TerminalDisplay::HAVE_TRANSPARENCY = false;
+//bool TerminalDisplay::HAVE_TRANSPARENCY = false;
+bool TerminalDisplay::HAVE_TRANSPARENCY = true;
 
 /* ------------------------------------------------------------------------- */
 /*                                                                           */
@@ -676,7 +677,8 @@ void TerminalDisplay::drawTextFragment(QPainter& painter ,
     
     // draw background if different from the display's background color
     if ( backgroundColor != palette().background().color() )
-        drawBackground(painter,rect,backgroundColor, false /* do not use transparency */);
+        //drawBackground(painter,rect,backgroundColor, false /* do not use transparency */);
+        drawBackground(painter,rect,backgroundColor, true);
 
     // draw cursor shape if the current character is the cursor
     // this may alter the foreground and background colors

@@ -182,6 +182,16 @@ void QTermWidget::setColor( int colorNumber, QColor color, bool transparency, bo
 	m_impl->m_terminalDisplay->setColorTableEntry( colorNumber, color, transparency, bold );
 }
 
+void QTermWidget::setOpacity( qreal opacity ) 
+{
+	m_impl->m_terminalDisplay->setOpacity( opacity );
+}
+
+void QTermWidget::updateImage()
+{
+	m_impl->m_terminalDisplay->updateImage();
+}
+
 void QTermWidget::setSize(int h, int v)
 {
     if (!m_impl->m_terminalDisplay)

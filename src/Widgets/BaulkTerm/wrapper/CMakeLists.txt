@@ -76,3 +76,13 @@ install( TARGETS ${LIB}
 	DESTINATION lib/BaulkLibs
 )
 
+
+##| Standalone Binary
+set( EXEC baulkTerm )
+set( EXECUTABLE_OUTPUT_PATH
+	${HEAD_DIR}/bin
+)
+
+add_executable( ${EXEC} main.cpp )
+target_link_libraries( ${EXEC} ${LIB} )
+

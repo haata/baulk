@@ -25,6 +25,7 @@ BaulkTerm::BaulkTerm( int startNow, QWidget *parent ) : BaulkWidget( parent ) {
 	QFont font = QFont( "Terminus" );
 	font.setPointSize( 12 );
 	term->setTerminalFont( font );
+	term->setOpacity( 0.7 );
 
 	// Layout
 	QVBoxLayout *layout = new QVBoxLayout;
@@ -38,10 +39,11 @@ BaulkTerm::BaulkTerm( int startNow, QWidget *parent ) : BaulkWidget( parent ) {
 	// Connections
 	connect( term, SIGNAL( finished() ), this, SIGNAL( finished() ) );
 	connect( term, SIGNAL( finished() ), this, SLOT( close() ) );
+
 }
 
 // Reimplemented Functions ************************************************************************
 void BaulkTerm::resizeEvent( QResizeEvent *event ) {
-	term->resize( event->size() );
+	term->updateImage();
 }
 

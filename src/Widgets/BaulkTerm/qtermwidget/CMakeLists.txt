@@ -64,7 +64,7 @@ install( TARGETS qtermwidget
 )
 
 
-#| Terst Executable
+#| Test Executable
 add_executable ( test main.cpp )
 target_link_libraries ( test qtermwidget ${QT_LIBRARIES} )
 
