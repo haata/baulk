@@ -15,7 +15,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <QApplication>
+#include <QCoreApplication>
 
 #include <handler.h>
 
@@ -34,7 +34,7 @@ int main( int argc, char *argv[] ) {
 	qInstallMsgHandler( handler );
 
 	// Qt Command Line Argument Handling
-	QApplication *app = new QApplication( argc, argv );
+	QCoreApplication *app = new QCoreApplication( argc, argv );
 
 	// Use default listen socket if none is specified via the command line
 	QString listenSocket = "BaulkServ";

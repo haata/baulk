@@ -20,10 +20,13 @@
 
 #include <QFont>
 #include <QResizeEvent>
+#include <QStackedWidget>
+#include <QTabBar>
 #include <QVBoxLayout>
 #include <QWidget>
 
 #include <baulkwidget.h>
+#include <baulkxml.h>
 #include <qtermwidget.h>
 
 /**
@@ -38,7 +41,31 @@ public:
 	BaulkTerm( int startNow = 1, QWidget *parent = 0 );
 
 private:
+	int startPriority;
+
 	QTermWidget *term;
+
+	BaulkXML *xmlConfig;
+
+	QTabBar *tabBar;
+	QStackedWidget *tabLayer;
+
+	QVBoxLayout *layout;
+
+	// Configuration Settings
+	qreal opacity;
+	int historySize;
+	QFont font;
+	bool useTabBar;
+
+	void configurationDefaults();
+	void configurationLoad();
+	void configurationSave();
+	void configurationSet();
+
+private slots:
+	void newTab();
+	void closeTab();
 
 protected:
 	virtual void resizeEvent( QResizeEvent *event );

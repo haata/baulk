@@ -19,18 +19,31 @@
 
 // Constructors ***********************************************************************************
 BaulkTerm::BaulkTerm( int startNow, QWidget *parent ) : BaulkWidget( parent ) {
-	term = new QTermWidget( startNow, this );
+	// Tab Bar
+	tabBar = new QTabBar( this );
+	if ( !useTabBar )
+		tabBar->hide();
+
+	tabLayer = new QStackedWidget;
+
+	// Initialize BaulkXML for Config Loading/Saving
+	xmlConfig = new BaulkXML( "BaulkTerm", this );
 
 	// term Settings
-	QFont font = QFont( "Terminus" );
-	font.setPointSize( 12 );
-	term->setTerminalFont( font );
-	term->setOpacity( 0.7 );
+	configurationDefaults();
+	configurationLoad();
+
+	// Initial Terminal
+	startPriority = startNow;
+	newTab();
 
 	// Layout
-	QVBoxLayout *layout = new QVBoxLayout;
+	layout = new QVBoxLayout;
 	layout->setContentsMargins( 0,0,0,0 );
-	layout->addWidget( term );
+
+	layout->addWidget( tabBar );
+
+	layout->addWidget( tabLayer );
 
 	// Widget Settings
 	setFocusProxy( term );
@@ -38,12 +51,82 @@ BaulkTerm::BaulkTerm( int startNow, QWidget *parent ) : BaulkWidget( parent ) {
 
 	// Connections
 	connect( term, SIGNAL( finished() ), this, SIGNAL( finished() ) );
-	connect( term, SIGNAL( finished() ), this, SLOT( close() ) );
+	connect( term, SIGNAL( finished() ), this, SLOT( closeTab() ) );
+}
 
+// Configuration **********************************************************************************
+void BaulkTerm::configurationDefaults() {
+	// Font
+	font = QFont( "Terminus" );
+	font.setPointSize( 12 );
+
+	// Transparency
+	opacity = 0.7;		// 70% opacity
+
+	// History Size
+
+	historySize = -1;	// Infinite
+
+	// Tabs
+	useTabBar = false;		// TEMP
+}
+
+void BaulkTerm::configurationLoad() {
+	QVariant tmp;
+
+	opacity = ( tmp = xmlConfig->option("terminalOpacity") ) == QVariant("") ? opacity
+		: tmp.toDouble();
+
+	font.fromString( ( tmp = xmlConfig->option("terminalFont") ) == QVariant("") ? font.toString()
+		: tmp.toString() );
+
+	historySize = ( tmp = xmlConfig->option("terminalHistorySize") ) == QVariant("") ? historySize
+		: tmp.toInt();
+
+	configurationSave();
+}
+
+void BaulkTerm::configurationSave() {
+	xmlConfig->setOption( "terminalOpacity", QVariant( opacity ) );
+	xmlConfig->setOption( "terminalFont", QVariant( font ) );
+	xmlConfig->setOption( "terminalHistorySize", QVariant( historySize ) );
+
+	// Save Config to File
+	xmlConfig->saveConfig();
+}
+
+void BaulkTerm::configurationSet() {
+	term->setHistorySize( historySize );
+	term->setTerminalFont( font );
+	term->setOpacity( opacity );
 }
 
 // Reimplemented Functions ************************************************************************
 void BaulkTerm::resizeEvent( QResizeEvent *event ) {
 	term->updateImage();
+}
+
+// Tabs *******************************************************************************************
+void BaulkTerm::newTab() {
+	term = new QTermWidget( startPriority, this );
+
+	// Use Current Configuration Options on new terminal
+	configurationSet();
+
+	// Add terminal to tabbed view
+	tabLayer->addWidget( term );
+	tabBar->addTab( QString("Terminal %1").arg( tabLayer->count() ) );
+
+	term->updateImage();
+}
+
+void BaulkTerm::closeTab() {
+	// Remove terminal from tabs
+	tabBar->removeTab( tabLayer->currentIndex() );
+	tabLayer->removeWidget( term );
+
+	// Close Terminal if there are no more tabs
+	if ( tabLayer->count() < 1 )
+		close();
 }
 

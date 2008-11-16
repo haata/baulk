@@ -107,8 +107,9 @@ public:
 
     // Updates Display Image, useful for forcing terminal display updates
     void updateImage();
-            
+
 signals:
+    // Terminal Closed
     void finished();
 
 public slots:

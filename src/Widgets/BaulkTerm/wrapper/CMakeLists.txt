@@ -36,6 +36,7 @@ add_definitions(
 	-ggdb
 )
 find_package( Qt4 REQUIRED )
+set( QT_USE_QTXML 1 )
 include( ${QT_USE_FILE} )
 QT4_WRAP_CPP( MOC_SRCS ${HDRS} )
 
@@ -68,6 +69,7 @@ set_target_properties( ${LIB} PROPERTIES VERSION ${LIBRARY_VERSION} )
 target_link_libraries( ${LIB} 
 	${QT_LIBRARIES} 
 	BaulkWidget	# From Common
+	BaulkXML	# From Common
 	qtermwidget	# From qtermwidget CVS
 )
 
