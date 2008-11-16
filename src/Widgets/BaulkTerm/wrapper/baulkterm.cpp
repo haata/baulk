@@ -69,6 +69,30 @@ void BaulkTerm::configurationDefaults() {
 
 	// Tabs
 	useTabBar = false;		// TEMP
+
+	// Normal Colours
+	foreground	.setOptions( QColor(0xD3,0xD3,0xD3), 0, 0 );
+	background	.setOptions( QColor(0x00,0x00,0x00), 1, 0 );
+	black		.setOptions( QColor(0x67,0x67,0x67), 0, 0 );
+	red		.setOptions( QColor(0xEA,0x68,0x68), 0, 0 );
+	green		.setOptions( QColor(0xAB,0xCB,0x8D), 0, 0 );
+	yellow		.setOptions( QColor(0xE8,0xAE,0x5B), 0, 0 );
+	blue		.setOptions( QColor(0x71,0xC5,0xF4), 0, 0 );
+	magenta		.setOptions( QColor(0xE2,0xBA,0xF1), 0, 0 );
+	cyan		.setOptions( QColor(0x21,0xF1,0xEA), 0, 0 );
+	white		.setOptions( QColor(0xD3,0xD3,0xD3), 0, 0 );
+
+	// Intensive Colours
+	intForeground	.setOptions( QColor(0x00,0x00,0x00), 0, 1 );
+	intBackground	.setOptions( QColor(0xD3,0xD3,0xD3), 1, 0 );
+	intBlack	.setOptions( QColor(0x75,0x75,0x75), 0, 0 );
+	intRed		.setOptions( QColor(0xFF,0x72,0x72), 0, 0 );
+	intGreen	.setOptions( QColor(0xAF,0xD7,0x8A), 0, 0 );
+	intYellow	.setOptions( QColor(0xFF,0xA7,0x5D), 0, 0 );
+	intBlue		.setOptions( QColor(0x67,0xCD,0xE9), 0, 0 );
+	intMagenta	.setOptions( QColor(0xEC,0xAE,0xE9), 0, 0 );
+	intCyan		.setOptions( QColor(0x36,0xFF,0xFC), 0, 0 );
+	intWhite	.setOptions( QColor(0xFF,0xFF,0xFF), 0, 0 );
 }
 
 void BaulkTerm::configurationLoad() {
@@ -83,6 +107,71 @@ void BaulkTerm::configurationLoad() {
 	historySize = ( tmp = xmlConfig->option("terminalHistorySize") ) == QVariant("") ? historySize
 		: tmp.toInt();
 
+	// Normal Colours
+	foreground.setFromVariant( 
+	( tmp = xmlConfig->option( "terminalColour", "colour", QVariant("Foreground") ) ) == QVariant("")
+		? foreground.toVariant() : tmp );
+	background.setFromVariant( 
+	( tmp = xmlConfig->option( "terminalColour", "colour", QVariant("Background") ) ) == QVariant("")
+		? background.toVariant() : tmp );
+	black.setFromVariant( 
+	( tmp = xmlConfig->option( "terminalColour", "colour", QVariant("Black") ) ) == QVariant("")
+		? black.toVariant() : tmp );
+	red.setFromVariant( 
+	( tmp = xmlConfig->option( "terminalColour", "colour", QVariant("Red") ) ) == QVariant("")
+		? red.toVariant() : tmp );
+	green.setFromVariant( 
+	( tmp = xmlConfig->option( "terminalColour", "colour", QVariant("Green") ) ) == QVariant("")
+		? green.toVariant() : tmp );
+	yellow.setFromVariant( 
+	( tmp = xmlConfig->option( "terminalColour", "colour", QVariant("Yellow") ) ) == QVariant("")
+		? yellow.toVariant() : tmp );
+	blue.setFromVariant( 
+	( tmp = xmlConfig->option( "terminalColour", "colour", QVariant("Blue") ) ) == QVariant("")
+		? blue.toVariant() : tmp );
+	magenta.setFromVariant( 
+	( tmp = xmlConfig->option( "terminalColour", "colour", QVariant("Magenta") ) ) == QVariant("")
+		? magenta.toVariant() : tmp );
+	cyan.setFromVariant( 
+	( tmp = xmlConfig->option( "terminalColour", "colour", QVariant("Cyan") ) ) == QVariant("")
+		? cyan.toVariant() : tmp );
+	white.setFromVariant( 
+	( tmp = xmlConfig->option( "terminalColour", "colour", QVariant("White") ) ) == QVariant("")
+		? white.toVariant() : tmp );
+
+	// Intensive Colours
+	intForeground.setFromVariant( 
+	( tmp = xmlConfig->option( "terminalColour", "intensiveColour", QVariant("Foreground") ) ) == QVariant("")
+		? intForeground.toVariant() : tmp );
+	intBackground.setFromVariant( 
+	( tmp = xmlConfig->option( "terminalColour", "intensiveColour", QVariant("Background") ) ) == QVariant("")
+		? intBackground.toVariant() : tmp );
+	intBlack.setFromVariant( 
+	( tmp = xmlConfig->option( "terminalColour", "intensiveColour", QVariant("Black") ) ) == QVariant("")
+		? intBlack.toVariant() : tmp );
+	intRed.setFromVariant( 
+	( tmp = xmlConfig->option( "terminalColour", "intensiveColour", QVariant("Red") ) ) == QVariant("")
+		? intRed.toVariant() : tmp );
+	intGreen.setFromVariant( 
+	( tmp = xmlConfig->option( "terminalColour", "intensiveColour", QVariant("Green") ) ) == QVariant("")
+		? intGreen.toVariant() : tmp );
+	intYellow.setFromVariant( 
+	( tmp = xmlConfig->option( "terminalColour", "intensiveColour", QVariant("Yellow") ) ) == QVariant("")
+		? intYellow.toVariant() : tmp );
+	intBlue.setFromVariant( 
+	( tmp = xmlConfig->option( "terminalColour", "intensiveColour", QVariant("Blue") ) ) == QVariant("")
+		? intBlue.toVariant() : tmp );
+	intMagenta.setFromVariant( 
+	( tmp = xmlConfig->option( "terminalColour", "intensiveColour", QVariant("Magenta") ) ) == QVariant("")
+		? intMagenta.toVariant() : tmp );
+	intCyan.setFromVariant( 
+	( tmp = xmlConfig->option( "terminalColour", "intensiveColour", QVariant("Cyan") ) ) == QVariant("")
+		? intCyan.toVariant() : tmp );
+	intWhite.setFromVariant( 
+	( tmp = xmlConfig->option( "terminalColour", "intensiveColour", QVariant("White") ) ) == QVariant("")
+		? intWhite.toVariant() : tmp );
+
+
 	configurationSave();
 }
 
@@ -90,6 +179,50 @@ void BaulkTerm::configurationSave() {
 	xmlConfig->setOption( "terminalOpacity", QVariant( opacity ) );
 	xmlConfig->setOption( "terminalFont", QVariant( font ) );
 	xmlConfig->setOption( "terminalHistorySize", QVariant( historySize ) );
+
+	// Normal Colours
+	xmlConfig->setOption( "terminalColour", foreground.toVariant(),
+		"colour", QVariant("Foreground") );
+	xmlConfig->setOption( "terminalColour", background.toVariant(),
+		"colour", QVariant("Background") );
+	xmlConfig->setOption( "terminalColour", black.toVariant(),
+		"colour", QVariant("Black") );
+	xmlConfig->setOption( "terminalColour", red.toVariant(),
+		"colour", QVariant("Red") );
+	xmlConfig->setOption( "terminalColour", green.toVariant(),
+		"colour", QVariant("Green") );
+	xmlConfig->setOption( "terminalColour", yellow.toVariant(),
+		"colour", QVariant("Yellow") );
+	xmlConfig->setOption( "terminalColour", blue.toVariant(),
+		"colour", QVariant("Blue") );
+	xmlConfig->setOption( "terminalColour", magenta.toVariant(),
+		"colour", QVariant("Magenta") );
+	xmlConfig->setOption( "terminalColour", cyan.toVariant(),
+		"colour", QVariant("Cyan") );
+	xmlConfig->setOption( "terminalColour", white.toVariant(),
+		"colour", QVariant("White") );
+
+	// Intensive Colours
+	xmlConfig->setOption( "terminalColour", intForeground.toVariant(), 
+		"intensiveColour", QVariant("Foreground") );
+	xmlConfig->setOption( "terminalColour", intBackground.toVariant(), 
+		"intensiveColour", QVariant("Background") );
+	xmlConfig->setOption( "terminalColour", intBlack.toVariant(),
+		"intensiveColour", QVariant("Black") );
+	xmlConfig->setOption( "terminalColour", intRed.toVariant(),
+		"intensiveColour", QVariant("Red") );
+	xmlConfig->setOption( "terminalColour", intGreen.toVariant(),
+		"intensiveColour", QVariant("Green") );
+	xmlConfig->setOption( "terminalColour", intYellow.toVariant(),
+		"intensiveColour", QVariant("Yellow") );
+	xmlConfig->setOption( "terminalColour", intBlue.toVariant(),
+		"intensiveColour", QVariant("Blue") );
+	xmlConfig->setOption( "terminalColour", intMagenta.toVariant(),
+		"intensiveColour", QVariant("Magenta") );
+	xmlConfig->setOption( "terminalColour", intCyan.toVariant(),
+		"intensiveColour", QVariant("Cyan") );
+	xmlConfig->setOption( "terminalColour", intWhite.toVariant(),
+		"intensiveColour", QVariant("White") );
 
 	// Save Config to File
 	xmlConfig->saveConfig();
@@ -99,6 +232,30 @@ void BaulkTerm::configurationSet() {
 	term->setHistorySize( historySize );
 	term->setTerminalFont( font );
 	term->setOpacity( opacity );
+
+	// Normal Colours
+	term->setColor( 0, foreground.colour(), 	foreground.transparency(), 	foreground.bold() );
+	term->setColor( 1, background.colour(), 	background.transparency(), 	background.bold() );
+	term->setColor( 2, black.colour(), 		black.transparency(), 		black.bold() );
+	term->setColor( 3, red.colour(), 		red.transparency(), 		red.bold() );
+	term->setColor( 4, green.colour(), 		green.transparency(), 		green.bold() );
+	term->setColor( 5, yellow.colour(), 		yellow.transparency(), 		yellow.bold() );
+	term->setColor( 6, blue.colour(), 		blue.transparency(), 		blue.bold() );
+	term->setColor( 7, magenta.colour(), 		magenta.transparency(), 	magenta.bold() );
+	term->setColor( 8, cyan.colour(), 		cyan.transparency(), 		cyan.bold() );
+	term->setColor( 9, white.colour(), 		white.transparency(), 		white.bold() );
+
+	// Intensive Colours
+	term->setColor( 10, foreground.colour(), 	foreground.transparency(), 	foreground.bold() );
+	term->setColor( 11, background.colour(), 	background.transparency(), 	background.bold() );
+	term->setColor( 12, black.colour(), 		black.transparency(), 		black.bold() );
+	term->setColor( 13, red.colour(), 		red.transparency(), 		red.bold() );
+	term->setColor( 14, green.colour(), 		green.transparency(), 		green.bold() );
+	term->setColor( 15, yellow.colour(), 		yellow.transparency(), 		yellow.bold() );
+	term->setColor( 16, blue.colour(), 		blue.transparency(), 		blue.bold() );
+	term->setColor( 17, magenta.colour(), 		magenta.transparency(), 	magenta.bold() );
+	term->setColor( 18, cyan.colour(), 		cyan.transparency(), 		cyan.bold() );
+	term->setColor( 19, white.colour(), 		white.transparency(), 		white.bold() );
 }
 
 // Reimplemented Functions ************************************************************************

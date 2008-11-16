@@ -29,6 +29,8 @@
 #include <baulkxml.h>
 #include <qtermwidget.h>
 
+#include "terminalcolour.h"
+
 /**
  * @author Jacob Alexander (HaaTa)
  *
@@ -58,6 +60,32 @@ private:
 	QFont font;
 	bool useTabBar;
 
+	// Normal Colours
+	TerminalColour foreground;
+	TerminalColour background;
+	TerminalColour black;
+	TerminalColour red;
+	TerminalColour green;
+	TerminalColour yellow;
+	TerminalColour blue;
+	TerminalColour magenta;
+	TerminalColour cyan;
+	TerminalColour white;
+
+	// Intensive Colours
+	TerminalColour intForeground;
+	TerminalColour intBackground;
+	TerminalColour intBlack;
+	TerminalColour intRed;
+	TerminalColour intGreen;
+	TerminalColour intYellow;
+	TerminalColour intBlue;
+	TerminalColour intMagenta;
+	TerminalColour intCyan;
+	TerminalColour intWhite;
+
+
+	// Configuration Functions
 	void configurationDefaults();
 	void configurationLoad();
 	void configurationSave();

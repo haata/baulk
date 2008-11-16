@@ -9,6 +9,7 @@ set( HEAD_DIR ${PROJECT_SOURCE_DIR}/../../../.. )
 #| Sources
 set( SRCS
 	./baulkterm.cpp
+	./terminalcolour.cpp
         ./wrapper_baulkterm.cpp
 )
 
