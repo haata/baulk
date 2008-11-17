@@ -4,6 +4,7 @@
 project( BaulkTerm )
 cmake_minimum_required( VERSION 2.6 )
 
+#| Baulk Now uses forked version of qtermwidget
 #| Prepares the qtermwidget cvs code
 #find_package( CVS REQUIRED )
 #if( CVS_FOUND AND NOT EXISTS ${PROJECT_SOURCE_DIR}/qtermwidget/qtermwidget.h )
