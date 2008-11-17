@@ -8,7 +8,9 @@
 # 	 cache. You will only need to set the variable again if you want to turn it off.
 # 
 # | BuildAll			- Builds everything 
-#				Uses: BuildBaulk and BuildBaulkTermBinary
+# | BuildReset			- Initializes build variables to zero before determining dependencies
+#				Note: This variable stays on, so you must set it to false if you want
+#					to build
 # 
 # Folder Builds
 # | BuildBaulk			- Builds Baulk (Default)
@@ -51,6 +53,29 @@ subdirs(
 	Widgets
 )
 
+##| Target Reset
+if ( BuildReset )
+	set( BuildAll			0 )
+	set( BuildBaulk			0 )
+	set( BuildBaulkBinary 		0 )
+	set( BuildBaulkControl 		0 )
+	set( BuildBaulkDialog		0 )
+	set( BuildBaulkPacket		0 )
+	set( BuildBaulkServBinary	0 )
+	set( BuildBaulkServClient	0 )
+	set( BuildBaulkStatus		0 )
+	set( BuildBaulkSwallow		0 )
+	set( BuildBaulkTerm		0 )
+	set( BuildBaulkTermBinary	0 )
+	set( BuildBaulkWidget		0 )
+	set( BuildBaulkXML		0 )
+	set( BuildCommon		0 )
+	set( BuildLibLoader		0 )
+	set( BuildQTermWidget		0 )
+	set( BuildWebBaulk		0 )
+	set( BuildWidgets		0 )
+endif ( BuildReset )
+
 
 ##| Targets - Note: Options are disabled by default
 
@@ -60,6 +85,7 @@ if ( BuildAll )
 	set( BuildBaulkTermBinary	1 )
 endif ( BuildAll )
 
+
 #| Default
 if ( BuildBaulk )
 	set( BuildBaulkBinary 		1 )
@@ -67,6 +93,7 @@ if ( BuildBaulk )
 	set( BuildCommon		1 )
 	set( BuildWidgets		1 )
 endif ( BuildBaulk )
+
 
 #| Common Librarys
 if ( BuildCommon )
@@ -76,6 +103,7 @@ if ( BuildCommon )
 	set( BuildLibLoader		1 )
 endif ( BuildCommon )
 
+
 #| Widget Libraries
 if ( BuildWidgets )
 	set( BuildBaulkStatus		1 )
@@ -84,12 +112,14 @@ if ( BuildWidgets )
 	set( BuildWebBaulk		1 )
 endif ( BuildWidgets )
 
+
 #| Baulk Binary
 if ( BuildBaulkBinary )
 	set( BuildBaulkControl 		1 )
 	set( BuildLibLoader		1 )
 	set( BuildBaulkWidget		1 )
 endif ( BuildBaulkBinary )
+
 
 #| BaulkControl Library
 if ( BuildBaulkControl )
@@ -103,22 +133,26 @@ if ( BuildBaulkControl )
 	endif ( WIN32 )
 endif ( BuildBaulkControl )
 
+
 #| BaulkServ Binary
 if ( BuildBaulkServBinary )
 	set( BuildBaulkServClient	1 )
 	set( BuildBaulkPacket		1 )
 endif ( BuildBaulkServBinary )
 
+
 #| BaulkServ Client
 if ( BuildBaulkServClient )
 	set( BuildBaulkPacket		1 )
 endif ( BuildBaulkServClient )
+
 
 #| BaulkTerm Binary Build
 if ( BuildBaulkTermBinary )
 	set( BuildBaulkTerm		1 )
 	set( BuildQTermWidget		1 )
 endif ( BuildBaulkTermBinary )
+
 
 #| BaulkTerm Library
 if ( BuildBaulkTerm )
@@ -127,6 +161,7 @@ if ( BuildBaulkTerm )
 	set( BuildBaulkXML		1 )
 endif ( BuildBaulkTerm )
 
+
 #| Warning if the user forgot to specify a Build Variable
 if ( BuildBaulkPacket AND BuildBaulkDialog AND BuildBaulkWidget AND BuildBaulkXML AND BuildQTermWidget )
 else ( BuildBaulkPacket AND BuildBaulkDialog AND BuildBaulkWidget AND BuildBaulkXML AND BuildQTermWidget )
@@ -134,7 +169,10 @@ else ( BuildBaulkPacket AND BuildBaulkDialog AND BuildBaulkWidget AND BuildBaulk
 	message("  You forgot to specify a build option (make will do nothing)")
 	message("    For Baulk     : cmake -DBuildBaulk=true .")
 	message("    For BaulkTerm : cmake -DBuildBaulkTerm=true .")
+	message("")
+	message("  See header in src/CMakeLists.txt for more options")
 endif ( BuildBaulkPacket AND BuildBaulkDialog AND BuildBaulkWidget AND BuildBaulkXML AND BuildQTermWidget )
+
 
 ##| Doxygen
 find_package( Doxygen ) 
