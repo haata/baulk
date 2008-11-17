@@ -62,6 +62,7 @@ void BaulkTerm::configurationDefaults() {
 
 	// Transparency
 	opacity = 0.7;		// 70% opacity
+	fadeOpacity = 0.5;
 
 	// History Size
 
@@ -258,11 +259,6 @@ void BaulkTerm::configurationSet() {
 	term->setColor( 19, white.colour(), 		white.transparency(), 		white.bold() );
 }
 
-// Reimplemented Functions ************************************************************************
-void BaulkTerm::resizeEvent( QResizeEvent *event ) {
-	term->updateImage();
-}
-
 // Tabs *******************************************************************************************
 void BaulkTerm::newTab() {
 	term = new QTermWidget( startPriority, this );
@@ -285,5 +281,27 @@ void BaulkTerm::closeTab() {
 	// Close Terminal if there are no more tabs
 	if ( tabLayer->count() < 1 )
 		close();
+}
+
+// Reimplemented Functions ************************************************************************
+void BaulkTerm::changeEvent( QEvent *event ) {
+	switch ( event->type() ) { 
+	case QEvent::ActivationChange:
+		// Terminal has focus - unfade
+		if ( isActiveWindow() )
+			term->setOpacity( opacity );
+		// Terminal lost focus - fade
+		else
+			term->setOpacity( fadeOpacity );
+		break;
+	default:
+		break;
+	}
+	event->accept();
+}
+
+void BaulkTerm::resizeEvent( QResizeEvent *event ) {
+	term->updateImage();
+	event->accept();
 }
 

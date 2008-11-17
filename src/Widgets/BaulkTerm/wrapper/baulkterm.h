@@ -18,6 +18,8 @@
 #ifndef __BAULKTERM_H
 #define __BAULKTERM_H
 
+#include <QEvent>
+#include <QFocusEvent>
 #include <QFont>
 #include <QResizeEvent>
 #include <QStackedWidget>
@@ -56,8 +58,12 @@ private:
 
 	// Configuration Settings
 	qreal opacity;
+	qreal fadeOpacity;
+
 	int historySize;
+
 	QFont font;
+
 	bool useTabBar;
 
 	// Normal Colours
@@ -96,6 +102,7 @@ private slots:
 	void closeTab();
 
 protected:
+	virtual void changeEvent( QEvent *event );
 	virtual void resizeEvent( QResizeEvent *event );
 
 signals:

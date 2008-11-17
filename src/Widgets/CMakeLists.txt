@@ -5,18 +5,12 @@ project( BaulkWIDGETLEVEL )
 cmake_minimum_required( VERSION 2.6 )
 
 if ( UNIX )
-	if ( BuildBaulkTerm )
-		subdirs(
-			BaulkTerm
-		)
-	else (BuildBaulkTerm )
-		subdirs(
-			BaulkStatus
-			BaulkSwallow
-			BaulkTerm
-			WebBaulk
-		)
-	endif ( BuildBaulkTerm )
+	subdirs(
+		BaulkStatus
+		BaulkSwallow
+		BaulkTerm
+		WebBaulk
+	)
 endif ( UNIX )
 
 if ( WIN32 )
