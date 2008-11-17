@@ -100,8 +100,16 @@ public:
     // Individual Colour Control
     //  See ColorTables.h for numbers
     void setColor( int colorNumber, QColor color, bool transparency, bool bold );
-            
+
+    // Real Transparency
+    // Opacity Setting - Window Manager must support Compositing
+    void setOpacity( qreal opacity );
+
+    // Updates Display Image, useful for forcing terminal display updates
+    void updateImage();
+
 signals:
+    // Terminal Closed
     void finished();
 
 public slots:

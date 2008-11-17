@@ -41,19 +41,19 @@ static const ColorEntry whiteonblack_color_table[TABLE_COLORS] =
     ColorEntry( QColor(0xD3,0xD3,0xD3), 0, 0 ), // White1
 
     // intensive
-    ColorEntry(QColor(0x00,0x00,0x00), 0, 1 ),	// Foreground2
+    ColorEntry( QColor(0x00,0x00,0x00), 0, 1 ),	// Foreground2
     ColorEntry( QColor(0xD3,0xD3,0xD3), 1, 0 ),	// Background2
 
-    ColorEntry(QColor(0x75,0x75,0x75), 0, 0 ), 	// Black2
+    ColorEntry( QColor(0x75,0x75,0x75), 0, 0 ),	// Black2
     ColorEntry( QColor(0xFF,0x72,0x72), 0, 0 ),	// Red2
 
-    ColorEntry(QColor(0xAF,0xD7,0x8A), 0, 0 ), 	// Green2
+    ColorEntry( QColor(0xAF,0xD7,0x8A), 0, 0 ),	// Green2
     ColorEntry( QColor(0xFF,0xA7,0x5D), 0, 0 ),	// Yellow2
 
-    ColorEntry(QColor(0x67,0xCD,0xE9), 0, 0 ), 	// Blue2
+    ColorEntry( QColor(0x67,0xCD,0xE9), 0, 0 ),	// Blue2
     ColorEntry( QColor(0xEC,0xAE,0xE9), 0, 0 ),	// Magenta2
 
-    ColorEntry(QColor(0x36,0xFF,0xFC), 0, 0 ), 	// Cyan2
+    ColorEntry( QColor(0x36,0xFF,0xFC), 0, 0 ),	// Cyan2
     ColorEntry( QColor(0xFF,0xFF,0xFF), 0, 0 )	// White2
 };
 

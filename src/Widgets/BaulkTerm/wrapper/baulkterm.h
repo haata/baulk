@@ -18,13 +18,19 @@
 #ifndef __BAULKTERM_H
 #define __BAULKTERM_H
 
+#include <QEvent>
 #include <QFont>
 #include <QResizeEvent>
+#include <QStackedWidget>
+#include <QTabBar>
 #include <QVBoxLayout>
 #include <QWidget>
 
 #include <baulkwidget.h>
+#include <baulkxml.h>
 #include <qtermwidget.h>
+
+#include "terminalcolour.h"
 
 /**
  * @author Jacob Alexander (HaaTa)
@@ -38,9 +44,64 @@ public:
 	BaulkTerm( int startNow = 1, QWidget *parent = 0 );
 
 private:
+	int startPriority;
+
 	QTermWidget *term;
 
+	BaulkXML *xmlConfig;
+
+	QTabBar *tabBar;
+	QStackedWidget *tabLayer;
+
+	QVBoxLayout *layout;
+
+	// Configuration Settings
+	qreal opacity;
+	qreal fadeOpacity;
+
+	int historySize;
+
+	QFont font;
+
+	bool useTabBar;
+
+	// Normal Colours
+	TerminalColour foreground;
+	TerminalColour background;
+	TerminalColour black;
+	TerminalColour red;
+	TerminalColour green;
+	TerminalColour yellow;
+	TerminalColour blue;
+	TerminalColour magenta;
+	TerminalColour cyan;
+	TerminalColour white;
+
+	// Intensive Colours
+	TerminalColour intForeground;
+	TerminalColour intBackground;
+	TerminalColour intBlack;
+	TerminalColour intRed;
+	TerminalColour intGreen;
+	TerminalColour intYellow;
+	TerminalColour intBlue;
+	TerminalColour intMagenta;
+	TerminalColour intCyan;
+	TerminalColour intWhite;
+
+
+	// Configuration Functions
+	void configurationDefaults();
+	void configurationLoad();
+	void configurationSave();
+	void configurationSet();
+
+private slots:
+	void newTab();
+	void closeTab();
+
 protected:
+	virtual void changeEvent( QEvent *event );
 	virtual void resizeEvent( QResizeEvent *event );
 
 signals:

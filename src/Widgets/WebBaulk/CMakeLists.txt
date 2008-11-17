@@ -34,12 +34,10 @@ include_directories(
 #| Misc Qt4
 add_definitions( 
 	-Wall 
-	-ggdb
 )
 find_package( Qt4 REQUIRED )
 set( QT_USE_QTWEBKIT 1 )
 include( ${QT_USE_FILE} )
-QT4_WRAP_CPP( MOC_SRCS ${HDRS} )
 
 
 #| Library Versioning
@@ -57,22 +55,26 @@ set( LIBRARY_VERSION
 )
 
 
-#| Create the Executable
-add_library( ${LIB} SHARED ${SRCS} ${MOC_SRCS} )
-set( LIBRARY_OUTPUT_PATH
-        ${HEAD_DIR}/bin/BaulkLibs
-)
-set_target_properties( ${LIB} PROPERTIES VERSION ${LIBRARY_VERSION} )
-
-
-#| Link Needed Libraries
-target_link_libraries( ${LIB} 
-	${QT_LIBRARIES} 
-	BaulkWidget	# From Common
-)
-
-#| Installation
-install( TARGETS ${LIB}
-	DESTINATION lib/BaulkLibs
-)
+if ( BuildWebBaulk )
+	QT4_WRAP_CPP( MOC_SRCS ${HDRS} )
+	
+	#| Create the Executable
+	add_library( ${LIB} SHARED ${SRCS} ${MOC_SRCS} )
+	set( LIBRARY_OUTPUT_PATH
+	        ${HEAD_DIR}/bin/BaulkLibs
+	)
+	set_target_properties( ${LIB} PROPERTIES VERSION ${LIBRARY_VERSION} )
+	
+	
+	#| Link Needed Libraries
+	target_link_libraries( ${LIB} 
+		${QT_LIBRARIES} 
+		BaulkWidget	# From Common
+	)
+	
+	#| Installation
+	install( TARGETS ${LIB}
+		DESTINATION lib/BaulkLibs
+	)
+endif ( BuildWebBaulk )
 

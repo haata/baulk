@@ -29,61 +29,62 @@ include_directories(
 	${HEAD_DIR}/src/Baulk/Server
 )
 
-#| Misc Qt4
-add_definitions( 
-	-Wall 
-	-ggdb 
-)
-find_package( Qt4 REQUIRED )
-set( QT_USE_QTXML 1 )
-include( ${QT_USE_FILE} )
-QT4_WRAP_CPP( aMOC_SRCS ${HDRS} )
-
-###| Library Versioning
-set( cat_prog cat )
-if( WIN32 )
-	set( cat_prog type )
-endif( WIN32 )
-
-exec_program( ${cat_prog} 
-	ARGS ${HEAD_DIR}/src/Common/VERSION 
-	OUTPUT_VARIABLE VERSION 
-)
-set( LIBRARY_VERSION
-	"${VERSION}"
-)
-
-#| Create the Library
-add_library( ${LIB} SHARED ${SRCS} ${aMOC_SRCS} )
-set( LIBRARY_OUTPUT_PATH
-        ${HEAD_DIR}/bin/BaulkLibs
-)
-set_target_properties( ${LIB} PROPERTIES VERSION ${LIBRARY_VERSION} )
-
-#| Link Needed Libraries
-if( WIN32 )
-target_link_libraries( ${LIB} 
-	${QT_LIBRARIES}
-	BaulkDialog	# From Common
-	BaulkWidget	# From Common
-	BaulkXML	# From Common
-	LibraryLoader	# From Common
-	BaulkClient	# From Server
-	BaulkLib	# From Baulk
-)
-else( WIN32 )
-target_link_libraries( ${LIB} 
-	${QT_LIBRARIES}
-	BaulkDialog	# From Common
-	BaulkWidget	# From Common
-	BaulkXML	# From Common
-	LibraryLoader	# From Common
-	BaulkClient	# From Server
-)
-endif( WIN32 )
-
-#| Installation
-install( TARGETS ${LIB}
-	DESTINATION lib/BaulkLibs
-)
+if ( BuildBaulkControl )
+	#| Misc Qt4
+	add_definitions( 
+		-Wall 
+	)
+	find_package( Qt4 REQUIRED )
+	set( QT_USE_QTXML 1 )
+	include( ${QT_USE_FILE} )
+	QT4_WRAP_CPP( aMOC_SRCS ${HDRS} )
+	
+	###| Library Versioning
+	set( cat_prog cat )
+	if( WIN32 )
+		set( cat_prog type )
+	endif( WIN32 )
+	
+	exec_program( ${cat_prog} 
+		ARGS ${HEAD_DIR}/src/Common/VERSION 
+		OUTPUT_VARIABLE VERSION 
+	)
+	set( LIBRARY_VERSION
+		"${VERSION}"
+	)
+	
+	#| Create the Library
+	add_library( ${LIB} SHARED ${SRCS} ${aMOC_SRCS} )
+	set( LIBRARY_OUTPUT_PATH
+	        ${HEAD_DIR}/bin/BaulkLibs
+	)
+	set_target_properties( ${LIB} PROPERTIES VERSION ${LIBRARY_VERSION} )
+	
+	#| Link Needed Libraries
+	if( WIN32 )
+	target_link_libraries( ${LIB} 
+		${QT_LIBRARIES}
+		BaulkDialog	# From Common
+		BaulkWidget	# From Common
+		BaulkXML	# From Common
+		LibraryLoader	# From Common
+		BaulkClient	# From Server
+		BaulkLib	# From Baulk
+	)
+	else( WIN32 )
+	target_link_libraries( ${LIB} 
+		${QT_LIBRARIES}
+		BaulkDialog	# From Common
+		BaulkWidget	# From Common
+		BaulkXML	# From Common
+		LibraryLoader	# From Common
+		BaulkClient	# From Server
+	)
+	endif( WIN32 )
+	
+	#| Installation
+	install( TARGETS ${LIB}
+		DESTINATION lib/BaulkLibs
+	)
+endif ( BuildBaulkControl )
 

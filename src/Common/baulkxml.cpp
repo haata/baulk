@@ -93,12 +93,18 @@ QVariant BaulkXML::option( QString settingName, QString propertyKey, QVariant pr
 	prepareConfig();
 
 	if ( !settingSearch( settingName, propertyKey, property ) ) {
-		qWarning( tr("%1\n\tCould not find setting\n\t%2 - %3 - %4")
-				.arg( errorName() )
-				.arg( settingName )
-				.arg( propertyKey )
-				.arg( property.toString() )
-			.toUtf8() );
+		if ( property == QVariant() || propertyKey == "" )
+			qWarning( tr("%1\n\tCould not find setting\n\t%2")
+					.arg( errorName() )
+					.arg( settingName )
+				.toUtf8() );
+		else
+			qWarning( tr("%1\n\tCould not find setting\n\t%2 - %3 - %4")
+					.arg( errorName() )
+					.arg( settingName )
+					.arg( propertyKey )
+					.arg( property.toString() )
+				.toUtf8() );
 		return QVariant("");
 	}
 	

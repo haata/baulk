@@ -42,29 +42,27 @@ set ( qtermwidget_VERSION
 add_definitions ( -Wall )
 find_package ( Qt4 REQUIRED ) # Finds Qt4 on the system
 include ( ${QT_USE_FILE} ) # Includes Qt4 headers and libraries (the above command is needed first)
-QT4_WRAP_CPP ( MOC_SRCS ${HDRS} ) # Moc's the headers
 
-#| qtermwidget specific
-include_directories ( ${PROJECT_SOURCE_DIR} ) # You mark some of the headers as global, so I just add the source directory to the includes
-
-#| Defines
-add_definitions ( -DHAVE_POSIX_OPENPT )
-#add_definitions( -DHAVE_GETPT )
-
-#| Create the Library
-add_library ( qtermwidget SHARED ${SRCS} ${MOC_SRCS} )
-
-#| Link Qt4 Libraries
-target_link_libraries ( qtermwidget ${QT_LIBRARIES} )
-
-
-#|Installation
-install( TARGETS qtermwidget
-	DESTINATION lib
-)
-
-
-#| Terst Executable
-add_executable ( test main.cpp )
-target_link_libraries ( test qtermwidget ${QT_LIBRARIES} )
+if ( BuildQTermWidget )
+	QT4_WRAP_CPP ( MOC_SRCS ${HDRS} ) # Moc's the headers
+	
+	#| qtermwidget specific
+	include_directories ( ${PROJECT_SOURCE_DIR} ) 
+	
+	#| Defines
+	add_definitions ( -DHAVE_POSIX_OPENPT )
+	#add_definitions( -DHAVE_GETPT )
+	
+	#| Create the Library
+	add_library ( qtermwidget SHARED ${SRCS} ${MOC_SRCS} )
+	
+	#| Link Qt4 Libraries
+	target_link_libraries ( qtermwidget ${QT_LIBRARIES} )
+	
+	
+	#|Installation
+	install( TARGETS qtermwidget
+		DESTINATION lib
+	)
+endif ( BuildQTermWidget )
 

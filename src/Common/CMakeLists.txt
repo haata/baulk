@@ -81,7 +81,6 @@ set( LIB_BXML
 ###| Misc Qt4
 add_definitions( 
 	-Wall 
-	-ggdb 
 )
 find_package( Qt4 REQUIRED )
 set( QT_USE_QTXML 1 )
@@ -89,61 +88,65 @@ include( ${QT_USE_FILE} )
 
 
 ##| Baulk Widget
-QT4_WRAP_CPP( MOC_SRCS_BW ${HDRS_BW} )
-
-if ( WIN32 )
-	add_library( ${LIB_BW} STATIC ${SRCS_BW} ${MOC_SRCS_BW} )
-else ( WIN32 )
-	add_library( ${LIB_BW} SHARED ${SRCS_BW} ${MOC_SRCS_BW} )
-endif( WIN32 )
-
-target_link_libraries( ${LIB_BW} ${QT_LIBRARIES} )
+if ( BuildBaulkWidget )
+	QT4_WRAP_CPP( MOC_SRCS_BW ${HDRS_BW} )
+	
+	if ( WIN32 )
+		add_library( ${LIB_BW} STATIC ${SRCS_BW} ${MOC_SRCS_BW} )
+	else ( WIN32 )
+		add_library( ${LIB_BW} SHARED ${SRCS_BW} ${MOC_SRCS_BW} )
+	endif( WIN32 )
+	
+	target_link_libraries( ${LIB_BW} ${QT_LIBRARIES} )
+	install( TARGETS ${LIB_BW} DESTINATION lib )
+endif ( BuildBaulkWidget )
 
 
 ##| Baulk Dialog
-QT4_WRAP_CPP( MOC_SRCS_BD ${HDRS_BD} )
-
-if ( WIN32 )
-	add_library( ${LIB_BD} STATIC ${SRCS_BD} ${MOC_SRCS_BD} )
-else ( WIN32 )
-	add_library( ${LIB_BD} SHARED ${SRCS_BD} ${MOC_SRCS_BD} )
-endif( WIN32 )
-
-target_link_libraries( ${LIB_BD} ${QT_LIBRARIES} )
+if ( BuildBaulkDialog )
+	QT4_WRAP_CPP( MOC_SRCS_BD ${HDRS_BD} )
+	
+	if ( WIN32 )
+		add_library( ${LIB_BD} STATIC ${SRCS_BD} ${MOC_SRCS_BD} )
+	else ( WIN32 )
+		add_library( ${LIB_BD} SHARED ${SRCS_BD} ${MOC_SRCS_BD} )
+	endif( WIN32 )
+	
+	target_link_libraries( ${LIB_BD} ${QT_LIBRARIES} )
+	install( TARGETS ${LIB_BD} DESTINATION lib )
+endif ( BuildBaulkDialog )
 
 
 ##| BaulkXML
-QT4_WRAP_CPP( MOC_SRCS_BXML ${HDRS_BXML} )
-
-if ( WIN32 )
-	add_library( ${LIB_BXML} STATIC ${SRCS_BXML} ${MOC_SRCS_BXML} )
-else ( WIN32 )
-	add_library( ${LIB_BXML} SHARED ${SRCS_BXML} ${MOC_SRCS_BXML} )
-endif( WIN32 )
-
-target_link_libraries( ${LIB_BXML} ${QT_LIBRARIES} )
+if ( BuildBaulkXML )
+	QT4_WRAP_CPP( MOC_SRCS_BXML ${HDRS_BXML} )
+	
+	if ( WIN32 )
+		add_library( ${LIB_BXML} STATIC ${SRCS_BXML} ${MOC_SRCS_BXML} )
+	else ( WIN32 )
+		add_library( ${LIB_BXML} SHARED ${SRCS_BXML} ${MOC_SRCS_BXML} )
+	endif( WIN32 )
+	
+	target_link_libraries( ${LIB_BXML} ${QT_LIBRARIES} )
+	install( TARGETS ${LIB_BXML} DESTINATION lib )
+endif ( BuildBaulkXML )
 
 
 ##| Library Loader
-QT4_WRAP_CPP( MOC_SRCS_LL ${HDRS_LL} )
+if ( BuildLibLoader )
+	QT4_WRAP_CPP( MOC_SRCS_LL ${HDRS_LL} )
+	
+	if ( WIN32 )
+		add_library( ${LIB_LL} STATIC ${SRCS_LL} ${MOC_SRCS_LL} )
+	else ( WIN32 )
+		add_library( ${LIB_LL} SHARED ${SRCS_LL} ${MOC_SRCS_LL} )
+	endif( WIN32 )
+	
+	target_link_libraries( ${LIB_LL} 
+		${QT_LIBRARIES} 
+		${LIB_BXML}
+		${LIB_BW}
+	)
+	install( TARGETS ${LIB_LL} DESTINATION lib )
+endif ( BuildLibLoader )
 
-if ( WIN32 )
-	add_library( ${LIB_LL} STATIC ${SRCS_LL} ${MOC_SRCS_LL} )
-else ( WIN32 )
-	add_library( ${LIB_LL} SHARED ${SRCS_LL} ${MOC_SRCS_LL} )
-endif( WIN32 )
-
-target_link_libraries( ${LIB_LL} 
-	${QT_LIBRARIES} 
-	${LIB_BXML}
-	${LIB_BW}
-)
-
-#| Installation
-install( TARGETS 
-	${LIB_BW} 
-	${LIB_BD} 
-	${LIB_BXML} 
-	${LIB_LL}
-	DESTINATION lib
-)
