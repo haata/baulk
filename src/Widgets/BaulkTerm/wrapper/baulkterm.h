@@ -19,7 +19,6 @@
 #define __BAULKTERM_H
 
 #include <QEvent>
-#include <QFocusEvent>
 #include <QFont>
 #include <QResizeEvent>
 #include <QStackedWidget>

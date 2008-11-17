@@ -62,7 +62,7 @@ void BaulkTerm::configurationDefaults() {
 
 	// Transparency
 	opacity = 0.7;		// 70% opacity
-	fadeOpacity = 0.5;
+	fadeOpacity = 0.5;	// 50% opacity
 
 	// History Size
 
@@ -100,6 +100,8 @@ void BaulkTerm::configurationLoad() {
 	QVariant tmp;
 
 	opacity = ( tmp = xmlConfig->option("terminalOpacity") ) == QVariant("") ? opacity
+		: tmp.toDouble();
+	fadeOpacity = ( tmp = xmlConfig->option("terminalFadeOpacity") ) == QVariant("") ? fadeOpacity
 		: tmp.toDouble();
 
 	font.fromString( ( tmp = xmlConfig->option("terminalFont") ) == QVariant("") ? font.toString()
@@ -178,6 +180,7 @@ void BaulkTerm::configurationLoad() {
 
 void BaulkTerm::configurationSave() {
 	xmlConfig->setOption( "terminalOpacity", QVariant( opacity ) );
+	xmlConfig->setOption( "terminalFadeOpacity", QVariant( fadeOpacity ) );
 	xmlConfig->setOption( "terminalFont", QVariant( font ) );
 	xmlConfig->setOption( "terminalHistorySize", QVariant( historySize ) );
 
@@ -295,6 +298,7 @@ void BaulkTerm::changeEvent( QEvent *event ) {
 			term->setOpacity( fadeOpacity );
 		break;
 	default:
+		qDebug("Default - %d", event->type() );
 		break;
 	}
 	event->accept();
