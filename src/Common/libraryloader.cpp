@@ -76,7 +76,7 @@ QStringList LibraryLoader::errorList() const {
 // Library Loaders ********************************************************************************
 bool LibraryLoader::loadLibrary( QString libraryName ) {
 	setFileName( determineLibraryPath( libraryName ) );
-	setProperty( "widgetName", ( (QString(*)()) lrResolve("widgetName") )() );
+	//setProperty( "widgetName", ( (QString(*)()) lrResolve("widgetName") )() );
 	bool success = load();
 	if ( !success )
 		allErrors << errorString();
@@ -182,5 +182,6 @@ QStringList LibraryLoader::symbolList() {
 
 // Widget Name
 QString LibraryLoader::widgetName() const {
-	return property("widgetName").toString();
+	//return property("widgetName").toString();
+	return "";
 }

@@ -96,15 +96,23 @@ void BaulkInterfaceDialog::configurationDialogLoader() {
 	configurationDialog->setWindowTitle( tr("Widget Configuration") );
 
 	// Layout
-	QVBoxLayout *layout = new QVBoxLayout;
-	layout->setContentsMargins( 0,0,0,0 );
-	configurationDialog->setLayout( layout );
+	QVBoxLayout *vlayout = new QVBoxLayout;
+	vlayout->setContentsMargins( 0,0,0,0 );
+
+	QHBoxLayout *hlayout = new QHBoxLayout;
+	hlayout->setContentsMargins( 0,0,0,0 );
+	hlayout->addLayout( vlayout );
+	configurationDialog->setLayout( hlayout );
+
+	// Widget Tree
+	configurationTree = new QTreeWidget;
+	hlayout->insertWidget( 0, configurationTree );
 
 	// Title
 	QLabel *title = new QLabel( tr("<big><b>Configs:</b></big>") );
 	title->setWordWrap( true );
 	title->setMargin( 5 );
-	layout->addWidget( title );
+	vlayout->addWidget( title );
 
 	// Show Dialog
 	configurationDialog->show();

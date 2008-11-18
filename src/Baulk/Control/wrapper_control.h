@@ -47,6 +47,9 @@ extern "C" EXPORTDLL {
 	// Main Widget
 	BaulkWidget *control_mainWidget( QWidget *parent = 0 );
 
+	// Widget Name
+	QString control_widgetName();
+
 	// Quit Event
 	bool allowQuit();
 }

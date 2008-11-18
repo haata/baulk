@@ -17,20 +17,27 @@
 
 #include "wrapper_control.h"
 
-// Symbol List
+// Symbol List ************************************************************************************
 QStringList symbolList() {
 	return QStringList()
+		<< "allowQuit"
+		<< "control_mainWidget"
 		<< "control_mainWidget";
 }
 
-// Main Widget
+// Main Widget ************************************************************************************
 BaulkWidget *control_mainWidget( QWidget *parent ) {
 	control = new BaulkControl( parent );
 
 	return control;
 }
 
-// Quit Event
+// Widget Name ************************************************************************************
+QString control_widgetName() {
+	return QObject::tr("Baulk Control");
+}
+
+// Quit Event *************************************************************************************
 bool allowQuit() {
 	if ( QMessageBox::warning( control, "Quit?",
 				"Are you sure you want to quit?", 
