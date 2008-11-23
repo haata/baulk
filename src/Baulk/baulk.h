@@ -50,6 +50,8 @@ public:
 	 */
 	bool updateMsgLogs( QStringList msgLogs );
 
+	bool processCommandArgs();
+
 private:
 	/// BaulkControl Pointer
 	BaulkWidget *controller;

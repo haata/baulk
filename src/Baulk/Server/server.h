@@ -20,6 +20,7 @@
 
 #include <stdlib.h>
 
+#include <QCoreApplication>
 #include <QList>
 #include <QLocalServer>
 #include <QLocalSocket>
@@ -46,6 +47,8 @@ public:
 	QLocalServer *serverOpen() const { return server; }
 
 	bool terminate();
+
+	bool processCommandArgs();
 
 private:
 	bool allowTerminate;

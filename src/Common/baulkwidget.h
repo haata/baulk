@@ -18,6 +18,7 @@
 #ifndef __BAULKWIDGET_H
 #define __BAULKWIDGET_H
 
+#include <QApplication>
 #include <QResizeEvent>
 #include <QVariant>
 #include <QVBoxLayout>
@@ -45,6 +46,9 @@ public:
 
 	QString windowTitleName() const;
 	void setWindowTitleName( QString titleName );
+
+	// Command Line Argument Processing
+	virtual bool processCommandArgs();
 
 public slots:
 

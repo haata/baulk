@@ -52,7 +52,13 @@ int main( int argc, char *argv[] ) {
 #endif
 
 	baulk = new Baulk;
-	baulk->show();
+	if ( baulk->processCommandArgs() )
+		baulk->show();
+	else {
+		delete baulk;
+		delete app;
+		return 0;
+	}
 
 	// Event-Loop	
 	int reTurn = app->exec();

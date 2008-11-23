@@ -44,7 +44,13 @@ int main( int argc, char *argv[] ) {
 	// Qt GUI Application start with compositing information
 	QApplication *app = new QApplication( display, argc, argv, (Qt::HANDLE)visual, (Qt::HANDLE)colormap );
 	baulk = new BaulkTerm;
-	baulk->show();
+	if ( baulk->processCommandArgs() )
+		baulk->show();
+	else {
+		delete baulk;
+		delete app;
+		return 0;
+	}
 
 	// Event-Loop	
 	int reTurn = app->exec();
