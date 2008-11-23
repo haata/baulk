@@ -106,6 +106,9 @@ private slots:
 	void newTab();
 	void closeTab();
 
+	void rightClickMenu( int, int, int, int );
+	void rightClickAction();
+
 protected:
 	virtual void changeEvent( QEvent *event );
 	virtual void resizeEvent( QResizeEvent *event );

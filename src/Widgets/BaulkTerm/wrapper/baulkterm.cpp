@@ -52,6 +52,8 @@ BaulkTerm::BaulkTerm( int startNow, QWidget *parent ) : BaulkWidget( parent ) {
 	// Connections
 	connect( term, SIGNAL( finished() ), this, SIGNAL( finished() ) );
 	connect( term, SIGNAL( finished() ), this, SLOT( closeTab() ) );
+	connect( term, SIGNAL( mouseSignal( int, int, int, int ) ), this, SLOT( rightClickMenu( int, int, int, int ) ) );
+	connect( term, SIGNAL( rightClickAction() ), this, SLOT( rightClickAction() ) );
 }
 
 // Configuration **********************************************************************************
@@ -260,6 +262,19 @@ void BaulkTerm::configurationSet() {
 	term->setColor( 17, magenta.colour(), 		magenta.transparency(), 	magenta.bold() );
 	term->setColor( 18, cyan.colour(), 		cyan.transparency(), 		cyan.bold() );
 	term->setColor( 19, white.colour(), 		white.transparency(), 		white.bold() );
+}
+
+// Configuration Menus ****************************************************************************
+void BaulkTerm::rightClickMenu( int button, int column, int line, int eventType ) {
+	// TODO Doesn't work
+	qDebug( "Button %d", button );
+	qDebug( "Column %d", column );
+	qDebug( "Line   %d", line );
+	qDebug( "eventType %d", eventType );
+}
+
+void BaulkTerm::rightClickAction() {
+	qDebug("RIGHT");
 }
 
 // Tabs *******************************************************************************************

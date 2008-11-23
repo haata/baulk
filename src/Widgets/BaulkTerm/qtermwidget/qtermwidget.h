@@ -112,6 +112,10 @@ signals:
     // Terminal Closed
     void finished();
 
+    // Mouse Click
+    void mouseSignal( int button, int column, int line, int eventType );
+    void rightClickAction();
+
 public slots:
     // Paste clipboard content to terminal
     void copyClipboard();
