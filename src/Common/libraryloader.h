@@ -63,6 +63,9 @@ public:
 	QAction *loadQAction( QString symbolBase, BaulkWidget *parent = 0 );
 	QObject *loadQObject( QString symbolBase, BaulkWidget *parent = 0 );
 
+	// Widget Name
+	QString widgetName() const;
+
 private:
 	QString errorName() const { return tr("Library Loader"); }
 	QString determineLibraryPath( QString libraryName );

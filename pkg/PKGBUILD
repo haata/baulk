@@ -14,7 +14,7 @@ source=()
 md5sums=()
 
 build() {
-	cmake -DCMAKE_INSTALL_PREFIX=/usr .. || return 1
+	cmake -DCMAKE_INSTALL_PREFIX=/usr -DBuildBaulk=true .. || return 1
 	make clean || return 1
 	make -j10 || return 1
 	make DESTDIR=$pkgdir install || return 1

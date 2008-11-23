@@ -9,7 +9,7 @@ if ( UNIX )
 		BaulkStatus
 		BaulkSwallow
 		BaulkTerm
-		WebBaulk
+		#WebBaulk
 	)
 endif ( UNIX )
 

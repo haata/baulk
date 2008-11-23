@@ -20,9 +20,9 @@
 // Constructors ***********************************************************************************
 BaulkTerm::BaulkTerm( int startNow, QWidget *parent ) : BaulkWidget( parent ) {
 	// Tab Bar
-	tabBar = new QTabBar( this );
-	if ( !useTabBar )
-		tabBar->hide();
+	//tabBar = new QTabBar( this );
+	//if ( !useTabBar )
+		//tabBar->hide();
 
 	tabLayer = new QStackedWidget;
 
@@ -41,7 +41,7 @@ BaulkTerm::BaulkTerm( int startNow, QWidget *parent ) : BaulkWidget( parent ) {
 	layout = new QVBoxLayout;
 	layout->setContentsMargins( 0,0,0,0 );
 
-	layout->addWidget( tabBar );
+	//layout->addWidget( tabBar );
 
 	layout->addWidget( tabLayer );
 
@@ -271,14 +271,14 @@ void BaulkTerm::newTab() {
 
 	// Add terminal to tabbed view
 	tabLayer->addWidget( term );
-	tabBar->addTab( QString("Terminal %1").arg( tabLayer->count() ) );
+	//tabBar->addTab( QString("Terminal %1").arg( tabLayer->count() ) );
 
 	term->updateImage();
 }
 
 void BaulkTerm::closeTab() {
 	// Remove terminal from tabs
-	tabBar->removeTab( tabLayer->currentIndex() );
+	//tabBar->removeTab( tabLayer->currentIndex() );
 	tabLayer->removeWidget( term );
 
 	// Close Terminal if there are no more tabs

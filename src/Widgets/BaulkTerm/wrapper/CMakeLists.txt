@@ -73,11 +73,9 @@ if ( BuildBaulkTerm )
 		BaulkXML	# From Common
 		qtermwidget	# From qtermwidget CVS
 	)
-	
+
 	#| Installation
-	install( TARGETS ${LIB}
-		DESTINATION lib/BaulkLibs
-	)
+	install( TARGETS ${LIB}	DESTINATION lib/BaulkLibs )
 endif ( BuildBaulkTerm )
 
 if ( BuildBaulkTermBinary )
@@ -91,8 +89,7 @@ if ( BuildBaulkTermBinary )
 	target_link_libraries( ${EXEC} ${LIB} )
 
 	#| Installation
-	install( TARGETS ${LIB}
-		DESTINATION bin
-	)
+	install( TARGETS ${EXEC} DESTINATION bin )
+	install( TARGETS ${LIB} DESTINATION lib	)
 endif ( BuildBaulkTermBinary )
 
