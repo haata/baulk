@@ -314,6 +314,7 @@ void Session::run()
 
 void Session::setUserTitle( int what, const QString &caption )
 {
+	qDebug("AAA");
     //set to true if anything is actually changed (eg. old _nameTitle != new _nameTitle )
 	bool modified = false;
 

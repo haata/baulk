@@ -53,6 +53,8 @@ BaulkTerm::BaulkTerm( int startNow, QWidget *parent ) : BaulkWidget( parent ) {
 	// Connections
 	connect( term, SIGNAL( finished() ), this, SIGNAL( finished() ) );
 	connect( term, SIGNAL( finished() ), this, SLOT( closeTab() ) );
+	connect( term, SIGNAL( mouseSignal( int, int, int, int ) ), this, SLOT( rightClickMenu( int, int, int, int ) ) );
+	connect( term, SIGNAL( rightClickAction() ), this, SLOT( rightClickAction() ) );
 }
 
 // Configuration **********************************************************************************
@@ -263,6 +265,19 @@ void BaulkTerm::configurationSet() {
 	term->setColor( 19, white.colour(), 		white.transparency(), 		white.bold() );
 }
 
+// Configuration Menus ****************************************************************************
+void BaulkTerm::rightClickMenu( int button, int column, int line, int eventType ) {
+	// TODO Doesn't work
+	qDebug( "Button %d", button );
+	qDebug( "Column %d", column );
+	qDebug( "Line   %d", line );
+	qDebug( "eventType %d", eventType );
+}
+
+void BaulkTerm::rightClickAction() {
+	qDebug("RIGHT");
+}
+
 // Tabs *******************************************************************************************
 void BaulkTerm::newTab() {
 	term = new QTermWidget( startPriority, this );
@@ -303,6 +318,99 @@ void BaulkTerm::changeEvent( QEvent *event ) {
 		break;
 	}
 	event->accept();
+}
+
+bool BaulkTerm::processCommandArgs() {
+	// Note: Options that are decyphered are removed from the arguments list
+	bool runApp = true;
+	QStringList args = qApp->arguments();
+
+	// Help
+	if ( args.contains( tr("--h" ) ) || args.contains( tr("--help") ) ) {
+		QString out = tr(
+		"BaulkTerm - A Konsole based Qt4 terminal emulator\n"
+		"Note: Some options may not be implemented yet\n"
+		"Usage:\n"
+		"  baulkTerm [OPTION...]\n"
+		"\n"
+		"Usual Options:\n"
+		"  --h, --help             Show help options (this list)\n"
+		"  --v, --version          BaulkTerm version\n"
+		"\n"
+		"Application Options:\n"
+		"  --columns               Set number of columns\n"
+		"  --e, --execute          Execute command\n"
+		"  --font <font family> <font size>\n"
+		"                          Initial terminal font used\n"
+		"  --rows                  Set number of rows\n"
+		);
+		std::cout << out.toUtf8().data();
+		return false;
+	}
+
+	// Version
+	if ( args.contains( tr("--v") ) || args.contains( tr("--version") ) ) {
+		QString out = tr(
+		"BaulkTerm Version 0.1.git(%1)\n"
+		).arg( "TODO" );
+		std::cout << out.toUtf8().data();
+		return false;
+	}
+
+	// Columns and Rows
+	if ( args.contains( tr("--columns") ) || args.contains( tr("--rows") ) ) {
+		bool ok;
+		int horizontal = 80;
+		int vertical = 60;
+		for ( int c = 0; c + 1 < args.count(); ++c ) {
+			if ( args[c] == tr("--columns") ) {
+				horizontal = args[c + 1].toInt( &ok );
+				if ( ok ) {
+					args.removeAt( c );
+					args.removeAt( c );
+					--c;
+					if ( c + 1 >= args.count() )
+						break;
+				}
+			}
+			if ( args[c] == tr("--rows") ) {
+				vertical = args[c + 1].toInt( &ok );
+				if ( ok ) {
+					args.removeAt( c );
+					args.removeAt( c );
+					--c;
+					if ( c + 1 >= args.count() )
+						break;
+				}
+			}
+		}
+
+		term->setSize( horizontal, vertical );
+	}
+
+	// Execute Command (assumed last command decyphered)
+	if ( args.contains( tr("--e") ) || args.contains( tr("--execute") ) ) {
+		QString command;
+
+		int count = 2;
+		while ( count < args.count() ) {
+			command += args[count] + " ";
+			args.removeAt( count );
+		}
+
+		args.removeAt( 1 );
+
+		qDebug( tr("Executing - %1").arg( command ).toUtf8() );
+		command += "\n";
+		term->sendText( command );
+	}
+
+	if ( args.count() > 1 ) {
+		qFatal( tr("Invalid Command-Line Argument(s) - %1").arg( args.count() - 1 ).toUtf8() );
+		return false;
+	}
+
+	return runApp;
 }
 
 void BaulkTerm::resizeEvent( QResizeEvent *event ) {

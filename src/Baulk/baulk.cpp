@@ -69,6 +69,11 @@ bool Baulk::updateMsgLogs( QStringList msgLogs ) {
 	return false;
 }
 
+// Command Line Arguments *************************************************************************
+bool Baulk::processCommandArgs() {
+	return controller->processCommandArgs();
+}
+
 // SLOTS ******************************************************************************************
 void Baulk::setWindowTitleName( QString windowTitle ) {
 	setWindowTitle( windowTitle );

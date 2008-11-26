@@ -66,6 +66,23 @@ void BaulkWidget::setWindowTitleName( QString titleName ) {
 	emit windowTitleNameSet( titleName ); 
 }
 
+// Command Line Arguments *************************************************************************
+bool BaulkWidget::processCommandArgs() {
+	bool runApp = true;
+	QStringList args = qApp->arguments();
+
+	if ( args.contains( tr("--h" ) ) || args.contains( tr("--help") ) ) {
+		qWarning("Currently there are no command line options");
+		// TODO Help Options
+		return false;
+	}
+	if ( args.contains( tr("--v") ) || args.contains( tr("--version") ) ) {
+		return false;
+	}
+
+	return runApp;
+}
+
 // Reimplemented QWidget Functions ****************************************************************
 void BaulkWidget::resizeEvent( QResizeEvent *event ) {
 	resize( event->size() );

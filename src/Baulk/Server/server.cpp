@@ -182,3 +182,20 @@ bool InformationServer::terminate() {
 	return true;
 }
 
+// Command Line Arguments *************************************************************************
+bool InformationServer::processCommandArgs() {
+	bool runApp = true;
+	QStringList args = QCoreApplication::instance()->arguments();
+
+	if ( args.contains( tr("--h" ) ) || args.contains( tr("--help") ) ) {
+		qWarning("Currently there are no command line options");
+		// TODO Help Options
+		return false;
+	}
+	if ( args.contains( tr("--v") ) || args.contains( tr("--version") ) ) {
+		return false;
+	}
+
+	return runApp;
+}
+

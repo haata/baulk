@@ -493,6 +493,7 @@ signals:
      * This can be used to display a context menu.
      */
     void configureRequest( TerminalDisplay*, int state, const QPoint& position );
+    void rightClickAction();
 
    void isBusySelecting(bool);
    void sendStringToEmu(const char*);

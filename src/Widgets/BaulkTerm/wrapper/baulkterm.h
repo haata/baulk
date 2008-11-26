@@ -18,6 +18,8 @@
 #ifndef __BAULKTERM_H
 #define __BAULKTERM_H
 
+#include <iostream>
+
 #include <QEvent>
 #include <QFont>
 #include <QResizeEvent>
@@ -42,6 +44,10 @@ class BaulkTerm : public BaulkWidget {
 
 public:
 	BaulkTerm( int startNow = 1, QWidget *parent = 0 );
+
+
+	// Command Line Args
+	virtual bool processCommandArgs();
 
 private:
 	int startPriority;
@@ -99,6 +105,9 @@ private:
 private slots:
 	void newTab();
 	void closeTab();
+
+	void rightClickMenu( int, int, int, int );
+	void rightClickAction();
 
 protected:
 	virtual void changeEvent( QEvent *event );
