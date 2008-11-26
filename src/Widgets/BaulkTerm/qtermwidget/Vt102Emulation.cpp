@@ -213,26 +213,22 @@ void Vt102Emulation::reset()
    Note that they are kept internal in the tokenizer.
 */
 
-void Vt102Emulation::resetToken()
-{
-  ppos = 0; argc = 0; argv[0] = 0; argv[1] = 0;
+void Vt102Emulation::resetToken() {
+	ppos = 0; argc = 0; argv[0] = 0; argv[1] = 0;
 }
 
-void Vt102Emulation::addDigit(int dig)
-{
-  argv[argc] = 10*argv[argc] + dig;
+void Vt102Emulation::addDigit(int dig) {
+	argv[argc] = 10*argv[argc] + dig;
 }
 
-void Vt102Emulation::addArgument()
-{
-  argc = qMin(argc+1,MAXARGS-1);
-  argv[argc] = 0;
+void Vt102Emulation::addArgument() {
+	argc = qMin(argc+1,MAXARGS-1);
+	argv[argc] = 0;
 }
 
-void Vt102Emulation::pushToToken(int cc)
-{
-  pbuf[ppos] = cc;
-  ppos = qMin(ppos+1,MAXPBUF-1);
+void Vt102Emulation::pushToToken(int cc) {
+	pbuf[ppos] = cc;
+	ppos = qMin(ppos + 1, MAXPBUF - 1);
 }
 
 // Character Classes used while decoding
@@ -245,18 +241,18 @@ void Vt102Emulation::pushToToken(int cc)
 #define GRP 32
 #define CPS 64
 
-void Vt102Emulation::initTokenizer()
-{ int i; quint8* s;
-  for(i =  0;                      i < 256; i++) tbl[ i]  = 0;
-  for(i =  0;                      i <  32; i++) tbl[ i] |= CTL;
-  for(i = 32;                      i < 256; i++) tbl[ i] |= CHR;
-  for(s = (quint8*)"@ABCDGHILMPSTXZcdfry"; *s; s++) tbl[*s] |= CPN;
-// resize = \e[8;<row>;<col>t
-  for(s = (quint8*)"t"; *s; s++) tbl[*s] |= CPS;
-  for(s = (quint8*)"0123456789"        ; *s; s++) tbl[*s] |= DIG;
-  for(s = (quint8*)"()+*%"             ; *s; s++) tbl[*s] |= SCS;
-  for(s = (quint8*)"()+*#[]%"          ; *s; s++) tbl[*s] |= GRP;
-  resetToken();
+void Vt102Emulation::initTokenizer() {
+	int i; quint8* s;
+	for(i =  0;			i < 256; 	i++) tbl[ i]  = 0;
+	for(i =  0;			i <  32; 	i++) tbl[ i] |= CTL;
+	for(i = 32;			i < 256; 	i++) tbl[ i] |= CHR;
+	for(s = (quint8*)"@ABCDGHILMPSTXZcdfry"; *s; 	s++) tbl[*s] |= CPN;
+	// resize = \e[8;<row>;<col>t
+	for(s = (quint8*)"t"; 		*s; 		s++) tbl[*s] |= CPS;
+	for(s = (quint8*)"0123456789";	*s; 		s++) tbl[*s] |= DIG;
+	for(s = (quint8*)"()+*%"; 	*s; 		s++) tbl[*s] |= SCS;
+	for(s = (quint8*)"()+*#[]%"; 	*s; 		s++) tbl[*s] |= GRP;
+	resetToken();
 }
 
 /* Ok, here comes the nasty part of the decoder.
@@ -292,102 +288,115 @@ void Vt102Emulation::initTokenizer()
 
 // process an incoming unicode character
 
-void Vt102Emulation::receiveChar(int cc)
-{ 
-  int i;
-  if (cc == 127) return; //VT100: ignore.
+void Vt102Emulation::receiveChar(int cc) { 
+	int i;
+	if (cc == 127) 	return; //VT100: ignore.
 
-  if (ces(    CTL))
-  { // DEC HACK ALERT! Control Characters are allowed *within* esc sequences in VT100
-    // This means, they do neither a resetToken nor a pushToToken. Some of them, do
-    // of course. Guess this originates from a weakly layered handling of the X-on
-    // X-off protocol, which comes really below this level.
-    if (cc == CNTL('X') || cc == CNTL('Z') || cc == ESC) resetToken(); //VT100: CAN or SUB
-    if (cc != ESC)    { tau( TY_CTL(cc+'@' ),   0,  0); return; }
-  }
+	if (ces(    CTL)) { 
+		// DEC HACK ALERT! Control Characters are allowed *within* esc sequences in VT100
+		// This means, they do neither a resetToken nor a pushToToken. Some of them, do
+		// of course. Guess this originates from a weakly layered handling of the X-on
+		// X-off protocol, which comes really below this level.
+		if (cc == CNTL('X') || cc == CNTL('Z') || cc == ESC) 	resetToken(); //VT100: CAN or SUB
+		if (cc != ESC) { tau( TY_CTL(cc+'@' ), 0, 0); 		return; }
+	}
 
-  pushToToken(cc); // advance the state
+	pushToToken(cc); // advance the state
 
-  int* s = pbuf;
-  int  p = ppos;
+	int* s = pbuf;
+	int  p = ppos;
 
-  if (getMode(MODE_Ansi)) // decide on proper action
-  {
-    if (lec(1,0,ESC)) {                                                       return; }
-    if (lec(1,0,ESC+128)) { s[0] = ESC; receiveChar('[');                   return; }
-    if (les(2,1,GRP)) {                                                       return; }
-    if (Xte         ) { XtermHack();                            resetToken(); return; }
-    if (Xpe         ) {                                                       return; }
-    if (lec(3,2,'?')) {                                                       return; }
-    if (lec(3,2,'>')) {                                                       return; }
-    if (lec(3,2,'!')) {                                                       return; }
-    if (lun(       )) { tau( TY_CHR(), applyCharset(cc), 0); resetToken(); return; }
-    if (lec(2,0,ESC)) { tau( TY_ESC(s[1]),   0,  0);       resetToken(); return; }
-    if (les(3,1,SCS)) { tau( TY_ESC_CS(s[1],s[2]),   0,  0);  resetToken(); return; }
-    if (lec(3,1,'#')) { tau( TY_ESC_DE(s[2]),   0,  0);       resetToken(); return; }
-    if (eps(    CPN)) { tau( TY_CSI_PN(cc), argv[0],argv[1]);   resetToken(); return; }
+	if (getMode(MODE_Ansi)) // decide on proper action
+	{
+		qDebug("VT100 Mode"); // TODO REMOVEME
+		if (lec(1,0,ESC)) 									return;	
+		if (lec(1,0,ESC+128)) { s[0] = ESC; receiveChar('['); 					return; }
+		if (les(2,1,GRP))									return;
+		if (Xte         ) { XtermHack(); 					resetToken();	return; }
+		if (Xpe         ) 									return;
+		if (lec(3,2,'?')) 									return;
+		if (lec(3,2,'>')) 									return;
+		if (lec(3,2,'!')) 									return;
+		if (lun(       )) { tau( TY_CHR(), applyCharset(cc), 0 ); 		resetToken();	return; }
+		if (lec(2,0,ESC)) { tau( TY_ESC(s[1]), 0, 0 );       			resetToken(); 	return; }
+		if (les(3,1,SCS)) { tau( TY_ESC_CS(s[1], s[2]), 0, 0 );			resetToken(); 	return; }
+		if (lec(3,1,'#')) { tau( TY_ESC_DE(s[2]), 0, 0 );			resetToken(); 	return; }
+		if (eps(    CPN)) { tau( TY_CSI_PN(cc), argv[0], argv[1] );   		resetToken(); 	return; }
 
-// resize = \e[8;<row>;<col>t
-    if (eps(    CPS)) { tau( TY_CSI_PS(cc, argv[0]), argv[1], argv[2]);   resetToken(); return; }
+		// resize = \e[8;<row>;<col>t
+		if (eps(    CPS)) { tau( TY_CSI_PS(cc, argv[0]), argv[1], argv[2] );   	resetToken(); 	return; }
 
-    if (epe(       )) { tau( TY_CSI_PE(cc),     0,  0);       resetToken(); return; }
-    if (ees(    DIG)) { addDigit(cc-'0');                                     return; }
-    if (eec(    ';')) { addArgument();                                        return; }
-    for (i=0;i<=argc;i++)
-    if ( epp(     ))  { tau( TY_CSI_PR(cc,argv[i]),   0,  0); }
-    else if(egt(    ))   { tau( TY_CSI_PG(cc     ),   0,  0); } // spec. case for ESC]>0c or ESC]>c
-    else if (cc == 'm' && argc - i >= 4 && (argv[i] == 38 || argv[i] == 48) && argv[i+1] == 2)
-    { // ESC[ ... 48;2;<red>;<green>;<blue> ... m -or- ESC[ ... 38;2;<red>;<green>;<blue> ... m
-      i += 2;
-      tau( TY_CSI_PS(cc, argv[i-2]), COLOR_SPACE_RGB, (argv[i] << 16) | (argv[i+1] << 8) | argv[i+2]);
-      i += 2;
-    }
-    else if (cc == 'm' && argc - i >= 2 && (argv[i] == 38 || argv[i] == 48) && argv[i+1] == 5)
-    { // ESC[ ... 48;5;<index> ... m -or- ESC[ ... 38;5;<index> ... m
-      i += 2;
-      tau( TY_CSI_PS(cc, argv[i-2]), COLOR_SPACE_256, argv[i]);
-    }
-    else              { tau( TY_CSI_PS(cc,argv[i]),   0,  0); }
-    resetToken();
-  }
-  else // mode VT52
-  {
-    if (lec(1,0,ESC))                                                      return;
-    if (les(1,0,CHR)) { tau( TY_CHR(       ), s[0],  0); resetToken(); return; }
-    if (lec(2,1,'Y'))                                                      return;
-    if (lec(3,1,'Y'))                                                      return;
-    if (p < 4)        { tau( TY_VT52(s[1]   ),   0,  0); resetToken(); return; }
-                        tau( TY_VT52(s[1]   ), s[2],s[3]); resetToken(); return;
-  }
+		if (epe(       )) { tau( TY_CSI_PE(cc), 0, 0 );    	   		resetToken(); 	return; }
+		if (ees(    DIG)) { addDigit(cc - '0' ); 						return; }
+		if (eec(    ';')) { addArgument(); 							return; }
+ 
+		for (i = 0; i <= argc; i++) {
+			if (epp(  ))		tau( TY_CSI_PR(cc,argv[i]),   0,  0);
+			else if	(egt(  ))	tau( TY_CSI_PG(cc), 0, 0); // spec. case for ESC]>0c or ESC]>c
+			else if (cc == 'm' && argc - i >= 4 && (argv[i] == 38 || argv[i] == 48) && argv[i+1] == 2) { 
+				// ESC[ ... 48;2;<red>;<green>;<blue> ... m -or- ESC[ ... 38;2;<red>;<green>;<blue> ... m
+				i += 2;
+				tau( TY_CSI_PS(cc, argv[i-2]), COLOR_SPACE_RGB, (argv[i] << 16) | (argv[i+1] << 8) | argv[i+2] );
+				i += 2;
+			}
+			else if (cc == 'm' && argc - i >= 2 && (argv[i] == 38 || argv[i] == 48) && argv[i+1] == 5) {
+				// ESC[ ... 48;5;<index> ... m -or- ESC[ ... 38;5;<index> ... m
+		  		i += 2;
+		  		tau( TY_CSI_PS(cc, argv[i-2]), COLOR_SPACE_256, argv[i] );
+			}
+			else 			tau( TY_CSI_PS(cc,argv[i]), 0, 0 );
+		}
+
+		resetToken();
+	}
+	else {
+		qDebug("VT52 Mode"); // TODO REMOVEME
+		// mode VT52 
+		if (lec(1,0,ESC))						return;
+		if (les(1,0,CHR)) { tau( TY_CHR(  ), s[0], 0 );	resetToken();	return; }
+		if (lec(2,1,'Y')) 						return;
+		if (lec(3,1,'Y')) 						return;
+		if (p < 4) { tau( TY_VT52(s[1]), 0, 0 ); 	resetToken();	return; }
+		// Default
+		tau( TY_VT52(s[1]), s[2],s[3] ); 		resetToken();	return;
+	}
 }
 
-void Vt102Emulation::XtermHack()
-{ int i,arg = 0;
-  for (i = 2; i < ppos && '0'<=pbuf[i] && pbuf[i]<'9' ; i++)
-    arg = 10*arg + (pbuf[i]-'0');
-  if (pbuf[i] != ';') { ReportErrorToken(); return; }
-  QChar *str = new QChar[ppos-i-2];
-  for (int j = 0; j < ppos-i-2; j++) str[j] = pbuf[i+1+j];
-  QString unistr(str,ppos-i-2);
-  
-  // arg == 1 doesn't change the title. In XTerm it only changes the icon name
-  // (btw: arg=0 changes title and icon, arg=1 only icon, arg=2 only title
-//  emit changeTitle(arg,unistr);
-  _pendingTitleUpdates[arg] = unistr;
-  _titleUpdateTimer->start(20);
+void Vt102Emulation::XtermHack() { 
+	int i,arg = 0;
+	for (i = 2; i < ppos && '0'<=pbuf[i] && pbuf[i]<'9' ; i++)
+		arg = 10*arg + (pbuf[i]-'0');
 
-  delete [] str;
+	if (pbuf[i] != ';') { 
+		ReportErrorToken(); 
+		return; 
+	}
+
+	QChar *str = new QChar[ppos-i-2];
+	for (int j = 0; j < ppos-i-2; j++) 
+		str[j] = pbuf[i+1+j];
+
+	QString unistr(str,ppos-i-2);
+	  
+	// arg == 1 doesn't change the title. In XTerm it only changes the icon name
+	// (btw: arg=0 changes title and icon, arg=1 only icon, arg=2 only title
+	//  emit changeTitle(arg,unistr);
+	_pendingTitleUpdates[arg] = unistr;
+	_titleUpdateTimer->start(20);
+	
+	delete [] str;
 }
 
-void Vt102Emulation::updateTitle()
-{
+void Vt102Emulation::updateTitle() {
 	QListIterator<int> iter( _pendingTitleUpdates.keys() );
 	while (iter.hasNext()) {
 		int arg = iter.next();
 		emit titleChanged( arg , _pendingTitleUpdates[arg] );	
+		// TODO REMOVEME
+		qDebug(_pendingTitleUpdates[arg].toUtf8() );
 	}
-
-    _pendingTitleUpdates.clear();	
+	
+	_pendingTitleUpdates.clear();	
 }
 
 // Interpreting Codes ---------------------------------------------------------
@@ -1239,8 +1248,10 @@ static void hexdump(int* s, int len)
     if (s[i] == '\\')
       printf("\\\\");
     else
-    if ((s[i]) > 32 && s[i] < 127)
-      printf("%c",s[i]);
+    if ((s[i]) > 32 && s[i] < 127) 
+    {
+     // printf("%c",s[i]);
+     }
     else
       printf("\\%04x(hex)",s[i]);
   }

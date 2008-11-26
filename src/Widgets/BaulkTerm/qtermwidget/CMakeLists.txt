@@ -39,7 +39,7 @@ set ( qtermwidget_VERSION
 )
 
 #| Qt4 Required Options
-add_definitions ( -Wall )
+add_definitions ( -Wall -D NDEBUG )
 find_package ( Qt4 REQUIRED ) # Finds Qt4 on the system
 include ( ${QT_USE_FILE} ) # Includes Qt4 headers and libraries (the above command is needed first)
 
