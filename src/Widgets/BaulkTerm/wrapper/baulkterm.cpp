@@ -48,6 +48,7 @@ BaulkTerm::BaulkTerm( int startNow, QWidget *parent ) : BaulkWidget( parent ) {
 	// Widget Settings
 	setFocusProxy( term );
 	setLayout( layout );
+	setWindowTitle( tr("BaulkTerm") );
 
 	// Connections
 	connect( term, SIGNAL( finished() ), this, SIGNAL( finished() ) );

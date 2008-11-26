@@ -25,6 +25,12 @@ BaulkTerm *baulk;
 #include <handler.h>
 #include <compositing.h>
 
+void commandLineArgs( QStringList arguments ) {
+	qDebug( arguments[0].toUtf8() );
+	qDebug( arguments[1].toUtf8() );
+	qDebug( arguments[2].toUtf8() );
+}
+
 /**
  * @author Jacob Alexander (HaaTa)
  *
@@ -43,6 +49,7 @@ int main( int argc, char *argv[] ) {
 
 	// Qt GUI Application start with compositing information
 	QApplication *app = new QApplication( display, argc, argv, (Qt::HANDLE)visual, (Qt::HANDLE)colormap );
+	commandLineArgs( app->arguments() );
 	baulk = new BaulkTerm;
 	baulk->show();
 

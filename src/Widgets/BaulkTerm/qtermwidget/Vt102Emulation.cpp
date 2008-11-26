@@ -372,7 +372,7 @@ void Vt102Emulation::XtermHack()
   
   // arg == 1 doesn't change the title. In XTerm it only changes the icon name
   // (btw: arg=0 changes title and icon, arg=1 only icon, arg=2 only title
-//  emit changeTitle(arg,unistr);
+  //emit changeTitle(arg,unistr);
   _pendingTitleUpdates[arg] = unistr;
   _titleUpdateTimer->start(20);
 
@@ -385,6 +385,7 @@ void Vt102Emulation::updateTitle()
 	while (iter.hasNext()) {
 		int arg = iter.next();
 		emit titleChanged( arg , _pendingTitleUpdates[arg] );	
+		qDebug( _pendingTitleUpdates[arg].toUtf8() ); // TODO REMOVE ME
 	}
 
     _pendingTitleUpdates.clear();	

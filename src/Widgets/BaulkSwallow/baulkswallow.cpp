@@ -23,10 +23,12 @@
 // Constructor ************************************************************************************
 BaulkSwallow::BaulkSwallow( BaulkWidget *parent ) : BaulkWidget( parent ) {
 	swallow = new QX11EmbedContainer;
+	swallow->setFocusPolicy( Qt::NoFocus );
 
 	infoLabel = new QLabel( tr("Window ID:") );
 
 	infoLineEdit = new QLineEdit;
+	infoLineEdit->setFocusPolicy( Qt::NoFocus );
 
 	// Window ID Information
 	infoLayout = new QHBoxLayout;
@@ -41,7 +43,7 @@ BaulkSwallow::BaulkSwallow( BaulkWidget *parent ) : BaulkWidget( parent ) {
 	layout->setContentsMargins( 0,0,0,0 );
 
 	setLayout( layout );
-	setFocusProxy( swallow );
+	//setFocusProxy( swallow );
 
 	// Window ID is only final after the layout creation is finished
 	infoLineEdit->setText( QString("%1").arg( (int) swallow->winId() ) );
