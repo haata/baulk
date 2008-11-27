@@ -308,7 +308,6 @@ void Vt102Emulation::receiveChar(int cc) {
 
 	if (getMode(MODE_Ansi)) // decide on proper action
 	{
-		qDebug("VT100 Mode"); // TODO REMOVEME
 		if (lec(1,0,ESC))                                                                       return;	
 		if (lec(1,0,ESC+128)) { s[0] = ESC; receiveChar('[');                                   return; }
 		if (les(2,1,GRP))                                                                       return;
@@ -350,7 +349,6 @@ void Vt102Emulation::receiveChar(int cc) {
 		resetToken();
 	}
 	else {
-		qDebug("VT52 Mode"); // TODO REMOVEME
 		// mode VT52 
 		if (lec(1,0,ESC))                                               return;
 		if (les(1,0,CHR)) { tau( TY_CHR(  ), s[0], 0 );	resetToken();   return; }
