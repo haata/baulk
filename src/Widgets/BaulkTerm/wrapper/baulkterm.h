@@ -25,6 +25,7 @@
 #include <QResizeEvent>
 #include <QStackedWidget>
 #include <QTabBar>
+#include <QTimer>
 #include <QVBoxLayout>
 #include <QWidget>
 

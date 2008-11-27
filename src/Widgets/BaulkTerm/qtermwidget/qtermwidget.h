@@ -105,9 +105,6 @@ public:
     // Opacity Setting - Window Manager must support Compositing
     void setOpacity( qreal opacity );
 
-    // Updates Display Image, useful for forcing terminal display updates
-    void updateImage();
-
 signals:
     // Terminal Closed
     void finished();
@@ -123,6 +120,9 @@ public slots:
      // Copies selection to clipboard
     void pasteClipboard();
         
+    // Updates Display Image, useful for forcing terminal display updates
+    void updateImage();
+
 protected: 
     virtual void resizeEvent(QResizeEvent *);
     
