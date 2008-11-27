@@ -50,6 +50,9 @@ public:
 	// Command Line Args
 	virtual bool processCommandArgs();
 
+	// Start Terminal
+	void startShellProgram();
+
 private:
 	int startPriority;
 
@@ -71,6 +74,8 @@ private:
 	QFont font;
 
 	bool useTabBar;
+
+	QString shellProgram;
 
 	// Normal Colours
 	TerminalColour foreground;

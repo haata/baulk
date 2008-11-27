@@ -59,8 +59,7 @@ BaulkTerm::BaulkTerm( int startNow, QWidget *parent ) : BaulkWidget( parent ) {
 // Configuration **********************************************************************************
 void BaulkTerm::configurationDefaults() {
 	// Font
-	font = QFont( "Terminus" );
-	font.setPointSize( 12 );
+	font = QFont( "Terminus", 12 );
 
 	// Transparency
 	opacity = 0.7;		// 70% opacity
@@ -72,6 +71,9 @@ void BaulkTerm::configurationDefaults() {
 
 	// Tabs
 	useTabBar = false;		// TEMP
+
+	// Shell Program
+	shellProgram = "/bin/bash";
 
 	// Normal Colours
 	foreground	.setOptions( QColor(0xD3,0xD3,0xD3), 0, 0 );
@@ -111,6 +113,9 @@ void BaulkTerm::configurationLoad() {
 
 	historySize = ( tmp = xmlConfig->option("terminalHistorySize") ) == QVariant("") ? historySize
 		: tmp.toInt();
+
+	shellProgram = ( tmp = xmlConfig->option("terminalShellProgram") ) == QVariant("") ? shellProgram 
+		: tmp.toString();
 
 	// Normal Colours
 	foreground.setFromVariant( 
@@ -185,6 +190,7 @@ void BaulkTerm::configurationSave() {
 	xmlConfig->setOption( "terminalFadeOpacity", QVariant( fadeOpacity ) );
 	xmlConfig->setOption( "terminalFont", QVariant( font ) );
 	xmlConfig->setOption( "terminalHistorySize", QVariant( historySize ) );
+	xmlConfig->setOption( "terminalShellProgram", QVariant( shellProgram ) );
 
 	// Normal Colours
 	xmlConfig->setOption( "terminalColour", foreground.toVariant(),
@@ -238,6 +244,7 @@ void BaulkTerm::configurationSet() {
 	term->setHistorySize( historySize );
 	term->setTerminalFont( font );
 	term->setOpacity( opacity );
+	term->setShellProgram( shellProgram );
 
 	// Normal Colours
 	term->setColor( 0, foreground.colour(), 	foreground.transparency(), 	foreground.bold() );
@@ -301,6 +308,11 @@ void BaulkTerm::closeTab() {
 		close();
 }
 
+// QTermWidget Passthrough Options
+void BaulkTerm::startShellProgram() {
+	term->startShellProgram();
+}
+
 // Reimplemented Functions ************************************************************************
 void BaulkTerm::changeEvent( QEvent *event ) {
 	switch ( event->type() ) { 
@@ -337,10 +349,12 @@ bool BaulkTerm::processCommandArgs() {
 		"  --v, --version          BaulkTerm version\n"
 		"\n"
 		"Application Options:\n"
+		"   Note: These options override the configuration file\n"
 		"  --columns               Set number of columns\n"
 		"  --e, --execute          Execute command\n"
 		"  --font <font family> <font size>\n"
-		"                          Initial terminal font used\n"
+		"                          Terminal font used\n"
+		"  --shell <shell program> ie. /bin/bash, /bin/zsh, etc.\n"
 		"  --rows                  Set number of rows\n"
 		);
 		std::cout << out.toUtf8().data();
@@ -357,12 +371,14 @@ bool BaulkTerm::processCommandArgs() {
 	}
 
 	// Columns and Rows
-	if ( args.contains( tr("--columns") ) || args.contains( tr("--rows") ) ) {
+	QString columns = tr("--columns");
+	QString rows = tr("--rows");
+	if ( args.contains( columns ) || args.contains( rows ) ) {
 		bool ok;
 		int horizontal = 80;
 		int vertical = 60;
 		for ( int c = 0; c + 1 < args.count(); ++c ) {
-			if ( args[c] == tr("--columns") ) {
+			if ( args[c] == columns ) {
 				horizontal = args[c + 1].toInt( &ok );
 				if ( ok ) {
 					args.removeAt( c );
@@ -372,7 +388,7 @@ bool BaulkTerm::processCommandArgs() {
 						break;
 				}
 			}
-			if ( args[c] == tr("--rows") ) {
+			if ( args[c] == rows ) {
 				vertical = args[c + 1].toInt( &ok );
 				if ( ok ) {
 					args.removeAt( c );
@@ -384,7 +400,42 @@ bool BaulkTerm::processCommandArgs() {
 			}
 		}
 
+		qWarning("This feature isn't used by the developer that much, log bugs if it doesn't work");
 		term->setSize( horizontal, vertical );
+	}
+
+	// Font
+	QString font = tr("--font");
+	if ( args.contains( font ) ) {
+		for ( int c = 0; c + 2 < args.count(); ++c ) {
+			if ( args[c] == font ) {
+				bool ok;
+
+				QFont termFont( args[c + 1], QString( args[c + 2] ).toInt( &ok ) );
+				if ( !ok ) {
+					qFatal( tr("Invalid font size - %1").arg( args[c + 2] ).toUtf8() );
+					return false;
+				}
+
+				term->setTerminalFont( termFont );
+
+				args.removeAt( c );
+				args.removeAt( c );
+				args.removeAt( c );
+			}
+		}
+	}
+
+	// Shell Program
+	QString shell = tr("--shell");
+	if ( args.contains( shell ) ) {
+		for ( int c = 0; c + 1 < args.count(); ++c ) {
+			if ( args[c] == shell ) {
+				term->setShellProgram( args[c + 1] );
+				args.removeAt( c );
+				args.removeAt( c );
+			}
+		}
 	}
 
 	// Execute Command (assumed last command decyphered)

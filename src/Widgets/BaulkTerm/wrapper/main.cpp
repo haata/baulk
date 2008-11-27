@@ -43,12 +43,14 @@ int main( int argc, char *argv[] ) {
 
 	// Qt GUI Application start with compositing information
 	QApplication *app = new QApplication( display, argc, argv, (Qt::HANDLE)visual, (Qt::HANDLE)colormap );
-	baulk = new BaulkTerm;
-	baulk->setStyleSheet("QWidget {"
-			"background: black;"
-			"}");
-	if ( baulk->processCommandArgs() )
+	baulk = new BaulkTerm( 0 );
+	if ( baulk->processCommandArgs() ) {
+		baulk->startShellProgram();
+		baulk->setStyleSheet("QWidget {"
+				"background: black;"
+				"}");
 		baulk->show();
+	}
 	else {
 		delete baulk;
 		delete app;
