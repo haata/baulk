@@ -113,7 +113,7 @@ private slots:
 	void newTab();
 	void closeTab();
 
-	void rightClickMenu( int, int, int, int );
+	void xMouseInput( int, int, int, int );
 	void rightClickAction();
 
 	void updateWindowTitle();

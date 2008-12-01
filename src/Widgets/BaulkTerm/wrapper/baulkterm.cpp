@@ -54,7 +54,7 @@ BaulkTerm::BaulkTerm( int startNow, QWidget *parent ) : BaulkWidget( parent ) {
 	// Connections
 	connect( term, SIGNAL( finished() ), this, SIGNAL( finished() ) );
 	connect( term, SIGNAL( finished() ), this, SLOT( closeTab() ) );
-	connect( term, SIGNAL( mouseSignal( int, int, int, int ) ), this, SLOT( rightClickMenu( int, int, int, int ) ) );
+	connect( term, SIGNAL( mouseSignal( int, int, int, int ) ), this, SLOT( xMouseInput( int, int, int, int ) ) );
 	connect( term, SIGNAL( rightClickAction() ), this, SLOT( rightClickAction() ) );
 	connect( term, SIGNAL( terminalTitleUpdate() ), this, SLOT( updateWindowTitle() ) );
 }
@@ -278,15 +278,17 @@ void BaulkTerm::configurationSet() {
 	term->setColor( 19, white.colour(), 		white.transparency(), 		white.bold() );
 }
 
-// Configuration Menus ****************************************************************************
-void BaulkTerm::rightClickMenu( int button, int column, int line, int eventType ) {
-	// TODO Doesn't work
-	qDebug( "Button %d", button );
-	qDebug( "Column %d", column );
-	qDebug( "Line   %d", line );
-	qDebug( "eventType %d", eventType );
+// X Input ****************************************************************************************
+void BaulkTerm::xMouseInput( int button, int column, int line, int eventType ) {
+	// This will only signal if the terminal application supports an X Mouse
+	qDebug( QString("Mouse - Button %1 | Column %2 | Line %3 | eventType %4")
+			.arg( button )
+			.arg( column )
+			.arg( line )
+			.arg( eventType ).toUtf8() );
 }
 
+// Configuration Menus ****************************************************************************
 void BaulkTerm::rightClickAction() {
 	qDebug("RIGHT");
 }

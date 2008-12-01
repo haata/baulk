@@ -78,12 +78,12 @@ public:
     //set size
     void setSize(int h, int v);
     
-    // History size for scrolling 
+    // History Type/Size for scrolling 
     // Types:
     //   HistoryTypeNone       - No History (Default)
-    //   HistoryTypeBlockArray - Uses lines
+    //   HistoryTypeBlockArray - (Uses lines arg)
     //   HistoryTypeFile       - Allows for unlimited history, slowest
-    //   HistoryTypeBuffer     - Limited length buffer (set using lines)
+    //   HistoryTypeBuffer     - Limited length buffer (uses line arg)
     void setHistoryType( QString type = "HistoryTypeNone", int lines = 0 );
 
     // Presence of scrollbar
