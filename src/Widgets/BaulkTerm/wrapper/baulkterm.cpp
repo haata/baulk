@@ -67,7 +67,8 @@ void BaulkTerm::configurationDefaults() {
 
 	// History Size
 
-	historySize = -1;	// Infinite
+	historyType = "HistoryTypeNone";
+	historySize = 0;	// No History
 
 	// Tabs
 	useTabBar = false;		// TEMP
@@ -111,6 +112,8 @@ void BaulkTerm::configurationLoad() {
 	font.fromString( ( tmp = xmlConfig->option("terminalFont") ) == QVariant("") ? font.toString()
 		: tmp.toString() );
 
+	historyType = ( tmp = xmlConfig->option("terminalHistoryType") ) == QVariant("") ? historyType
+		: tmp.toString();
 	historySize = ( tmp = xmlConfig->option("terminalHistorySize") ) == QVariant("") ? historySize
 		: tmp.toInt();
 
@@ -189,6 +192,7 @@ void BaulkTerm::configurationSave() {
 	xmlConfig->setOption( "terminalOpacity", QVariant( opacity ) );
 	xmlConfig->setOption( "terminalFadeOpacity", QVariant( fadeOpacity ) );
 	xmlConfig->setOption( "terminalFont", QVariant( font ) );
+	xmlConfig->setOption( "terminalHistoryType", QVariant( historyType ) );
 	xmlConfig->setOption( "terminalHistorySize", QVariant( historySize ) );
 	xmlConfig->setOption( "terminalShellProgram", QVariant( shellProgram ) );
 
@@ -241,7 +245,7 @@ void BaulkTerm::configurationSave() {
 }
 
 void BaulkTerm::configurationSet() {
-	term->setHistorySize( historySize );
+	term->setHistoryType( historyType, historySize );
 	term->setTerminalFont( font );
 	term->setOpacity( opacity );
 	term->setShellProgram( shellProgram );

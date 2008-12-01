@@ -70,6 +70,7 @@ private:
 	qreal fadeOpacity;
 
 	int historySize;
+	QString historyType;
 
 	QFont font;
 
