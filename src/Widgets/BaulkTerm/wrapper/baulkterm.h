@@ -116,6 +116,8 @@ private slots:
 	void rightClickMenu( int, int, int, int );
 	void rightClickAction();
 
+	void updateWindowTitle();
+
 protected:
 	virtual void changeEvent( QEvent *event );
 	virtual void resizeEvent( QResizeEvent *event );

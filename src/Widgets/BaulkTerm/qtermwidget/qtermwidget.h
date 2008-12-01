@@ -43,6 +43,8 @@ public:
         ScrollBarRight=2
     };
 
+    // Terminal Title
+    QString terminalTitle() const;
 
     //Creation of widget
     QTermWidget(int startnow = 1, //start shell programm immediatelly
@@ -79,7 +81,7 @@ public:
     // History size for scrolling 
     // Types:
     //   HistoryTypeNone       - No History (Default)
-    //   HistoryTypeBlockArray
+    //   HistoryTypeBlockArray - Uses lines
     //   HistoryTypeFile       - Allows for unlimited history, slowest
     //   HistoryTypeBuffer     - Limited length buffer (set using lines)
     void setHistoryType( QString type = "HistoryTypeNone", int lines = 0 );
@@ -113,6 +115,9 @@ public:
 signals:
     // Terminal Closed
     void finished();
+
+    // Title Updated
+    void terminalTitleUpdate();
 
     // Mouse Click
     void mouseSignal( int button, int column, int line, int eventType );

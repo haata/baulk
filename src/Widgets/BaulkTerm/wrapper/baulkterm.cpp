@@ -48,12 +48,15 @@ BaulkTerm::BaulkTerm( int startNow, QWidget *parent ) : BaulkWidget( parent ) {
 	// Widget Settings
 	setFocusProxy( term );
 	setLayout( layout );
+	setWindowTitle("BaulkTerm"); // Default Title
+	qDebug( term->windowTitle().toUtf8() );
 
 	// Connections
 	connect( term, SIGNAL( finished() ), this, SIGNAL( finished() ) );
 	connect( term, SIGNAL( finished() ), this, SLOT( closeTab() ) );
 	connect( term, SIGNAL( mouseSignal( int, int, int, int ) ), this, SLOT( rightClickMenu( int, int, int, int ) ) );
 	connect( term, SIGNAL( rightClickAction() ), this, SLOT( rightClickAction() ) );
+	connect( term, SIGNAL( terminalTitleUpdate() ), this, SLOT( updateWindowTitle() ) );
 }
 
 // Configuration **********************************************************************************
@@ -312,9 +315,14 @@ void BaulkTerm::closeTab() {
 		close();
 }
 
-// QTermWidget Passthrough Options
+// QTermWidget Passthrough Options ****************************************************************
 void BaulkTerm::startShellProgram() {
 	term->startShellProgram();
+}
+
+// Terminal Title *********************************************************************************
+void BaulkTerm::updateWindowTitle() {
+	setWindowTitle( term->terminalTitle() );
 }
 
 // Reimplemented Functions ************************************************************************

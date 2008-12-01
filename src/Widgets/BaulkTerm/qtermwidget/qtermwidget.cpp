@@ -125,6 +125,7 @@ void QTermWidget::init()
     connect(m_impl->m_session, SIGNAL(finished()), this, SLOT(sessionFinished()));
     connect( m_impl->m_terminalDisplay, SIGNAL( mouseSignal( int, int, int, int ) ), this, SIGNAL( mouseSignal( int, int, int, int ) ) );
     connect( m_impl->m_terminalDisplay, SIGNAL( rightClickAction() ), this, SIGNAL( rightClickAction() ) );
+    connect( m_impl->m_session, SIGNAL( titleChanged() ), this, SIGNAL( terminalTitleUpdate() ) );
 }
 
 
@@ -133,6 +134,10 @@ QTermWidget::~QTermWidget()
     emit destroyed();
 }
 
+
+QString QTermWidget::terminalTitle() const {
+	return m_impl->m_session->userTitle();
+}
 
 void QTermWidget::setTerminalFont(QFont &font)
 {

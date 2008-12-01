@@ -390,8 +390,6 @@ void Vt102Emulation::updateTitle() {
 	while (iter.hasNext()) {
 		int arg = iter.next();
 		emit titleChanged( arg , _pendingTitleUpdates[arg] );	
-		// TODO REMOVEME
-		qDebug(_pendingTitleUpdates[arg].toUtf8() );
 	}
 	
 	_pendingTitleUpdates.clear();	
