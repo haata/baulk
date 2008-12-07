@@ -43,6 +43,8 @@ public:
         ScrollBarRight=2
     };
 
+    // Terminal Title
+    QString terminalTitle() const;
 
     //Creation of widget
     QTermWidget(int startnow = 1, //start shell programm immediatelly
@@ -76,8 +78,13 @@ public:
     //set size
     void setSize(int h, int v);
     
-    // History size for scrolling 
-    void setHistorySize(int lines); //infinite if lines < 0
+    // History Type/Size for scrolling 
+    // Types:
+    //   HistoryTypeNone       - No History (Default)
+    //   HistoryTypeBlockArray - (Uses lines arg)
+    //   HistoryTypeFile       - Allows for unlimited history, slowest
+    //   HistoryTypeBuffer     - Limited length buffer (uses line arg)
+    void setHistoryType( QString type = "HistoryTypeNone", int lines = 0 );
 
     // Presence of scrollbar
     void setScrollBarPosition(ScrollBarPosition);
@@ -105,12 +112,12 @@ public:
     // Opacity Setting - Window Manager must support Compositing
     void setOpacity( qreal opacity );
 
-    // Updates Display Image, useful for forcing terminal display updates
-    void updateImage();
-
 signals:
     // Terminal Closed
     void finished();
+
+    // Title Updated
+    void terminalTitleUpdate();
 
     // Mouse Click
     void mouseSignal( int button, int column, int line, int eventType );
@@ -123,6 +130,9 @@ public slots:
      // Copies selection to clipboard
     void pasteClipboard();
         
+    // Updates Display Image, useful for forcing terminal display updates
+    void updateImage();
+
 protected: 
     virtual void resizeEvent(QResizeEvent *);
     

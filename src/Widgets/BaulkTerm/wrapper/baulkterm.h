@@ -25,6 +25,7 @@
 #include <QResizeEvent>
 #include <QStackedWidget>
 #include <QTabBar>
+#include <QTimer>
 #include <QVBoxLayout>
 #include <QWidget>
 
@@ -49,6 +50,9 @@ public:
 	// Command Line Args
 	virtual bool processCommandArgs();
 
+	// Start Terminal
+	void startShellProgram();
+
 private:
 	int startPriority;
 
@@ -66,10 +70,13 @@ private:
 	qreal fadeOpacity;
 
 	int historySize;
+	QString historyType;
 
 	QFont font;
 
 	bool useTabBar;
+
+	QString shellProgram;
 
 	// Normal Colours
 	TerminalColour foreground;
@@ -106,8 +113,10 @@ private slots:
 	void newTab();
 	void closeTab();
 
-	void rightClickMenu( int, int, int, int );
+	void xMouseInput( int, int, int, int );
 	void rightClickAction();
+
+	void updateWindowTitle();
 
 protected:
 	virtual void changeEvent( QEvent *event );

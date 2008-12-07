@@ -314,101 +314,93 @@ void Session::run()
 
 void Session::setUserTitle( int what, const QString &caption )
 {
-	qDebug("AAA");
-    //set to true if anything is actually changed (eg. old _nameTitle != new _nameTitle )
+	// set to true if anything is actually changed (eg. old _nameTitle != new _nameTitle )
 	bool modified = false;
 
-    // (btw: what=0 changes _userTitle and icon, what=1 only icon, what=2 only _nameTitle
-    if ((what == 0) || (what == 2)) 
-    {
-       	if ( _userTitle != caption ) {
+	// (btw: what=0 changes _userTitle and icon, what=1 only icon, what=2 only _nameTitle
+	if ((what == 0) || (what == 2)) {
+		if ( _userTitle != caption ) {
 			_userTitle = caption;
-			modified = true;
-		}
-    }
-
-    if ((what == 0) || (what == 1))
-	{
-		if ( _iconText != caption ) {
-       		_iconText = caption;
 			modified = true;
 		}
 	}
 
-    if (what == 11) 
-    {
-      QString colorString = caption.section(';',0,0);
-      qDebug() << __FILE__ << __LINE__ << ": setting background colour to " << colorString;
-      QColor backColor = QColor(colorString);
-      if (backColor.isValid()){// change color via \033]11;Color\007
-          if (backColor != _modifiedBackground)
-          {
-              _modifiedBackground = backColor;
+	if ((what == 0) || (what == 1)) {
+		if ( _iconText != caption ) {
+			_iconText = caption;
+			modified = true;
+		}
+	}
 
-              // bail out here until the code to connect the terminal display
-              // to the changeBackgroundColor() signal has been written
-              // and tested - just so we don't forget to do this.
-              Q_ASSERT( 0 );
+	if (what == 11) {
+		QString colorString = caption.section(';',0,0);
+		qDebug() << __FILE__ << __LINE__ << ": setting background colour to " << colorString;
+		QColor backColor = QColor(colorString);
 
-              emit changeBackgroundColorRequest(backColor);
-          }
-      }
-    }
+		// change color via \033]11;Color\007
+		if (backColor.isValid()) {
+			if (backColor != _modifiedBackground) {
+				_modifiedBackground = backColor;
 
-	if (what == 30) 
-    {
+				// bail out here until the code to connect the terminal display
+				// to the changeBackgroundColor() signal has been written
+				// and tested - just so we don't forget to do this.
+				Q_ASSERT( 0 );
+
+				emit changeBackgroundColorRequest(backColor);
+			}
+		}
+	}
+
+	if (what == 30) {
 		if ( _nameTitle != caption ) {
-       		setTitle(Session::NameRole,caption);
+			setTitle(Session::NameRole,caption);
 			return;
 		}
 	}
 
-    if (what == 31) 
-    {
-       QString cwd=caption;
-       cwd=cwd.replace( QRegExp("^~"), QDir::homePath() );
-       emit openUrlRequest(cwd);
+	if (what == 31) {
+		QString cwd=caption;
+		cwd=cwd.replace( QRegExp("^~"), QDir::homePath() );
+		emit openUrlRequest(cwd);
 	}
 
-    // change icon via \033]32;Icon\007
-    if (what == 32) 
-    { 
-    	if ( _iconName != caption ) {
-	   		_iconName = caption;
+	// change icon via \033]32;Icon\007
+	if (what == 32) { 
+		if ( _iconName != caption ) {
+			_iconName = caption;
 
 			modified = true;
 		}
-    }
+	}
 
-    if (what == 50) 
-    {
-        emit profileChangeCommandReceived(caption);
-        return;
-    }
+	if (what == 50) {
+		emit profileChangeCommandReceived(caption);
+		return;
+	}
 
 	if ( modified )
-    	emit titleChanged();
+		emit titleChanged();
 }
 
-QString Session::userTitle() const
-{
-    return _userTitle;
+QString Session::userTitle() const {
+	return _userTitle;
 }
-void Session::setTabTitleFormat(TabTitleContext context , const QString& format)
-{
-    if ( context == LocalTabTitle )
-        _localTabTitleFormat = format;
-    else if ( context == RemoteTabTitle )
-        _remoteTabTitleFormat = format;
-}
-QString Session::tabTitleFormat(TabTitleContext context) const
-{
-    if ( context == LocalTabTitle )
-        return _localTabTitleFormat;
-    else if ( context == RemoteTabTitle )
-        return _remoteTabTitleFormat;
 
-    return QString();
+void Session::setTabTitleFormat(TabTitleContext context , const QString& format) {
+	if ( context == LocalTabTitle )
+		_localTabTitleFormat = format;
+	else if ( context == RemoteTabTitle )
+		_remoteTabTitleFormat = format;
+}
+
+QString Session::tabTitleFormat(TabTitleContext context) const {
+	if ( context == LocalTabTitle )
+		return _localTabTitleFormat;
+	else if ( context == RemoteTabTitle )
+		return _remoteTabTitleFormat;
+
+	return QString();
 }
 
 void Session::monitorTimerDone()

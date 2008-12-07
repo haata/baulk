@@ -125,6 +125,7 @@ void QTermWidget::init()
     connect(m_impl->m_session, SIGNAL(finished()), this, SLOT(sessionFinished()));
     connect( m_impl->m_terminalDisplay, SIGNAL( mouseSignal( int, int, int, int ) ), this, SIGNAL( mouseSignal( int, int, int, int ) ) );
     connect( m_impl->m_terminalDisplay, SIGNAL( rightClickAction() ), this, SIGNAL( rightClickAction() ) );
+    connect( m_impl->m_session, SIGNAL( titleChanged() ), this, SIGNAL( terminalTitleUpdate() ) );
 }
 
 
@@ -133,6 +134,10 @@ QTermWidget::~QTermWidget()
     emit destroyed();
 }
 
+
+QString QTermWidget::terminalTitle() const {
+	return m_impl->m_session->userTitle();
+}
 
 void QTermWidget::setTerminalFont(QFont &font)
 {
@@ -201,12 +206,16 @@ void QTermWidget::setSize(int h, int v)
     m_impl->m_terminalDisplay->setSize(h, v);
 }
 
-void QTermWidget::setHistorySize(int lines)
+void QTermWidget::setHistoryType( QString type, int lines )
 {
-    if (lines < 0)
-        m_impl->m_session->setHistoryType(HistoryTypeFile());
-    else
-	m_impl->m_session->setHistoryType(HistoryTypeBuffer(lines));
+	if ( type == "HistoryTypeNone" )
+		m_impl->m_session->setHistoryType( HistoryTypeNone() );
+	if ( type == "HistoryTypeBlockArray" )
+		m_impl->m_session->setHistoryType( HistoryTypeBlockArray( lines ) );
+	if ( type == "HistoryTypeFile" )
+		m_impl->m_session->setHistoryType( HistoryTypeFile() );
+	if ( type == "HistoryTypeBuffer" )
+		m_impl->m_session->setHistoryType(HistoryTypeBuffer( lines ));
 }
 
 void QTermWidget::setScrollBarPosition(ScrollBarPosition pos)

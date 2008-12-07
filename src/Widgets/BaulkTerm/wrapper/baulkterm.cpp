@@ -53,15 +53,15 @@ BaulkTerm::BaulkTerm( int startNow, QWidget *parent ) : BaulkWidget( parent ) {
 	// Connections
 	connect( term, SIGNAL( finished() ), this, SIGNAL( finished() ) );
 	connect( term, SIGNAL( finished() ), this, SLOT( closeTab() ) );
-	connect( term, SIGNAL( mouseSignal( int, int, int, int ) ), this, SLOT( rightClickMenu( int, int, int, int ) ) );
+	connect( term, SIGNAL( mouseSignal( int, int, int, int ) ), this, SLOT( xMouseInput( int, int, int, int ) ) );
 	connect( term, SIGNAL( rightClickAction() ), this, SLOT( rightClickAction() ) );
+	connect( term, SIGNAL( terminalTitleUpdate() ), this, SLOT( updateWindowTitle() ) );
 }
 
 // Configuration **********************************************************************************
 void BaulkTerm::configurationDefaults() {
 	// Font
-	font = QFont( "Terminus" );
-	font.setPointSize( 12 );
+	font = QFont( "Terminus", 12 );
 
 	// Transparency
 	opacity = 0.7;		// 70% opacity
@@ -69,10 +69,14 @@ void BaulkTerm::configurationDefaults() {
 
 	// History Size
 
-	historySize = -1;	// Infinite
+	historyType = "HistoryTypeNone";
+	historySize = 0;	// No History
 
 	// Tabs
 	useTabBar = false;		// TEMP
+
+	// Shell Program
+	shellProgram = "/bin/bash";
 
 	// Normal Colours
 	foreground	.setOptions( QColor(0xD3,0xD3,0xD3), 0, 0 );
@@ -110,8 +114,13 @@ void BaulkTerm::configurationLoad() {
 	font.fromString( ( tmp = xmlConfig->option("terminalFont") ) == QVariant("") ? font.toString()
 		: tmp.toString() );
 
+	historyType = ( tmp = xmlConfig->option("terminalHistoryType") ) == QVariant("") ? historyType
+		: tmp.toString();
 	historySize = ( tmp = xmlConfig->option("terminalHistorySize") ) == QVariant("") ? historySize
 		: tmp.toInt();
+
+	shellProgram = ( tmp = xmlConfig->option("terminalShellProgram") ) == QVariant("") ? shellProgram 
+		: tmp.toString();
 
 	// Normal Colours
 	foreground.setFromVariant( 
@@ -185,7 +194,9 @@ void BaulkTerm::configurationSave() {
 	xmlConfig->setOption( "terminalOpacity", QVariant( opacity ) );
 	xmlConfig->setOption( "terminalFadeOpacity", QVariant( fadeOpacity ) );
 	xmlConfig->setOption( "terminalFont", QVariant( font ) );
+	xmlConfig->setOption( "terminalHistoryType", QVariant( historyType ) );
 	xmlConfig->setOption( "terminalHistorySize", QVariant( historySize ) );
+	xmlConfig->setOption( "terminalShellProgram", QVariant( shellProgram ) );
 
 	// Normal Colours
 	xmlConfig->setOption( "terminalColour", foreground.toVariant(),
@@ -236,9 +247,10 @@ void BaulkTerm::configurationSave() {
 }
 
 void BaulkTerm::configurationSet() {
-	term->setHistorySize( historySize );
+	term->setHistoryType( historyType, historySize );
 	term->setTerminalFont( font );
 	term->setOpacity( opacity );
+	term->setShellProgram( shellProgram );
 
 	// Normal Colours
 	term->setColor( 0, foreground.colour(), 	foreground.transparency(), 	foreground.bold() );
@@ -265,15 +277,17 @@ void BaulkTerm::configurationSet() {
 	term->setColor( 19, white.colour(), 		white.transparency(), 		white.bold() );
 }
 
-// Configuration Menus ****************************************************************************
-void BaulkTerm::rightClickMenu( int button, int column, int line, int eventType ) {
-	// TODO Doesn't work
-	qDebug( "Button %d", button );
-	qDebug( "Column %d", column );
-	qDebug( "Line   %d", line );
-	qDebug( "eventType %d", eventType );
+// X Input ****************************************************************************************
+void BaulkTerm::xMouseInput( int button, int column, int line, int eventType ) {
+	// This will only signal if the terminal application supports an X Mouse
+	qDebug( QString("Mouse - Button %1 | Column %2 | Line %3 | eventType %4")
+			.arg( button )
+			.arg( column )
+			.arg( line )
+			.arg( eventType ).toUtf8() );
 }
 
+// Configuration Menus ****************************************************************************
 void BaulkTerm::rightClickAction() {
 	qDebug("RIGHT");
 }
@@ -300,6 +314,16 @@ void BaulkTerm::closeTab() {
 	// Close Terminal if there are no more tabs
 	if ( tabLayer->count() < 1 )
 		close();
+}
+
+// QTermWidget Passthrough Options ****************************************************************
+void BaulkTerm::startShellProgram() {
+	term->startShellProgram();
+}
+
+// Terminal Title *********************************************************************************
+void BaulkTerm::updateWindowTitle() {
+	setWindowTitle( term->terminalTitle() );
 }
 
 // Reimplemented Functions ************************************************************************
@@ -338,10 +362,12 @@ bool BaulkTerm::processCommandArgs() {
 		"  --v, --version          BaulkTerm version\n"
 		"\n"
 		"Application Options:\n"
+		"   Note: These options override the configuration file\n"
 		"  --columns               Set number of columns\n"
 		"  --e, --execute          Execute command\n"
 		"  --font <font family> <font size>\n"
-		"                          Initial terminal font used\n"
+		"                          Terminal font used\n"
+		"  --shell <shell program> ie. /bin/bash, /bin/zsh, etc.\n"
 		"  --rows                  Set number of rows\n"
 		);
 		std::cout << out.toUtf8().data();
@@ -358,12 +384,14 @@ bool BaulkTerm::processCommandArgs() {
 	}
 
 	// Columns and Rows
-	if ( args.contains( tr("--columns") ) || args.contains( tr("--rows") ) ) {
+	QString columns = tr("--columns");
+	QString rows = tr("--rows");
+	if ( args.contains( columns ) || args.contains( rows ) ) {
 		bool ok;
 		int horizontal = 80;
 		int vertical = 60;
 		for ( int c = 0; c + 1 < args.count(); ++c ) {
-			if ( args[c] == tr("--columns") ) {
+			if ( args[c] == columns ) {
 				horizontal = args[c + 1].toInt( &ok );
 				if ( ok ) {
 					args.removeAt( c );
@@ -373,7 +401,7 @@ bool BaulkTerm::processCommandArgs() {
 						break;
 				}
 			}
-			if ( args[c] == tr("--rows") ) {
+			if ( args[c] == rows ) {
 				vertical = args[c + 1].toInt( &ok );
 				if ( ok ) {
 					args.removeAt( c );
@@ -385,7 +413,42 @@ bool BaulkTerm::processCommandArgs() {
 			}
 		}
 
+		qWarning("This feature isn't used by the developer that much, log bugs if it doesn't work");
 		term->setSize( horizontal, vertical );
+	}
+
+	// Font
+	QString font = tr("--font");
+	if ( args.contains( font ) ) {
+		for ( int c = 0; c + 2 < args.count(); ++c ) {
+			if ( args[c] == font ) {
+				bool ok;
+
+				QFont termFont( args[c + 1], QString( args[c + 2] ).toInt( &ok ) );
+				if ( !ok ) {
+					qFatal( tr("Invalid font size - %1").arg( args[c + 2] ).toUtf8() );
+					return false;
+				}
+
+				term->setTerminalFont( termFont );
+
+				args.removeAt( c );
+				args.removeAt( c );
+				args.removeAt( c );
+			}
+		}
+	}
+
+	// Shell Program
+	QString shell = tr("--shell");
+	if ( args.contains( shell ) ) {
+		for ( int c = 0; c + 1 < args.count(); ++c ) {
+			if ( args[c] == shell ) {
+				term->setShellProgram( args[c + 1] );
+				args.removeAt( c );
+				args.removeAt( c );
+			}
+		}
 	}
 
 	// Execute Command (assumed last command decyphered)
