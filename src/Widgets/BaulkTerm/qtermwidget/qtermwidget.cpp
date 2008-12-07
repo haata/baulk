@@ -275,3 +275,4 @@ void QTermWidget::setEnvironment(const QStringList& environment)
 {
     m_impl->m_session->setEnvironment(environment);
 }
+

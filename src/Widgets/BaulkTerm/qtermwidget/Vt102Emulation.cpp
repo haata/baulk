@@ -289,9 +289,10 @@ void Vt102Emulation::initTokenizer() {
 // process an incoming unicode character
 
 void Vt102Emulation::receiveChar(int cc) { 
+	//qWarning("cc %d", cc ); // TODO REMOVEME
 	int i;
 	if (cc == 127) 	return; //VT100: ignore.
-
+	
 	if (ces(    CTL)) { 
 		// DEC HACK ALERT! Control Characters are allowed *within* esc sequences in VT100
 		// This means, they do neither a resetToken nor a pushToToken. Some of them, do
@@ -305,6 +306,9 @@ void Vt102Emulation::receiveChar(int cc) {
 
 	int* s = pbuf;
 	int  p = ppos;
+
+	//qWarning( "s %d", s ); // TODO REMOVEME
+	//qWarning( "p %d", p ); // TODO REMOVEME
 
 	if (getMode(MODE_Ansi)) // decide on proper action
 	{

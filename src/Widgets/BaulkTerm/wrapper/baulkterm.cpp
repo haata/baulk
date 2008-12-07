@@ -78,6 +78,10 @@ void BaulkTerm::configurationDefaults() {
 	// Shell Program
 	shellProgram = "/bin/bash";
 
+	// Shell Environment - At least TERM should be set here
+	environmentVariables 	<< "TERM=rxvt-unicode"
+				<< "EDITOR=vim";
+
 	// Normal Colours
 	foreground	.setOptions( QColor(0xD3,0xD3,0xD3), 0, 0 );
 	background	.setOptions( QColor(0x00,0x00,0x00), 1, 0 );
@@ -121,6 +125,8 @@ void BaulkTerm::configurationLoad() {
 
 	shellProgram = ( tmp = xmlConfig->option("terminalShellProgram") ) == QVariant("") ? shellProgram 
 		: tmp.toString();
+	environmentVariables = ( tmp = xmlConfig->option("terminalEnvironmentVariables") ) == QVariant("")
+		? environmentVariables : tmp.toString().split(",");
 
 	// Normal Colours
 	foreground.setFromVariant( 
@@ -197,6 +203,8 @@ void BaulkTerm::configurationSave() {
 	xmlConfig->setOption( "terminalHistoryType", QVariant( historyType ) );
 	xmlConfig->setOption( "terminalHistorySize", QVariant( historySize ) );
 	xmlConfig->setOption( "terminalShellProgram", QVariant( shellProgram ) );
+	xmlConfig->setOption( "terminalEnvironmentVariables", 
+		QVariant( environmentVariables.join(",") ) );
 
 	// Normal Colours
 	xmlConfig->setOption( "terminalColour", foreground.toVariant(),
@@ -251,6 +259,7 @@ void BaulkTerm::configurationSet() {
 	term->setTerminalFont( font );
 	term->setOpacity( opacity );
 	term->setShellProgram( shellProgram );
+	term->setEnvironment( environmentVariables );
 
 	// Normal Colours
 	term->setColor( 0, foreground.colour(), 	foreground.transparency(), 	foreground.bold() );

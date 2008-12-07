@@ -77,6 +77,7 @@ private:
 	bool useTabBar;
 
 	QString shellProgram;
+	QStringList environmentVariables;
 
 	// Normal Colours
 	TerminalColour foreground;
