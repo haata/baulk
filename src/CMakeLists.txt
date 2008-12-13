@@ -164,15 +164,15 @@ endif ( BuildBaulkTerm )
 
 
 #| Warning if the user forgot to specify a Build Variable
-if ( BuildBaulkPacket AND BuildBaulkDialog AND BuildBaulkWidget AND BuildBaulkXML AND BuildQTermWidget )
-else ( BuildBaulkPacket AND BuildBaulkDialog AND BuildBaulkWidget AND BuildBaulkXML AND BuildQTermWidget )
+if ( BuildBaulkPacket OR BuildBaulkDialog OR BuildBaulkWidget OR BuildBaulkXML OR BuildQTermWidget )
+else ( BuildBaulkPacket OR BuildBaulkDialog OR BuildBaulkWidget OR BuildBaulkXML OR BuildQTermWidget )
 	message("||Warning||")
 	message("  You forgot to specify a build option (make will do nothing)")
 	message("    For Baulk     : cmake -DBuildBaulk=true .")
-	message("    For BaulkTerm : cmake -DBuildBaulkTerm=true .")
+	message("    For BaulkTerm : cmake -DBuildBaulkTermBinary=true .")
 	message("")
 	message("  See header in src/CMakeLists.txt for more options")
-endif ( BuildBaulkPacket AND BuildBaulkDialog AND BuildBaulkWidget AND BuildBaulkXML AND BuildQTermWidget )
+endif ( BuildBaulkPacket OR BuildBaulkDialog OR BuildBaulkWidget OR BuildBaulkXML OR BuildQTermWidget )
 
 
 ##| Doxygen
