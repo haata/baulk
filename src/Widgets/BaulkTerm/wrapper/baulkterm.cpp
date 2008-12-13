@@ -68,7 +68,6 @@ void BaulkTerm::configurationDefaults() {
 	fadeOpacity = 0.5;	// 50% opacity
 
 	// History Size
-
 	historyType = "HistoryTypeNone";
 	historySize = 0;	// No History
 
@@ -323,6 +322,11 @@ void BaulkTerm::closeTab() {
 	// Close Terminal if there are no more tabs
 	if ( tabLayer->count() < 1 )
 		close();
+}
+
+// New Terminal ***********************************************************************************
+BaulkWidget *BaulkTerm::newTerminal() {
+	return (BaulkTerm*)createTermWidget( 1, 0 );
 }
 
 // QTermWidget Passthrough Options ****************************************************************

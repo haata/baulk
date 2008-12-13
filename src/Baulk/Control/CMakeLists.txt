@@ -26,7 +26,7 @@ set( LIB
 #| Baulk Common and Server Libraries
 include_directories(
 	${HEAD_DIR}/src/Common
-	${HEAD_DIR}/src/Baulk/Server
+	${HEAD_DIR}/src/Server
 )
 
 if ( BuildBaulkControl )

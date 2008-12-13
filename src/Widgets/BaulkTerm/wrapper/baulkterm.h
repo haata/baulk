@@ -53,6 +53,9 @@ public:
 	// Start Terminal
 	void startShellProgram();
 
+	// New Terminal
+	BaulkWidget *newTerminal();
+
 private:
 	int startPriority;
 

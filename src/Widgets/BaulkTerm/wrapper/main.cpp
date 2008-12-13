@@ -56,6 +56,7 @@ int main( int argc, char *argv[] ) {
 		delete app;
 		return 0;
 	}
+	//baulk->newTerminal()->show();
 
 	// Event-Loop	
 	int reTurn = app->exec();

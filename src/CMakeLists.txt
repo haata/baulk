@@ -50,6 +50,7 @@ set( HEAD_DIR ${PROJECT_SOURCE_DIR}/.. )
 subdirs(
 	Common
 	Baulk
+	Server
 	Widgets
 )
 
