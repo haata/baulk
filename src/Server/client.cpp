@@ -48,6 +48,8 @@ void InformationClient::clientRequest() {
 			int newIdnum = data[c].toInt();
 			if ( newIdnum != 0 ) // toInt defaults to 0 on failure, and 0 will never be an assigned Id 
 				newId( newIdnum );
+			else 
+				qCritical( QString("%1 || Failure to get ID").arg( errorName() ).toUtf8() );
 		}
 	}
 }

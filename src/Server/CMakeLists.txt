@@ -101,6 +101,10 @@ endif ( BuildBaulkPacket )
 
 ##| Baulk Server
 if ( BuildBaulkServBinary )
+	set( EXECUTABLE_OUTPUT_PATH
+	        ${HEAD_DIR}/bin
+	)
+
 	QT4_WRAP_CPP( MOC_SRCS_BS ${HDRS_BS} )
 	add_executable( ${EXEC_BS} ${SRCS_BS} ${MOC_SRCS_BS} )
 	target_link_libraries( 	${EXEC_BS} 

@@ -16,6 +16,9 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QApplication>
+#include <QTest>
+
+#include <client.h>
 
 #include "baulkterm.h"
 
@@ -41,6 +44,9 @@ int main( int argc, char *argv[] ) {
 	Colormap colormap = 0;
 	getDisplayInformation( display, visual, colormap );
 
+	// Daemon
+	InformationClient *client;
+
 	// Qt GUI Application start with compositing information
 	QApplication *app = new QApplication( display, argc, argv, (Qt::HANDLE)visual, (Qt::HANDLE)colormap );
 	baulk = new BaulkTerm( 0 );
@@ -50,6 +56,23 @@ int main( int argc, char *argv[] ) {
 				"background: black;"
 				"}");
 		baulk->show();
+
+		// Attempt to start Daemon
+		QString serverListenName = "BaulkTermServ"; // TODO Put in config
+
+		// Start Daemon - Automatically closes if Daemon is already running
+		QString program;
+		if ( QFile::exists("./baulkServ") )
+			program = QString("./baulkServ %1").arg( serverListenName );
+		else
+			program = QString("baulkServ %1").arg( serverListenName );
+
+		QProcess::startDetached( program );
+		QTest::qSleep(100); // Leave Time for the Daemon to start
+
+		// Connect to Daemon
+		client = new InformationClient( serverListenName );
+		client->requestId();
 	}
 	else {
 		delete baulk;
@@ -62,6 +85,7 @@ int main( int argc, char *argv[] ) {
 	int reTurn = app->exec();
 
 	// Post-Quit Events
+	delete client;
 	delete baulk;
 	delete app;
 

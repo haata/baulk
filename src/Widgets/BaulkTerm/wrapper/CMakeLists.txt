@@ -27,6 +27,7 @@ set( LIB
 #| Baulk Common and qtermwidget Libraries
 include_directories(
 	${HEAD_DIR}/src/Common
+	${HEAD_DIR}/src/Server
 	${HEAD_DIR}/src/Widgets/BaulkTerm/qtermwidget
 )
 
@@ -37,6 +38,9 @@ add_definitions(
 )
 find_package( Qt4 REQUIRED )
 set( QT_USE_QTXML 1 )
+set( QT_USE_QTNETWORK 1 )
+set( QT_USE_QTTEST 1 )
+
 include( ${QT_USE_FILE} )
 
 
@@ -86,7 +90,10 @@ if ( BuildBaulkTermBinary )
 	)
 	
 	add_executable( ${EXEC} main.cpp )
-	target_link_libraries( ${EXEC} ${LIB} )
+	target_link_libraries( ${EXEC} 
+		${LIB} 
+		BaulkClient	# From Server
+	)
 
 	#| Installation
 	install( TARGETS ${EXEC} DESTINATION bin )
