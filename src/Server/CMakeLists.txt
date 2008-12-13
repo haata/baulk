@@ -10,7 +10,6 @@ set( HEAD_DIR ${PROJECT_SOURCE_DIR}/../.. )
 
 #| Sources
 set( SRCS_BS
-	./main.cpp
         ./server.cpp
 )
 
@@ -74,7 +73,6 @@ include_directories(
 ###| Misc Qt4
 add_definitions( 
 	-Wall 
-	-ggdb 
 )
 find_package( Qt4 REQUIRED )
 set( QT_USE_QTNETWORK 1 )
@@ -98,6 +96,19 @@ if ( BuildBaulkPacket )
 	)
 endif ( BuildBaulkPacket )
 
+if ( BuildBaulkServServer )
+	QT4_WRAP_CPP( MOC_SRCS_BS ${HDRS_BS} )
+	add_library( ${LIB_BS} ${SRCS_BS} ${MOC_SRCS_BS} )
+	target_link_libraries( 	${LIB_BS} 
+				${QT_LIBRARIES} 
+				${LIB_PED}
+	)
+
+	install( TARGETS
+		${LIB_BS}
+		DESTINATION lib
+	)
+endif ( BuildBaulkServServer )
 
 ##| Baulk Server
 if ( BuildBaulkServBinary )
@@ -106,10 +117,11 @@ if ( BuildBaulkServBinary )
 	)
 
 	QT4_WRAP_CPP( MOC_SRCS_BS ${HDRS_BS} )
-	add_executable( ${EXEC_BS} ${SRCS_BS} ${MOC_SRCS_BS} )
+	add_executable( ${EXEC_BS} main.cpp )
 	target_link_libraries( 	${EXEC_BS} 
 				${QT_LIBRARIES} 
 				${LIB_PED}
+				${LIB_BS}
 	)
 	install( TARGETS
 		${EXEC_BS}

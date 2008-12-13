@@ -19,6 +19,7 @@
 #include <QTest>
 
 #include <client.h>
+#include <server.h>
 
 #include "baulkterm.h"
 
@@ -51,35 +52,36 @@ int main( int argc, char *argv[] ) {
 	QApplication *app = new QApplication( display, argc, argv, (Qt::HANDLE)visual, (Qt::HANDLE)colormap );
 	baulk = new BaulkTerm( 0 );
 	if ( baulk->processCommandArgs() ) {
-		baulk->startShellProgram();
-		baulk->setStyleSheet("QWidget {"
-				"background: black;"
-				"}");
-		baulk->show();
+		if ( baulk->useDaemon() ) {
+			QString serverListenName = "BaulkTermServ"; // TODO Put in config
 
-		// Attempt to start Daemon
-		QString serverListenName = "BaulkTermServ"; // TODO Put in config
+			// Daemon Quit Event Connection
+			InformationServer *serv = new InformationServer( serverListenName );
+			//QObject::connect( serv, SIGNAL( destroyed() ), app, SLOT( quit() ));
+			QObject::connect( serv, SIGNAL( startNewHostInstance() ), baulk, SLOT( newTerminal() ) );
 
-		// Start Daemon - Automatically closes if Daemon is already running
-		QString program;
-		if ( QFile::exists("./baulkServ") )
-			program = QString("./baulkServ %1").arg( serverListenName );
-		else
-			program = QString("baulkServ %1").arg( serverListenName );
+			// Connect to Daemon
+			QTest::qSleep( 200 );
+			client = new InformationClient( serverListenName );
+			client->requestId();
 
-		QProcess::startDetached( program );
-		QTest::qSleep(100); // Leave Time for the Daemon to start
+			// Start Terminal through generic pathway (via the connection above)
+			client->requestStartNewHostInstance();
+		}
 
-		// Connect to Daemon
-		client = new InformationClient( serverListenName );
-		client->requestId();
+		if ( !baulk->useDaemon() ) {
+			baulk->startShellProgram();
+			baulk->setStyleSheet("QWidget {"
+					"background: black;"
+					"}");
+			baulk->show();
+		}
 	}
 	else {
 		delete baulk;
 		delete app;
 		return 0;
 	}
-	//baulk->newTerminal()->show();
 
 	// Event-Loop	
 	int reTurn = app->exec();

@@ -78,6 +78,8 @@ private slots:
 
 signals:
 	void alreadyRunning();
+
+	void startNewHostInstance();
 };
 
 #endif

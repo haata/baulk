@@ -17,8 +17,10 @@
 
 #include "server.h"
 
+// Constructor ************************************************************************************
 InformationServer::InformationServer( QString listen, QObject *parent ) : QObject( parent ) {
 	allowTerminate = true;
+
 	// Reserve First Socket and already running test
 	QLocalSocket *tmp = new QLocalSocket( this );
 	clientList.append( tmp );
@@ -28,9 +30,13 @@ InformationServer::InformationServer( QString listen, QObject *parent ) : QObjec
 	// Server Not Running
 	case QLocalSocket::ServerNotFoundError:
 		listenSocket = listen;
+
 		server = new QLocalServer( this );
 		if ( !server->listen( listenSocket ) ) 
-			qCritical( tr("%1\n\tCould not open listen socket\n\t%1").arg( errorName() ).arg( listenSocket ).toUtf8() );
+			qCritical( tr("%1\n\tCould not open listen socket\n\t%1")
+				.arg( errorName() )
+				.arg( listenSocket ).toUtf8() );
+
 		connect( server, SIGNAL( newConnection() ), this, SLOT( connection() ) );
 		break;
 	// Server Already Running Case
@@ -67,7 +73,7 @@ void InformationServer::connection() {
 	connect( clientConnection, SIGNAL( disconnected() ), clientConnection, SLOT( deleteLater() ) );
 }
 
-// All Incoming Data goes through here
+// All Incoming Data goes through here ************************************************************
 void InformationServer::incomingData() {
 	QDataStream in( clientConnection );
 	in.setVersion( QDataStream::Qt_4_4 );
@@ -168,6 +174,11 @@ void InformationServer::serverRequest() {
 				--connectedClients;
 				if ( connectedClients < 1 )
 					terminate();
+			}
+		}
+		if ( flags[c] == "RequestStartNewHostInstance" ) {
+			if ( data[c] == "True" ) {
+				emit startNewHostInstance();
 			}
 		}
 	}

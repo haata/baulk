@@ -93,6 +93,7 @@ if ( BuildBaulkTermBinary )
 	target_link_libraries( ${EXEC} 
 		${LIB} 
 		BaulkClient	# From Server
+		BaulkServer	# From Server
 	)
 
 	#| Installation

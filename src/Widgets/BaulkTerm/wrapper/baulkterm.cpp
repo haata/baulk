@@ -60,6 +60,9 @@ BaulkTerm::BaulkTerm( int startNow, QWidget *parent ) : BaulkWidget( parent ) {
 
 // Configuration **********************************************************************************
 void BaulkTerm::configurationDefaults() {
+	// Daemon
+	daemonEnabled = true;
+
 	// Font
 	font = QFont( "Terminus", 12 );
 
@@ -113,6 +116,9 @@ void BaulkTerm::configurationLoad() {
 		: tmp.toDouble();
 	fadeOpacity = ( tmp = xmlConfig->option("terminalFadeOpacity") ) == QVariant("") ? fadeOpacity
 		: tmp.toDouble();
+
+	daemonEnabled = ( tmp = xmlConfig->option("terminalUseDaemon") ) == QVariant("") ? daemonEnabled
+		: tmp.toBool();
 
 	font.fromString( ( tmp = xmlConfig->option("terminalFont") ) == QVariant("") ? font.toString()
 		: tmp.toString() );
@@ -198,6 +204,7 @@ void BaulkTerm::configurationLoad() {
 void BaulkTerm::configurationSave() {
 	xmlConfig->setOption( "terminalOpacity", QVariant( opacity ) );
 	xmlConfig->setOption( "terminalFadeOpacity", QVariant( fadeOpacity ) );
+	xmlConfig->setOption( "terminalUseDaemon", QVariant( daemonEnabled ) );
 	xmlConfig->setOption( "terminalFont", QVariant( font ) );
 	xmlConfig->setOption( "terminalHistoryType", QVariant( historyType ) );
 	xmlConfig->setOption( "terminalHistorySize", QVariant( historySize ) );
@@ -325,8 +332,13 @@ void BaulkTerm::closeTab() {
 }
 
 // New Terminal ***********************************************************************************
-BaulkWidget *BaulkTerm::newTerminal() {
-	return (BaulkTerm*)createTermWidget( 1, 0 );
+void BaulkTerm::newTerminal() {
+	qDebug("NEWTERM!!");
+	term = (QTermWidget*)createTermWidget( 1, 0 );
+
+	configurationSet();
+	term->startShellProgram();
+	term->show();
 }
 
 // QTermWidget Passthrough Options ****************************************************************

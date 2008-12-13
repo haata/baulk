@@ -23,6 +23,7 @@
 # | BuildBaulkPacket		- Build BaulkPacket Library
 # | BuildBaulkServBinary	- Build minimum for the BaulkServ Binary
 # | BuildBaulkServClient	- Build BaulkServ Client Library
+# | BuildBaulkServServer	- Build BaulkServ Server Library
 #
 # Common Library Builds
 # | BuildBaulkDialog		- Builds BaulkDialog Library
@@ -64,6 +65,7 @@ if ( BuildReset )
 	set( BuildBaulkPacket		0 )
 	set( BuildBaulkServBinary	0 )
 	set( BuildBaulkServClient	0 )
+	set( BuildBaulkServServer	0 )
 	set( BuildBaulkStatus		0 )
 	set( BuildBaulkSwallow		0 )
 	set( BuildBaulkTerm		0 )
@@ -138,21 +140,24 @@ endif ( BuildBaulkControl )
 #| BaulkServ Binary
 if ( BuildBaulkServBinary )
 	set( BuildBaulkServClient	1 )
+	set( BuildBaulkServServer	1 )
 	set( BuildBaulkPacket		1 )
 endif ( BuildBaulkServBinary )
+
+
+#| BaulkTerm Binary Build
+if ( BuildBaulkTermBinary )
+	set( BuildBaulkTerm		1 )
+	set( BuildBaulkServServer	1 )
+	set( BuildBaulkServClient	1 )
+	set( BuildQTermWidget		1 )
+endif ( BuildBaulkTermBinary )
 
 
 #| BaulkServ Client
 if ( BuildBaulkServClient )
 	set( BuildBaulkPacket		1 )
 endif ( BuildBaulkServClient )
-
-
-#| BaulkTerm Binary Build
-if ( BuildBaulkTermBinary )
-	set( BuildBaulkTerm		1 )
-	set( BuildQTermWidget		1 )
-endif ( BuildBaulkTermBinary )
 
 
 #| BaulkTerm Library

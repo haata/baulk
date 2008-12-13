@@ -17,6 +17,7 @@
 
 #include "client.h"
 
+// Constructor ************************************************************************************
 InformationClient::InformationClient( QString call, QObject *parent ) : QObject( parent ) {
 	currentId = 0; // Default Id;
 	serverName = call;
@@ -25,6 +26,7 @@ InformationClient::InformationClient( QString call, QObject *parent ) : QObject(
 	connect( socket, SIGNAL( readyRead() ), this, SLOT( incomingData() ) );
 }
 
+// Destructor *************************************************************************************
 InformationClient::~InformationClient() {
 	// Remove Client From Server List
 	Packet removePacket(	Packet::infoToId( 0, 0 ),
@@ -58,7 +60,7 @@ void InformationClient::connectToServer() {
 	qDebug("READ!");
 }
 
-// All Incoming Data goes through here
+// All Incoming Data goes through here ************************************************************
 void InformationClient::incomingData() {
 	QDataStream in( socket );
 	in.setVersion( QDataStream::Qt_4_4 );
@@ -88,7 +90,7 @@ void InformationClient::newId( int newIdnum ) {
 	qDebug( QString("%1\n\tNew Id || %2").arg( errorName() ).arg( currentId ).toUtf8() );
 }
 
-// All Outgoing Data goes through here
+// All Outgoing Data goes through here ************************************************************
 void InformationClient::outgoingData( QString data ) {
 	//if ( !socket->isValid() ) {
 		socket->abort();
@@ -109,6 +111,16 @@ void InformationClient::requestId() {
 	Packet requestPacket( 	Packet::infoToId( 0, 0 ), 
 				Packet::infoToId( 0, 0 ), 
 				QStringList() << "RequestId", 
+				QStringList() << "True" );
+
+	outgoingData( requestPacket.packet() );
+}
+
+// Request startNewHostInstance signal on server **************************************************
+void InformationClient::requestStartNewHostInstance() {
+	Packet requestPacket( 	Packet::infoToId( 0, 0 ), 
+				Packet::infoToId( 0, id() ), 
+				QStringList() << "RequestStartNewHostInstance", 
 				QStringList() << "True" );
 
 	outgoingData( requestPacket.packet() );

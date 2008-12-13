@@ -53,8 +53,12 @@ public:
 	// Start Terminal
 	void startShellProgram();
 
+	// External Settings
+	bool useDaemon() const { return daemonEnabled; }
+
+public slots:
 	// New Terminal
-	BaulkWidget *newTerminal();
+	void newTerminal();
 
 private:
 	int startPriority;
@@ -71,6 +75,8 @@ private:
 	// Configuration Settings
 	qreal opacity;
 	qreal fadeOpacity;
+
+	bool daemonEnabled;
 
 	int historySize;
 	QString historyType;

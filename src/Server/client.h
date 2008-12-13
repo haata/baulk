@@ -43,6 +43,7 @@ public:
 
 	void connectToServer();
 	void requestId();
+	void requestStartNewHostInstance();
 
 	int id() const { return currentId; }
 
