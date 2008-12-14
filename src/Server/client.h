@@ -43,12 +43,12 @@ public:
 
 	void connectToServer();
 	void requestId();
-	void requestStartNewHostInstance();
 
 	int id() const { return currentId; }
 
 public slots:
 	void incomingData();
+	void requestStartNewHostInstance();
 
 private:
 	int currentId;
@@ -63,6 +63,9 @@ private:
 	void clientRequest();
 	void newId( int newId );
 	void outgoingData( QString data );
+
+signals:
+	void idChanged();
 };
 
 #endif

@@ -98,7 +98,7 @@ endif ( BuildBaulkPacket )
 
 if ( BuildBaulkServServer )
 	QT4_WRAP_CPP( MOC_SRCS_BS ${HDRS_BS} )
-	add_library( ${LIB_BS} ${SRCS_BS} ${MOC_SRCS_BS} )
+	add_library( ${LIB_BS} SHARED ${SRCS_BS} ${MOC_SRCS_BS} )
 	target_link_libraries( 	${LIB_BS} 
 				${QT_LIBRARIES} 
 				${LIB_PED}

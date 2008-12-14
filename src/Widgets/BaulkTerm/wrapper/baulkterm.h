@@ -20,11 +20,11 @@
 
 #include <iostream>
 
+#include <QDialog>
 #include <QEvent>
 #include <QFont>
+#include <QMainWindow>
 #include <QResizeEvent>
-#include <QStackedWidget>
-#include <QTabBar>
 #include <QTimer>
 #include <QVBoxLayout>
 #include <QWidget>
@@ -55,6 +55,7 @@ public:
 
 	// External Settings
 	bool useDaemon() const { return daemonEnabled; }
+	QString listenName() const { return daemonListenName; }
 
 public slots:
 	// New Terminal
@@ -64,19 +65,18 @@ private:
 	int startPriority;
 
 	QTermWidget *term;
+	QList<QTermWidget*> termList;
+
+	QVBoxLayout *termLayout;
 
 	BaulkXML *xmlConfig;
-
-	QTabBar *tabBar;
-	QStackedWidget *tabLayer;
-
-	QVBoxLayout *layout;
 
 	// Configuration Settings
 	qreal opacity;
 	qreal fadeOpacity;
 
 	bool daemonEnabled;
+	QString daemonListenName;
 
 	int historySize;
 	QString historyType;
@@ -127,6 +127,8 @@ private slots:
 	void rightClickAction();
 
 	void updateWindowTitle();
+
+	void removeTerminalFromList();
 
 protected:
 	virtual void changeEvent( QEvent *event );

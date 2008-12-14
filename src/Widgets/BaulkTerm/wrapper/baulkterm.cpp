@@ -19,13 +19,6 @@
 
 // Constructors ***********************************************************************************
 BaulkTerm::BaulkTerm( int startNow, QWidget *parent ) : BaulkWidget( parent ) {
-	// Tab Bar
-	//tabBar = new QTabBar( this );
-	//if ( !useTabBar )
-		//tabBar->hide();
-
-	tabLayer = new QStackedWidget;
-
 	// Initialize BaulkXML for Config Loading/Saving
 	xmlConfig = new BaulkXML( "BaulkTerm", this );
 
@@ -35,33 +28,17 @@ BaulkTerm::BaulkTerm( int startNow, QWidget *parent ) : BaulkWidget( parent ) {
 
 	// Initial Terminal
 	startPriority = startNow;
-	newTab();
 
-	// Layout
-	layout = new QVBoxLayout;
-	layout->setContentsMargins( 0,0,0,0 );
-
-	//layout->addWidget( tabBar );
-
-	layout->addWidget( tabLayer );
-
-	// Widget Settings
-	setFocusProxy( term );
-	setLayout( layout );
-	setWindowTitle( tr("BaulkTerm") );
-
-	// Connections
-	connect( term, SIGNAL( finished() ), this, SIGNAL( finished() ) );
-	connect( term, SIGNAL( finished() ), this, SLOT( closeTab() ) );
-	connect( term, SIGNAL( mouseSignal( int, int, int, int ) ), this, SLOT( xMouseInput( int, int, int, int ) ) );
-	connect( term, SIGNAL( rightClickAction() ), this, SLOT( rightClickAction() ) );
-	connect( term, SIGNAL( terminalTitleUpdate() ), this, SLOT( updateWindowTitle() ) );
+	setStyleSheet("QWidget {"
+				"background: black;"
+				"}");
 }
 
 // Configuration **********************************************************************************
 void BaulkTerm::configurationDefaults() {
 	// Daemon
 	daemonEnabled = true;
+	daemonListenName = "BaulkTermServer";
 
 	// Font
 	font = QFont( "Terminus", 12 );
@@ -119,6 +96,8 @@ void BaulkTerm::configurationLoad() {
 
 	daemonEnabled = ( tmp = xmlConfig->option("terminalUseDaemon") ) == QVariant("") ? daemonEnabled
 		: tmp.toBool();
+	daemonListenName = ( tmp = xmlConfig->option("terminalDaemonListenName") ) == QVariant("")
+		? daemonListenName : tmp.toString();
 
 	font.fromString( ( tmp = xmlConfig->option("terminalFont") ) == QVariant("") ? font.toString()
 		: tmp.toString() );
@@ -205,6 +184,7 @@ void BaulkTerm::configurationSave() {
 	xmlConfig->setOption( "terminalOpacity", QVariant( opacity ) );
 	xmlConfig->setOption( "terminalFadeOpacity", QVariant( fadeOpacity ) );
 	xmlConfig->setOption( "terminalUseDaemon", QVariant( daemonEnabled ) );
+	xmlConfig->setOption( "terminalDaemonListenName", QVariant( daemonListenName ) );
 	xmlConfig->setOption( "terminalFont", QVariant( font ) );
 	xmlConfig->setOption( "terminalHistoryType", QVariant( historyType ) );
 	xmlConfig->setOption( "terminalHistorySize", QVariant( historySize ) );
@@ -314,31 +294,73 @@ void BaulkTerm::newTab() {
 	// Use Current Configuration Options on new terminal
 	configurationSet();
 
-	// Add terminal to tabbed view
-	tabLayer->addWidget( term );
-	//tabBar->addTab( QString("Terminal %1").arg( tabLayer->count() ) );
-
 	term->updateImage();
 }
 
 void BaulkTerm::closeTab() {
-	// Remove terminal from tabs
-	//tabBar->removeTab( tabLayer->currentIndex() );
-	tabLayer->removeWidget( term );
-
-	// Close Terminal if there are no more tabs
-	if ( tabLayer->count() < 1 )
-		close();
 }
 
-// New Terminal ***********************************************************************************
+// Terminal Start/Close ***************************************************************************
 void BaulkTerm::newTerminal() {
-	qDebug("NEWTERM!!");
-	term = (QTermWidget*)createTermWidget( 1, 0 );
+	// New Terminal
+	term = new QTermWidget( startPriority, this );
+	termList.append( term );
 
+	// Dialog for Terminal Layout
+	if ( layout() == 0 ) {
+		// Layout for Terminal Widget
+		termLayout = new QVBoxLayout;
+		termLayout->setContentsMargins( 0,0,0,0 );
+		termLayout->addWidget( term );
+
+		// Hide the main window if the terminal contained is finished
+		connect( term, SIGNAL( finished() ), this, SLOT( hide() ) );
+		connect( term, SIGNAL( finished() ), termLayout, SLOT( deleteLater() ) );
+
+		// Widget Settings
+		setWindowTitle( tr("BaulkTerm") );
+
+		// Layout Setup
+		setLayout( termLayout );
+		show();
+
+		qDebug("MAIN");
+	}
+	else {
+		// Use a new Window
+		QMainWindow *window = new QMainWindow( this );
+
+		// Hide and Close the Dialog window once the terminal is finished
+		connect( term, SIGNAL( finished() ), window, SLOT( hide() ) );
+		connect( term, SIGNAL( finished() ), window, SLOT( close() ) );
+
+		// Widget Settings
+		window->setWindowTitle( tr("BaulkTerm") );
+		
+		// Layout Setup
+		window->setCentralWidget( term );
+		window->show();
+
+		qDebug("EXTRA");
+	}
+
+	// Apply Terminal Settings
 	configurationSet();
-	term->startShellProgram();
-	term->show();
+
+	// Connections
+	connect( term, SIGNAL( finished() ), this, SIGNAL( finished() ) );
+	connect( term, SIGNAL( finished() ), this, SLOT( removeTerminalFromList() ) );
+	connect( term, SIGNAL( mouseSignal( int, int, int, int ) ), this, SLOT( xMouseInput( int, int, int, int ) ) );
+	connect( term, SIGNAL( rightClickAction() ), this, SLOT( rightClickAction() ) );
+	connect( term, SIGNAL( terminalTitleUpdate() ), this, SLOT( updateWindowTitle() ) );
+
+	startShellProgram();
+
+	term->updateImage();
+}
+
+void BaulkTerm::removeTerminalFromList() {
+	qDebug( "%d", termList.indexOf( 0 ) );
 }
 
 // QTermWidget Passthrough Options ****************************************************************

@@ -86,7 +86,10 @@ void InformationClient::incomingData() {
 
 void InformationClient::newId( int newIdnum ) {
 	currentId = newIdnum;
-	// TODO emit signal for Controller to determine new Id
+
+	// Allows for the parent program to determine when an ID has been assigned
+	emit idChanged();
+
 	qDebug( QString("%1\n\tNew Id || %2").arg( errorName() ).arg( currentId ).toUtf8() );
 }
 

@@ -53,27 +53,24 @@ int main( int argc, char *argv[] ) {
 	baulk = new BaulkTerm( 0 );
 	if ( baulk->processCommandArgs() ) {
 		if ( baulk->useDaemon() ) {
-			QString serverListenName = "BaulkTermServ"; // TODO Put in config
+			QString serverListenName = baulk->listenName();
 
-			// Daemon Quit Event Connection
+			// Daemon - Quit if only starting a client
 			InformationServer *serv = new InformationServer( serverListenName );
-			//QObject::connect( serv, SIGNAL( destroyed() ), app, SLOT( quit() ));
-			QObject::connect( serv, SIGNAL( startNewHostInstance() ), baulk, SLOT( newTerminal() ) );
+			QObject::connect( serv, SIGNAL( destroyed() ), app, SLOT( quit() ));
 
-			// Connect to Daemon
-			QTest::qSleep( 200 );
+			// Client
 			client = new InformationClient( serverListenName );
-			client->requestId();
 
-			// Start Terminal through generic pathway (via the connection above)
-			client->requestStartNewHostInstance();
+			// Connection for starting each terminal
+			QObject::connect( serv, SIGNAL( startNewHostInstance() ), baulk, SLOT( newTerminal() ) );
+			QObject::connect( client, SIGNAL( idChanged() ), client, SLOT( requestStartNewHostInstance() ) );
+
+			client->requestId();
 		}
 
 		if ( !baulk->useDaemon() ) {
 			baulk->startShellProgram();
-			baulk->setStyleSheet("QWidget {"
-					"background: black;"
-					"}");
 			baulk->show();
 		}
 	}
