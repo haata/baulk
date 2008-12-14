@@ -306,11 +306,20 @@ void BaulkTerm::newTerminal() {
 	term = new QTermWidget( startPriority, this );
 	termList.append( term );
 
-	// Dialog for Terminal Layout
+	// Determine Whether the Main Window is in Use
+	bool useMainWindow = false;
+/*
 	if ( layout() == 0 ) {
-		// Layout for Terminal Widget
 		termLayout = new QVBoxLayout;
 		termLayout->setContentsMargins( 0,0,0,0 );
+		useMainWindow = true;
+	}
+	else if ( layout()->count() == 0 )
+		useMainWindow = true;
+*/
+	// Window used for Terminal Layout
+	if ( useMainWindow ) {
+		// Layout for Terminal Widget
 		termLayout->addWidget( term );
 
 		// Hide the main window if the terminal contained is finished
@@ -325,14 +334,16 @@ void BaulkTerm::newTerminal() {
 		show();
 
 		qDebug("MAIN");
+
+		connect( term, SIGNAL( finished() ), this, SIGNAL( finished() ) );
 	}
 	else {
 		// Use a new Window
-		QMainWindow *window = new QMainWindow( this );
+		BaulkWindow *window = new BaulkWindow( false, 0 );
 
-		// Hide and Close the Dialog window once the terminal is finished
-		connect( term, SIGNAL( finished() ), window, SLOT( hide() ) );
-		connect( term, SIGNAL( finished() ), window, SLOT( close() ) );
+		// Remove Terminal if Window closed
+		connect( term, SIGNAL( finished() ), window, SLOT( forceClose() ) );
+		connect( window, SIGNAL( userAttemptedClose() ), this, SLOT( removeTerminalViaUserClose() ) );
 
 		// Widget Settings
 		window->setWindowTitle( tr("BaulkTerm") );
@@ -340,15 +351,12 @@ void BaulkTerm::newTerminal() {
 		// Layout Setup
 		window->setCentralWidget( term );
 		window->show();
-
-		qDebug("EXTRA");
 	}
 
 	// Apply Terminal Settings
 	configurationSet();
 
 	// Connections
-	connect( term, SIGNAL( finished() ), this, SIGNAL( finished() ) );
 	connect( term, SIGNAL( finished() ), this, SLOT( removeTerminalFromList() ) );
 	connect( term, SIGNAL( mouseSignal( int, int, int, int ) ), this, SLOT( xMouseInput( int, int, int, int ) ) );
 	connect( term, SIGNAL( rightClickAction() ), this, SLOT( rightClickAction() ) );
@@ -359,8 +367,18 @@ void BaulkTerm::newTerminal() {
 	term->updateImage();
 }
 
-void BaulkTerm::removeTerminalFromList() {
-	qDebug( "%d", termList.indexOf( 0 ) );
+void BaulkTerm::removeTerminalViaUserClose() {
+	// Removes the Terminal from the terminal list if the user closes the window
+	BaulkWindow *closingWindow = (BaulkWindow*) sender();
+	removeTerminalFromList( (QTermWidget*) closingWindow->centralWidget() );
+	closingWindow->forceClose();
+}
+
+void BaulkTerm::removeTerminalFromList( QTermWidget *terminal ) {
+	// Removes the sender from the term list
+	if ( terminal == 0 )
+		terminal = (QTermWidget*) sender();
+	termList.removeOne( terminal );
 }
 
 // QTermWidget Passthrough Options ****************************************************************
@@ -389,6 +407,20 @@ void BaulkTerm::changeEvent( QEvent *event ) {
 		break;
 	}
 	event->accept();
+}
+
+void BaulkTerm::closeEvent( QCloseEvent *event ) {
+	qDebug("BLALALA");
+	if ( termList.count() < 1 ) {
+		qDebug("LAST");
+		event->accept();
+	}
+	else {
+		qDebug("MAIN TERM CLOSE");
+		event->ignore();
+		//hide();
+		//mainTerm->close();
+	}
 }
 
 bool BaulkTerm::processCommandArgs() {

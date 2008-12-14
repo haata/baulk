@@ -38,7 +38,7 @@ class InformationClient : public QObject {
 	Q_OBJECT
 
 public:
-	InformationClient( QString call, QObject *parent = 0 );
+	InformationClient( QString call, bool informDaemonOnClose = true, QObject *parent = 0 );
 	~InformationClient();
 
 	void connectToServer();
@@ -51,6 +51,8 @@ public slots:
 	void requestStartNewHostInstance();
 
 private:
+	bool informDaemonOnClose;
+
 	int currentId;
 
 	Packet *incomingPacket;

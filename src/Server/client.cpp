@@ -18,10 +18,12 @@
 #include "client.h"
 
 // Constructor ************************************************************************************
-InformationClient::InformationClient( QString call, QObject *parent ) : QObject( parent ) {
+InformationClient::InformationClient( QString call, bool informOnClose, QObject *parent ) : QObject( parent ) {
 	currentId = 0; // Default Id;
 	serverName = call;
 	socket = new QLocalSocket( this );
+
+	informDaemonOnClose = informOnClose;
 
 	connect( socket, SIGNAL( readyRead() ), this, SLOT( incomingData() ) );
 }
@@ -29,16 +31,18 @@ InformationClient::InformationClient( QString call, QObject *parent ) : QObject(
 // Destructor *************************************************************************************
 InformationClient::~InformationClient() {
 	// Remove Client From Server List
-	Packet removePacket(	Packet::infoToId( 0, 0 ),
-				Packet::infoToId( 0, currentId ),
-				QStringList() << "RemoveId",
-				QStringList() << "True");
-	outgoingData( removePacket.packet() );
+	if ( informDaemonOnClose ) {
+		Packet removePacket(	Packet::infoToId( 0, 0 ),
+					Packet::infoToId( 0, currentId ),
+					QStringList() << "RemoveId",
+					QStringList() << "True");
+		outgoingData( removePacket.packet() );
 #ifdef Q_OS_WIN32
-	// Since Windows cuts corners, I have to force it to keep the 
-	//  window open until the very end
-	qCritical("Client Closing");
+		// Since Windows cuts corners, I have to force it to keep the 
+		//  client open until the very end
+		qCritical("Client Closing");
 #endif
+	}
 }
 
 void InformationClient::clientRequest() {

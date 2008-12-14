@@ -24,6 +24,24 @@ set( LIB_BW
 )
 
 
+##| Baulk Window
+
+#| Sources
+set( SRCS_BWN
+	./baulkwindow.cpp
+)
+
+#| Headers
+set( HDRS_BWN
+	./baulkwindow.h
+)
+
+#| Library
+set( LIB_BWN
+	BaulkWindow
+)
+
+
 ##| Baulk Dialog
 
 #| Sources
@@ -100,6 +118,21 @@ if ( BuildBaulkWidget )
 	target_link_libraries( ${LIB_BW} ${QT_LIBRARIES} )
 	install( TARGETS ${LIB_BW} DESTINATION lib )
 endif ( BuildBaulkWidget )
+
+
+##| Baulk Window
+if ( BuildBaulkWindow )
+	QT4_WRAP_CPP( MOC_SRCS_BWN ${HDRS_BWN} )
+	
+	if ( WIN32 )
+		add_library( ${LIB_BWN} STATIC ${SRCS_BWN} ${MOC_SRCS_BWN} )
+	else ( WIN32 )
+		add_library( ${LIB_BWN} SHARED ${SRCS_BWN} ${MOC_SRCS_BWN} )
+	endif( WIN32 )
+
+	target_link_libraries( ${LIB_BWN} ${QT_LIBRARIES} )
+	install( TARGETS ${LIB_BWN} DESTINATION lib )
+endif ( BuildBaulkWindow )
 
 
 ##| Baulk Dialog

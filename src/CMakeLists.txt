@@ -28,6 +28,7 @@
 # Common Library Builds
 # | BuildBaulkDialog		- Builds BaulkDialog Library
 # | BuildBaulkWidget		- Builds BaulkWidget Library
+# | BuildBaulkWindow		- Builds BaulkWindow Library
 # | BuildBaulkXML		- Builds BaulkXML Library
 # | BuildLibLoader		- Builds Library Loader (BaulkXML will automatically be built as well)
 #
@@ -164,6 +165,7 @@ endif ( BuildBaulkServClient )
 if ( BuildBaulkTerm )
 	set( BuildQTermWidget		1 )
 	set( BuildBaulkWidget		1 )
+	set( BuildBaulkWindow		1 )
 	set( BuildBaulkXML		1 )
 endif ( BuildBaulkTerm )
 

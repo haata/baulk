@@ -50,17 +50,19 @@ int main( int argc, char *argv[] ) {
 
 	// Qt GUI Application start with compositing information
 	QApplication *app = new QApplication( display, argc, argv, (Qt::HANDLE)visual, (Qt::HANDLE)colormap );
+
+	// Start BaulkTerm
 	baulk = new BaulkTerm( 0 );
 	if ( baulk->processCommandArgs() ) {
 		if ( baulk->useDaemon() ) {
 			QString serverListenName = baulk->listenName();
 
 			// Daemon - Quit if only starting a client
-			InformationServer *serv = new InformationServer( serverListenName );
+			InformationServer *serv = new InformationServer( serverListenName, baulk );
 			QObject::connect( serv, SIGNAL( destroyed() ), app, SLOT( quit() ));
 
 			// Client
-			client = new InformationClient( serverListenName );
+			client = new InformationClient( serverListenName, false, baulk );
 
 			// Connection for starting each terminal
 			QObject::connect( serv, SIGNAL( startNewHostInstance() ), baulk, SLOT( newTerminal() ) );

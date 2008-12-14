@@ -74,6 +74,7 @@ if ( BuildBaulkTerm )
 	target_link_libraries( ${LIB} 
 		${QT_LIBRARIES} 
 		BaulkWidget	# From Common
+		BaulkWindow	# From Common
 		BaulkXML	# From Common
 		qtermwidget	# From qtermwidget CVS
 	)

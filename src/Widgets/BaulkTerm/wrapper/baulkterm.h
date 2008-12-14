@@ -20,6 +20,7 @@
 
 #include <iostream>
 
+#include <QCloseEvent>
 #include <QDialog>
 #include <QEvent>
 #include <QFont>
@@ -30,6 +31,7 @@
 #include <QWidget>
 
 #include <baulkwidget.h>
+#include <baulkwindow.h>
 #include <baulkxml.h>
 #include <qtermwidget.h>
 
@@ -65,6 +67,7 @@ private:
 	int startPriority;
 
 	QTermWidget *term;
+	QTermWidget *mainTerm;
 	QList<QTermWidget*> termList;
 
 	QVBoxLayout *termLayout;
@@ -128,14 +131,17 @@ private slots:
 
 	void updateWindowTitle();
 
-	void removeTerminalFromList();
+	void removeTerminalFromList( QTermWidget *terminal = 0 );
+	void removeTerminalViaUserClose();
 
 protected:
 	virtual void changeEvent( QEvent *event );
 	virtual void resizeEvent( QResizeEvent *event );
+	virtual void closeEvent( QCloseEvent *event );
 
 signals:
 	void finished();
+	void removedTerminal();
 };
 
 #endif
