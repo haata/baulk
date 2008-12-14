@@ -68,7 +68,7 @@ void handler( QtMsgType type, const char *msg ) {
 				.replace( QRegExp("\t(.*)"), QString("<li>\\1</li>") ) 
 			);
 #ifndef BAULK
-		logPlain = QObject::tr("<Debug> %1").arg( msg );
+		logPlain = QObject::tr("\033[22;32m<Debug>\033[22;0m %1").arg( msg );
 		std::cerr << logPlain.toUtf8().data() << std::endl;
 #endif
 		break;
@@ -80,7 +80,7 @@ void handler( QtMsgType type, const char *msg ) {
 				.replace( QRegExp("\t(.*)"), QString("<li>\\1</li>") ) 
 			);
 #ifndef BAULK
-		logPlain = QObject::tr("<Warning> %1").arg( msg );
+		logPlain = QObject::tr("\033[22;36m<Warning>\033[22;0m %1").arg( msg );
 		std::cerr << logPlain.toUtf8().data() << std::endl;
 #endif
 		break;
@@ -91,7 +91,7 @@ void handler( QtMsgType type, const char *msg ) {
 				.replace( QRegExp("\t(.*)\n"), QString("<li>\\1</li>") ) 
 				.replace( QRegExp("\t(.*)"), QString("<li>\\1</li>") ) 
 			);
-		logPlain = QObject::tr("<Critical> %1").arg( msg );
+		logPlain = QObject::tr("\033[22;33m<Critical>\033[22;0m %1").arg( msg );
 		std::cerr << logPlain.toUtf8().data() << std::endl;
 		break;
 	case QtFatalMsg:
@@ -101,7 +101,7 @@ void handler( QtMsgType type, const char *msg ) {
 				.replace( QRegExp("\t(.*)\n"), QString("<li>\\1</li>") ) 
 				.replace( QRegExp("\t(.*)"), QString("<li>\\1</li>") ) 
 			);
-		logPlain = QObject::tr("<Fatal> %1").arg( msg );
+		logPlain = QObject::tr("\033[22;31m<Fatal>\033[22;0m %1").arg( msg );
 		std::cerr << logPlain.toUtf8().data() << std::endl;
 		break;
 	}
