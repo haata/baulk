@@ -292,12 +292,6 @@ void BaulkTerm::rightClickAction() {
 
 // Tabs *******************************************************************************************
 void BaulkTerm::newTab() {
-	term = new QTermWidget( startPriority, this );
-
-	// Use Current Configuration Options on new terminal
-	configurationSet();
-
-	term->updateImage();
 }
 
 void BaulkTerm::closeTab() {
@@ -324,6 +318,7 @@ void BaulkTerm::newTerminal( bool useMainWindow ) {
 		show();
 
 		connect( term, SIGNAL( finished() ), this, SIGNAL( finished() ) );
+		connect( this, SIGNAL( finished() ), this, SLOT( close() ) );
 	}
 	else {
 		// Use a new Window
@@ -401,17 +396,7 @@ void BaulkTerm::changeEvent( QEvent *event ) {
 }
 
 void BaulkTerm::closeEvent( QCloseEvent *event ) {
-	qDebug("BLALALA");
-	if ( termList.count() < 1 ) {
-		qDebug("LAST");
-		event->accept();
-	}
-	else {
-		qDebug("MAIN TERM CLOSE");
-		event->ignore();
-		//hide();
-		//mainTerm->close();
-	}
+	event->accept();
 }
 
 bool BaulkTerm::processCommandArgs() {

@@ -86,7 +86,6 @@ int main( int argc, char *argv[] ) {
 	int reTurn = app->exec();
 
 	// Post-Quit Events
-	delete client;
 	delete baulk;
 	delete app;
 
