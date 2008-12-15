@@ -40,7 +40,7 @@ BaulkWidget *baulkterm_mainWidget( QWidget *parent ) {
 	qDebug("Loading BaulkTerm");
 
 	term = new BaulkTerm();
-	BaulkWidget *wrapper = new BaulkWidget( term, false, parent );
+	BaulkWidget *wrapper = new BaulkWidget( term, parent );
 
 	QObject::connect( term, SIGNAL( finished() ), wrapper, SLOT( close() ) );
 
