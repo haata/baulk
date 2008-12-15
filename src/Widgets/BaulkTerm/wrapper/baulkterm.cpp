@@ -18,7 +18,7 @@
 #include "baulkterm.h"
 
 // Constructors ***********************************************************************************
-BaulkTerm::BaulkTerm( int startNow, QWidget *parent ) : BaulkWidget( parent ) {
+BaulkTerm::BaulkTerm( int startNow, bool standalone, QWidget *parent ) : BaulkWidget( parent ) {
 	// Initialize BaulkXML for Config Loading/Saving
 	xmlConfig = new BaulkXML( "BaulkTerm", this );
 
@@ -32,6 +32,9 @@ BaulkTerm::BaulkTerm( int startNow, QWidget *parent ) : BaulkWidget( parent ) {
 	setStyleSheet("QWidget {"
 				"background: black;"
 				"}");
+
+	if ( !daemonEnabled || !standalone )
+		newTerminal( true );
 }
 
 // Configuration **********************************************************************************
@@ -301,30 +304,17 @@ void BaulkTerm::closeTab() {
 }
 
 // Terminal Start/Close ***************************************************************************
-void BaulkTerm::newTerminal() {
+void BaulkTerm::newTerminal( bool useMainWindow ) {
 	// New Terminal
 	term = new QTermWidget( startPriority, this );
 	termList.append( term );
 
-	// Determine Whether the Main Window is in Use
-	bool useMainWindow = false;
-/*
-	if ( layout() == 0 ) {
-		termLayout = new QVBoxLayout;
-		termLayout->setContentsMargins( 0,0,0,0 );
-		useMainWindow = true;
-	}
-	else if ( layout()->count() == 0 )
-		useMainWindow = true;
-*/
 	// Window used for Terminal Layout
 	if ( useMainWindow ) {
 		// Layout for Terminal Widget
+		termLayout = new QVBoxLayout;
+		termLayout->setContentsMargins( 0,0,0,0 );
 		termLayout->addWidget( term );
-
-		// Hide the main window if the terminal contained is finished
-		connect( term, SIGNAL( finished() ), this, SLOT( hide() ) );
-		connect( term, SIGNAL( finished() ), termLayout, SLOT( deleteLater() ) );
 
 		// Widget Settings
 		setWindowTitle( tr("BaulkTerm") );
@@ -332,8 +322,6 @@ void BaulkTerm::newTerminal() {
 		// Layout Setup
 		setLayout( termLayout );
 		show();
-
-		qDebug("MAIN");
 
 		connect( term, SIGNAL( finished() ), this, SIGNAL( finished() ) );
 	}
@@ -347,6 +335,9 @@ void BaulkTerm::newTerminal() {
 
 		// Widget Settings
 		window->setWindowTitle( tr("BaulkTerm") );
+		window->setStyleSheet("QWidget {"
+				"background: black;"
+				"}");
 		
 		// Layout Setup
 		window->setCentralWidget( term );

@@ -52,7 +52,7 @@ int main( int argc, char *argv[] ) {
 	QApplication *app = new QApplication( display, argc, argv, (Qt::HANDLE)visual, (Qt::HANDLE)colormap );
 
 	// Start BaulkTerm
-	baulk = new BaulkTerm( 0 );
+	baulk = new BaulkTerm( 0, true );
 	if ( baulk->processCommandArgs() ) {
 		if ( baulk->useDaemon() ) {
 			QString serverListenName = baulk->listenName();

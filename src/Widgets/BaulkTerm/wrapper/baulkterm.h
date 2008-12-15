@@ -46,7 +46,7 @@ class BaulkTerm : public BaulkWidget {
 	Q_OBJECT
 
 public:
-	BaulkTerm( int startNow = 1, QWidget *parent = 0 );
+	BaulkTerm( int startNow = 1, bool standalone = false, QWidget *parent = 0 );
 
 
 	// Command Line Args
@@ -61,7 +61,7 @@ public:
 
 public slots:
 	// New Terminal
-	void newTerminal();
+	void newTerminal( bool useMainWindow = false );
 
 private:
 	int startPriority;
