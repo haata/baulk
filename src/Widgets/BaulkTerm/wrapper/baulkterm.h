@@ -129,7 +129,7 @@ private slots:
 	void xMouseInput( int, int, int, int );
 	void rightClickAction();
 
-	void updateWindowTitle();
+	void updateMainWindowTitle( QString title );
 
 	void removeTerminalFromList( QTermWidget *terminal = 0 );
 	void removeTerminalViaUserClose();

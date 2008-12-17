@@ -33,7 +33,8 @@ BaulkTerm::BaulkTerm( int startNow, bool standalone, QWidget *parent ) : BaulkWi
 				"background: black;"
 				"}");
 
-	if ( !daemonEnabled || !standalone )
+	// If BaulkTerm is used as a library start the terminal
+	if ( !standalone )
 		newTerminal( true );
 }
 
@@ -317,8 +318,9 @@ void BaulkTerm::newTerminal( bool useMainWindow ) {
 		setLayout( termLayout );
 		show();
 
-		connect( term, SIGNAL( finished() ), this, SIGNAL( finished() ) );
-		connect( this, SIGNAL( finished() ), this, SLOT( close() ) );
+		connect( term, SIGNAL( finished() ), SIGNAL( finished() ) );
+		connect( this, SIGNAL( finished() ), SLOT( close() ) );
+		connect( term, SIGNAL( terminalTitleUpdate( QString ) ), SLOT( updateMainWindowTitle( QString ) ) );
 	}
 	else {
 		// Use a new Window
@@ -326,7 +328,8 @@ void BaulkTerm::newTerminal( bool useMainWindow ) {
 
 		// Remove Terminal if Window closed
 		connect( term, SIGNAL( finished() ), window, SLOT( forceClose() ) );
-		connect( window, SIGNAL( userAttemptedClose() ), this, SLOT( removeTerminalViaUserClose() ) );
+		connect( window, SIGNAL( userAttemptedClose() ), SLOT( removeTerminalViaUserClose() ) );
+		connect( term, SIGNAL( terminalTitleUpdate( QString ) ), window, SLOT( updateWindowTitle( QString ) ) );
 
 		// Widget Settings
 		window->setWindowTitle( tr("BaulkTerm") );
@@ -343,10 +346,9 @@ void BaulkTerm::newTerminal( bool useMainWindow ) {
 	configurationSet();
 
 	// Connections
-	connect( term, SIGNAL( finished() ), this, SLOT( removeTerminalFromList() ) );
-	connect( term, SIGNAL( mouseSignal( int, int, int, int ) ), this, SLOT( xMouseInput( int, int, int, int ) ) );
-	connect( term, SIGNAL( rightClickAction() ), this, SLOT( rightClickAction() ) );
-	connect( term, SIGNAL( terminalTitleUpdate() ), this, SLOT( updateWindowTitle() ) );
+	connect( term, SIGNAL( finished() ), SLOT( removeTerminalFromList() ) );
+	connect( term, SIGNAL( mouseSignal( int, int, int, int ) ), SLOT( xMouseInput( int, int, int, int ) ) );
+	connect( term, SIGNAL( rightClickAction() ), SLOT( rightClickAction() ) );
 
 	startShellProgram();
 
@@ -373,8 +375,8 @@ void BaulkTerm::startShellProgram() {
 }
 
 // Terminal Title *********************************************************************************
-void BaulkTerm::updateWindowTitle() {
-	setWindowTitle( term->terminalTitle() );
+void BaulkTerm::updateMainWindowTitle( QString title ) {
+	setWindowTitle( title );
 }
 
 // Reimplemented Functions ************************************************************************
@@ -422,8 +424,10 @@ bool BaulkTerm::processCommandArgs() {
 		"  --e, --execute          Execute command\n"
 		"  --font <font family> <font size>\n"
 		"                          Terminal font used\n"
-		"  --shell <shell program> ie. /bin/bash, /bin/zsh, etc.\n"
 		"  --rows                  Set number of rows\n"
+		"  --shell <shell program> ie. /bin/bash, /bin/zsh, etc.\n"
+		"  --useDaemon <true/false>\n"
+		"                          Run terminal in Daemon mode.\n"
 		);
 		std::cout << out.toUtf8().data();
 		return false;
@@ -500,6 +504,20 @@ bool BaulkTerm::processCommandArgs() {
 		for ( int c = 0; c + 1 < args.count(); ++c ) {
 			if ( args[c] == shell ) {
 				term->setShellProgram( args[c + 1] );
+				args.removeAt( c );
+				args.removeAt( c );
+			}
+		}
+	}
+
+	// Daemon/Single Mode
+	QString daemon = tr("--useDaemon");
+	if ( args.contains( daemon ) ) {
+		for ( int c = 0; c + 1 < args.count(); ++c ) {
+			if ( args[c] == daemon ) {
+				QVariant tmp = QVariant( args[c + 1] );
+				if ( !tmp.toBool() ) 
+					newTerminal( true );
 				args.removeAt( c );
 				args.removeAt( c );
 			}

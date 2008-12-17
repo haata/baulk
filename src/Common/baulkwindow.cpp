@@ -30,6 +30,10 @@ void BaulkWindow::forceClose() {
 	close();
 }
 
+void BaulkWindow::updateWindowTitle( QString title ) {
+	setWindowTitle( title );
+}
+
 // Reimplemented Functions ************************************************************************
 void BaulkWindow::closeEvent( QCloseEvent *event ) {
 	emit userAttemptedClose();

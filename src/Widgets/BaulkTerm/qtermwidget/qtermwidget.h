@@ -119,7 +119,7 @@ signals:
     void finished();
 
     // Title Updated
-    void terminalTitleUpdate();
+    void terminalTitleUpdate( QString title );
 
     // Mouse Click
     void mouseSignal( int button, int column, int line, int eventType );
@@ -144,6 +144,9 @@ protected slots:
 private:
     void init();    
     TermWidgetImpl *m_impl;
+
+private slots:
+	void titleUpdated();
 };
 
 

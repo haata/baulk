@@ -124,10 +124,10 @@ void QTermWidget::init()
         
     m_impl->m_session->addView(m_impl->m_terminalDisplay);
     
-    connect(m_impl->m_session, SIGNAL(finished()), this, SLOT(sessionFinished()));
-    connect( m_impl->m_terminalDisplay, SIGNAL( mouseSignal( int, int, int, int ) ), this, SIGNAL( mouseSignal( int, int, int, int ) ) );
-    connect( m_impl->m_terminalDisplay, SIGNAL( rightClickAction() ), this, SIGNAL( rightClickAction() ) );
-    connect( m_impl->m_session, SIGNAL( titleChanged() ), this, SIGNAL( terminalTitleUpdate() ) );
+    connect(m_impl->m_session, SIGNAL(finished()), SLOT(sessionFinished()));
+    connect( m_impl->m_terminalDisplay, SIGNAL( mouseSignal( int, int, int, int ) ), SIGNAL( mouseSignal( int, int, int, int ) ) );
+    connect( m_impl->m_terminalDisplay, SIGNAL( rightClickAction() ), SIGNAL( rightClickAction() ) );
+    connect( m_impl->m_session, SIGNAL( titleChanged() ), SLOT( titleUpdated() ) );
 }
 
 
@@ -136,6 +136,10 @@ QTermWidget::~QTermWidget()
     emit destroyed();
 }
 
+
+void QTermWidget::titleUpdated() {
+	emit terminalTitleUpdate( terminalTitle() );
+}
 
 QString QTermWidget::terminalTitle() const {
 	return m_impl->m_session->userTitle();

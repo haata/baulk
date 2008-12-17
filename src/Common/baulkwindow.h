@@ -37,6 +37,8 @@ public:
 public slots:
 	void forceClose();
 
+	void updateWindowTitle( QString title );
+
 protected:
 	virtual void closeEvent( QCloseEvent *event );
 
