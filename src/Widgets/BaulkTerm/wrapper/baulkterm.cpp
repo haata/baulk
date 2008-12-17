@@ -421,6 +421,8 @@ bool BaulkTerm::processCommandArgs() {
 		"Application Options:\n"
 		"   Note: These options override the configuration file\n"
 		"  --columns               Set number of columns\n"
+		"  --daemonListenName      Use a daemon name different from default.\n"
+		"                          This is also useful for starting another daemon.\n"
 		"  --e, --execute          Execute command\n"
 		"  --font <font family> <font size>\n"
 		"                          Terminal font used\n"
@@ -510,14 +512,25 @@ bool BaulkTerm::processCommandArgs() {
 		}
 	}
 
+	// Daemon Listen Name
+	QString daemonListen = tr("--daemonListenName");
+	if ( args.contains( daemonListen ) ) {
+		for ( int c = 0; c + 1 < args.count(); ++c ) {
+			if ( args[c] == daemonListen ) {
+				daemonListenName = args[c + 1];
+				args.removeAt( c );
+				args.removeAt( c );
+			}
+		}
+	}
+
 	// Daemon/Single Mode
 	QString daemon = tr("--useDaemon");
 	if ( args.contains( daemon ) ) {
 		for ( int c = 0; c + 1 < args.count(); ++c ) {
 			if ( args[c] == daemon ) {
 				QVariant tmp = QVariant( args[c + 1] );
-				if ( !tmp.toBool() ) 
-					newTerminal( true );
+				daemonEnabled = tmp.toBool();
 				args.removeAt( c );
 				args.removeAt( c );
 			}

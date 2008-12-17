@@ -72,6 +72,7 @@ int main( int argc, char *argv[] ) {
 		}
 
 		if ( !baulk->useDaemon() ) {
+			baulk->newTerminal( true );
 			baulk->startShellProgram();
 			baulk->show();
 		}
