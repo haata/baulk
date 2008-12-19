@@ -335,10 +335,6 @@ void BaulkTerm::newTerminal( bool useMainWindow ) {
 		connect( window, SIGNAL( userAttemptedClose() ), SLOT( removeTerminalViaUserClose() ) );
 		connect( term, SIGNAL( terminalTitleUpdate( QString ) ), window, SLOT( updateWindowTitle( QString ) ) );
 
-		// Connect right click menu actions
-		connect( rightClickMenu->copyAction, SIGNAL( triggered() ), term, SLOT( copyClipboard() ) );
-		connect( rightClickMenu->pasteAction, SIGNAL( triggered() ), term, SLOT( pasteClipboard() ) );
-
 		// Widget Settings
 		window->setWindowTitle( tr("BaulkTerm") );
 		window->setStyleSheet("QWidget {"
@@ -357,6 +353,11 @@ void BaulkTerm::newTerminal( bool useMainWindow ) {
 	connect( term, SIGNAL( finished() ), SLOT( removeTerminalFromList() ) );
 	connect( term, SIGNAL( mouseSignal( int, int, int, int ) ), SLOT( xMouseInput( int, int, int, int ) ) );
 	connect( term, SIGNAL( rightClickAction() ), SLOT( rightClickAction() ) );
+
+	// Connect right click menu actions
+	connect( rightClickMenu->copyAction, SIGNAL( triggered() ), term, SLOT( copyClipboard() ) );
+	connect( rightClickMenu, SIGNAL( newFont( QFont ) ), term, SLOT( setTerminalFont( QFont ) ) );
+	connect( rightClickMenu->pasteAction, SIGNAL( triggered() ), term, SLOT( pasteClipboard() ) );
 
 	startShellProgram();
 

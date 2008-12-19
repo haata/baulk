@@ -58,10 +58,6 @@ public:
     
     //look-n-feel, if you don`t like defaults
 
-    //	Terminal font
-    // Default is application font with family Monospace, size 10
-    void setTerminalFont(QFont &font); 
-    
     //environment
     void setEnvironment(const QStringList& environment);
 
@@ -135,6 +131,10 @@ public slots:
     // Updates Display Image, useful for forcing terminal display updates
     void updateImage();
 
+    //	Terminal font
+    // Default is application font with family Monospace, size 10
+    void setTerminalFont(QFont font); 
+    
 protected: 
     virtual void resizeEvent(QResizeEvent *);
     

@@ -26,10 +26,27 @@ BaulkTermRightClickMenu::BaulkTermRightClickMenu( QWidget *parent ) : QMenu( par
 
 	// Initialize Actions
 	copyAction = new QAction( tr("Copy"), this );
+	fontAction = new QAction( tr("Set Font"), this );
 	pasteAction = new QAction( tr("Paste"), this );
 
 	// Attach Actions
 	addAction( copyAction );
 	addAction( pasteAction );
+	addSeparator();
+	addAction( fontAction );
+
+	// Connections
+	connect( fontAction, SIGNAL( triggered() ), SLOT( fontDialog() ) );
+}
+
+// Fonts ******************************************************************************************
+void BaulkTermRightClickMenu::fontDialog() {
+	bool ok;
+
+	// Font Dialog
+	QFont font = QFontDialog::getFont( &ok, QFont( "Monospace", 10 ), this );
+
+	if ( ok )
+		emit newFont( font );
 }
 

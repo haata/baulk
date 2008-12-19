@@ -16,6 +16,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QAction>
+#include <QFontDialog>
 #include <QMenu>
 #include <QWidget>
 
@@ -32,6 +33,12 @@ public:
 
 	QAction *copyAction;
 	QAction *pasteAction;
+	QAction *fontAction;
 
+private slots:
+	void fontDialog();
+
+signals:
+	void newFont( QFont font );
 };
 

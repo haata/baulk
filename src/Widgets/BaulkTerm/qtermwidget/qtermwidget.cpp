@@ -145,7 +145,7 @@ QString QTermWidget::terminalTitle() const {
 	return m_impl->m_session->userTitle();
 }
 
-void QTermWidget::setTerminalFont(QFont &font)
+void QTermWidget::setTerminalFont(QFont font)
 {
     if (!m_impl->m_terminalDisplay)
 	return;
