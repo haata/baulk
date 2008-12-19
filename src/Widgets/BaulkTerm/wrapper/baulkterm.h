@@ -35,6 +35,7 @@
 #include <baulkxml.h>
 #include <qtermwidget.h>
 
+#include "rightclickmenu.h"
 #include "terminalcolour.h"
 
 /**
@@ -66,12 +67,17 @@ public slots:
 private:
 	int startPriority;
 
+	// Terminal
 	QTermWidget *term;
 	QTermWidget *mainTerm;
 	QList<QTermWidget*> termList;
 
 	QVBoxLayout *termLayout;
 
+	// Terminal Right Click Menu
+	BaulkTermRightClickMenu *rightClickMenu;
+
+	// Configuration File Pointer
 	BaulkXML *xmlConfig;
 
 	// Configuration Settings

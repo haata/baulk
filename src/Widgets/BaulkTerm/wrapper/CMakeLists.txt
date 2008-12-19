@@ -9,6 +9,7 @@ set( HEAD_DIR ${PROJECT_SOURCE_DIR}/../../../.. )
 #| Sources
 set( SRCS
 	./baulkterm.cpp
+	./rightclickmenu.cpp
 	./terminalcolour.cpp
         ./wrapper_baulkterm.cpp
 )
@@ -16,6 +17,7 @@ set( SRCS
 #| Headers
 set( HDRS
 	./baulkterm.h
+	./rightclickmenu.h
 )
 
 #| Library

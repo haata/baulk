@@ -2231,24 +2231,27 @@ bool TerminalDisplay::usesMouse() const
 
 #undef KeyPress
 
-void TerminalDisplay::emitSelection(bool useXselection,bool appendReturn)
-{
-  if ( !_screenWindow ) 
-      return;
+void TerminalDisplay::emitSelection( bool useXselection, bool appendReturn ) {
+	if ( !_screenWindow ) 
+		return;
 
-  // Paste Clipboard by simulating keypress events
-  QString text = QApplication::clipboard()->text(useXselection ? QClipboard::Selection :
-                                                                 QClipboard::Clipboard);
-  if(appendReturn)
-    text.append("\r");
-  if ( ! text.isEmpty() )
-  {
-    text.replace("\n", "\r");
-    QKeyEvent e(QEvent::KeyPress, 0, Qt::NoModifier, text);
-    emit keyPressedSignal(&e); // expose as a big fat keypress event
-    
-    _screenWindow->clearSelection();
-  }
+	// Paste Clipboard by simulating keypress events
+	QString text;
+	if ( useXselection )
+		text = QApplication::clipboard()->text( QClipboard::Selection );
+	else
+		text = QApplication::clipboard()->text();
+
+	if( appendReturn )
+		text.append("\r");
+
+	if ( !text.isEmpty() ) {
+		text.replace( "\n", "\r" );
+		QKeyEvent e( QEvent::KeyPress, 0, Qt::NoModifier, text );
+		emit keyPressedSignal( &e ); // expose as a big fat keypress event
+
+		_screenWindow->clearSelection();
+	}
 }
 
 void TerminalDisplay::setSelection(const QString& t)

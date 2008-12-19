@@ -36,6 +36,9 @@ BaulkTerm::BaulkTerm( int startNow, bool standalone, QWidget *parent ) : BaulkWi
 	// If BaulkTerm is used as a library start the terminal
 	if ( !standalone )
 		newTerminal( true );
+
+	// Initialize right click menu for terminals
+	rightClickMenu = new BaulkTermRightClickMenu( this );
 }
 
 // Configuration **********************************************************************************
@@ -288,7 +291,8 @@ void BaulkTerm::xMouseInput( int button, int column, int line, int eventType ) {
 
 // Configuration Menus ****************************************************************************
 void BaulkTerm::rightClickAction() {
-	qDebug("RIGHT");
+	// Pops up the right click menu at the current mouse position after a right click
+	rightClickMenu->popup( QCursor::pos() );
 }
 
 // Tabs *******************************************************************************************
@@ -330,6 +334,10 @@ void BaulkTerm::newTerminal( bool useMainWindow ) {
 		connect( term, SIGNAL( finished() ), window, SLOT( forceClose() ) );
 		connect( window, SIGNAL( userAttemptedClose() ), SLOT( removeTerminalViaUserClose() ) );
 		connect( term, SIGNAL( terminalTitleUpdate( QString ) ), window, SLOT( updateWindowTitle( QString ) ) );
+
+		// Connect right click menu actions
+		connect( rightClickMenu->copyAction, SIGNAL( triggered() ), term, SLOT( copyClipboard() ) );
+		connect( rightClickMenu->pasteAction, SIGNAL( triggered() ), term, SLOT( pasteClipboard() ) );
 
 		// Widget Settings
 		window->setWindowTitle( tr("BaulkTerm") );
