@@ -140,6 +140,8 @@ private slots:
 	void removeTerminalFromList( QTermWidget *terminal = 0 );
 	void removeTerminalViaUserClose();
 
+	void changeTransparency( qreal opacity, qreal fadeOpacity );
+
 protected:
 	virtual void changeEvent( QEvent *event );
 	virtual void resizeEvent( QResizeEvent *event );

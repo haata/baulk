@@ -28,15 +28,18 @@ BaulkTermRightClickMenu::BaulkTermRightClickMenu( QWidget *parent ) : QMenu( par
 	copyAction = new QAction( tr("Copy"), this );
 	fontAction = new QAction( tr("Set Font"), this );
 	pasteAction = new QAction( tr("Paste"), this );
+	transparencyAction = new QAction( tr("Set Transparency"), this );
 
 	// Attach Actions
 	addAction( copyAction );
 	addAction( pasteAction );
 	addSeparator();
 	addAction( fontAction );
+	addAction( transparencyAction );
 
 	// Connections
 	connect( fontAction, SIGNAL( triggered() ), SLOT( fontDialog() ) );
+	connect( transparencyAction, SIGNAL( triggered() ), SLOT( transparencyDialog() ) );
 }
 
 // Fonts ******************************************************************************************
@@ -48,5 +51,66 @@ void BaulkTermRightClickMenu::fontDialog() {
 
 	if ( ok )
 		emit newFont( font );
+}
+
+// Opacity ****************************************************************************************
+void BaulkTermRightClickMenu::transparencyDialog() {
+	// Dialog Window
+	BaulkDialog *dialog = new BaulkDialog( true, this );
+
+	// Labels
+	QLabel *mainLabel = new QLabel( tr("Main Transparency") );
+	mainLabel->setWordWrap( true );
+	QLabel *fadeLabel = new QLabel( tr("Fade Transparency") );
+	fadeLabel->setWordWrap( true );
+	QLabel *noteLabel = new QLabel( tr("<b>Note:</b> A composite manager must be running to use these options (ie. xcompmgr).") );
+	noteLabel->setWordWrap( true );
+
+	// Spin Boxes
+	QDoubleSpinBox *mainTransparencySpinBox = new QDoubleSpinBox;
+	mainTransparencySpinBox->setDecimals( 2 );
+	mainTransparencySpinBox->setMaximum( 1 );
+	mainTransparencySpinBox->setMinimum( 0 );
+
+	QDoubleSpinBox *fadeTransparencySpinBox = new QDoubleSpinBox;
+	fadeTransparencySpinBox->setDecimals( 2 );
+	fadeTransparencySpinBox->setMaximum( 1 );
+	fadeTransparencySpinBox->setMinimum( 0 );
+
+	// Button Box
+	QDialogButtonBox *buttonBox = new QDialogButtonBox( QDialogButtonBox::Ok | QDialogButtonBox::Cancel );
+	connect( buttonBox, SIGNAL( accepted() ), dialog, SLOT( accept() ) );
+	connect( buttonBox, SIGNAL( rejected() ), dialog, SLOT( forceClose() ) );
+
+	// Dialog Settings
+	dialog->setWindowTitle( tr("Adjust Terminal Transparency") );
+
+	// Dialog Layout
+	QVBoxLayout *mainSpinBoxLayout = new QVBoxLayout;
+	mainSpinBoxLayout->addWidget( mainLabel );
+	mainSpinBoxLayout->addWidget( mainTransparencySpinBox );
+
+	QVBoxLayout *fadeSpinBoxLayout = new QVBoxLayout;
+	fadeSpinBoxLayout->addWidget( fadeLabel );
+	fadeSpinBoxLayout->addWidget( fadeTransparencySpinBox );
+
+	QHBoxLayout *mainOptionLayout = new QHBoxLayout;
+	mainOptionLayout->addLayout( mainSpinBoxLayout );
+	mainOptionLayout->addLayout( fadeSpinBoxLayout );
+
+	QVBoxLayout *mainDialogLayout = new QVBoxLayout;
+	mainDialogLayout->addLayout( mainOptionLayout );
+	mainDialogLayout->addWidget( noteLabel );
+	mainDialogLayout->addWidget( buttonBox );
+
+	dialog->setLayout( mainDialogLayout );
+
+	dialog->show();
+
+	qreal main = 0.2;
+	qreal fade = 0.3;
+	qDebug("AAAA");
+
+	emit newTransparency( main, fade );
 }
 

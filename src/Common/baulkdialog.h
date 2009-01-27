@@ -31,11 +31,14 @@ class BaulkDialog : public QDialog {
 	Q_OBJECT
 
 public:
-	BaulkDialog( QWidget *parent = 0 );
+	BaulkDialog( bool userCancel = false, QWidget *parent = 0 );
 	~BaulkDialog();
 
 public slots:
 	virtual void reject();
+
+private:
+	bool forceQuit;
 
 protected:
 	virtual void closeEvent( QCloseEvent *event );

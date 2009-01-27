@@ -16,9 +16,16 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QAction>
+#include <QDoubleSpinBox>
+#include <QDialogButtonBox>
 #include <QFontDialog>
+#include <QHBoxLayout>
+#include <QLabel>
 #include <QMenu>
+#include <QVBoxLayout>
 #include <QWidget>
+
+#include "baulkdialog.h"
 
 /**
  * @author Jacob Alexander (HaaTa)
@@ -34,11 +41,14 @@ public:
 	QAction *copyAction;
 	QAction *pasteAction;
 	QAction *fontAction;
+	QAction *transparencyAction;
 
 private slots:
 	void fontDialog();
+	void transparencyDialog();
 
 signals:
 	void newFont( QFont font );
+	void newTransparency( qreal opacity, qreal fadeOpacity );;
 };
 

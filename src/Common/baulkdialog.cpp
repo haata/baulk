@@ -18,9 +18,10 @@
 #include "baulkdialog.h"
 
 // Constructors ***********************************************************************************
-BaulkDialog::BaulkDialog( QWidget *parent ) : QDialog( parent ) {
+BaulkDialog::BaulkDialog( bool userCancel, QWidget *parent ) : QDialog( parent ) {
 	// Default Settings
 	setModal( true );
+	forceQuit = userCancel; 
 }
 
 BaulkDialog::~BaulkDialog() {
@@ -28,7 +29,6 @@ BaulkDialog::~BaulkDialog() {
 
 // Reimplemented Functions ************************************************************************
 void BaulkDialog::closeEvent( QCloseEvent *event ) {
-	//event->accept();
 	event->ignore();
 }
 

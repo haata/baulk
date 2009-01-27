@@ -358,6 +358,7 @@ void BaulkTerm::newTerminal( bool useMainWindow ) {
 	connect( rightClickMenu->copyAction, SIGNAL( triggered() ), term, SLOT( copyClipboard() ) );
 	connect( rightClickMenu, SIGNAL( newFont( QFont ) ), term, SLOT( setTerminalFont( QFont ) ) );
 	connect( rightClickMenu->pasteAction, SIGNAL( triggered() ), term, SLOT( pasteClipboard() ) );
+	connect( rightClickMenu, SIGNAL( newTransparency( qreal, qreal ) ), SLOT( changeTransparency( qreal, qreal ) ) );
 
 	startShellProgram();
 
@@ -386,6 +387,12 @@ void BaulkTerm::startShellProgram() {
 // Terminal Title *********************************************************************************
 void BaulkTerm::updateMainWindowTitle( QString title ) {
 	setWindowTitle( title );
+}
+
+// Transparency ***********************************************************************************
+void BaulkTerm::changeTransparency( qreal mainTransparency, qreal fadeTransparency ) {
+	opacity = mainTransparency;
+	fadeOpacity = fadeTransparency;
 }
 
 // Reimplemented Functions ************************************************************************

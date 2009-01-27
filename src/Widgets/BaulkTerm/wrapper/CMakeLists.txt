@@ -75,6 +75,7 @@ if ( BuildBaulkTerm )
 	#| Link Needed Libraries
 	target_link_libraries( ${LIB} 
 		${QT_LIBRARIES} 
+		BaulkDialog	# From Common
 		BaulkWidget	# From Common
 		BaulkWindow	# From Common
 		BaulkXML	# From Common

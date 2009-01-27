@@ -164,6 +164,7 @@ endif ( BuildBaulkServClient )
 #| BaulkTerm Library
 if ( BuildBaulkTerm )
 	set( BuildQTermWidget		1 )
+	set( BuildBaulkDialog		1 )
 	set( BuildBaulkWidget		1 )
 	set( BuildBaulkWindow		1 )
 	set( BuildBaulkXML		1 )
