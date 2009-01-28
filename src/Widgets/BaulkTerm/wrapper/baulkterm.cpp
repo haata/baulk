@@ -416,7 +416,7 @@ bool BaulkTerm::processCommandArgs() {
 	QStringList args = qApp->arguments();
 
 	// Help
-	if ( args.contains( tr("--h" ) ) || args.contains( tr("--help") ) ) {
+	if ( args.contains( tr("-h" ) ) || args.contains( tr("--help") ) ) {
 		QString out = tr(
 		"BaulkTerm - A Konsole based Qt4 terminal emulator\n"
 		"Note: Some options may not be implemented yet\n"
@@ -424,15 +424,15 @@ bool BaulkTerm::processCommandArgs() {
 		"  baulkTerm [OPTION...]\n"
 		"\n"
 		"Usual Options:\n"
-		"  --h, --help             Show help options (this list)\n"
-		"  --v, --version          BaulkTerm version\n"
+		"  -h, --help             Show help options (this list)\n"
+		"  -v, --version          BaulkTerm version\n"
 		"\n"
 		"Application Options:\n"
 		"   Note: These options override the configuration file\n"
 		"  --columns               Set number of columns\n"
 		"  --daemonListenName      Use a daemon name different from default.\n"
 		"                          This is also useful for starting another daemon.\n"
-		"  --e, --execute          Execute command\n"
+		"  -e, --execute          Execute command\n"
 		"  --font <font family> <font size>\n"
 		"                          Terminal font used\n"
 		"  --rows                  Set number of rows\n"
@@ -445,7 +445,7 @@ bool BaulkTerm::processCommandArgs() {
 	}
 
 	// Version
-	if ( args.contains( tr("--v") ) || args.contains( tr("--version") ) ) {
+	if ( args.contains( tr("-v") ) || args.contains( tr("--version") ) ) {
 		QString out = tr(
 		"BaulkTerm Version 0.1.git(%1)\n"
 		).arg( "TODO" );
@@ -547,7 +547,7 @@ bool BaulkTerm::processCommandArgs() {
 	}
 
 	// Execute Command (assumed last command decyphered)
-	if ( args.contains( tr("--e") ) || args.contains( tr("--execute") ) ) {
+	if ( args.contains( tr("-e") ) || args.contains( tr("--execute") ) ) {
 		QString command;
 
 		int count = 2;
