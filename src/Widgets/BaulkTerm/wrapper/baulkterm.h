@@ -84,6 +84,11 @@ private:
 	qreal opacity;
 	qreal fadeOpacity;
 
+	int windowHeight;
+	int windowWidth;
+	int windowXpos;
+	int windowYpos;
+
 	bool daemonEnabled;
 	QString daemonListenName;
 
