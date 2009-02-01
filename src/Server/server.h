@@ -18,6 +18,7 @@
 #ifndef __INFORMATIONSERVER_H
 #define __INFORMATIONSERVER_H
 
+#include <iostream>
 #include <stdlib.h>
 
 #include <QCoreApplication>
@@ -26,6 +27,8 @@
 #include <QLocalSocket>
 #include <QObject>
 #include <QVector>
+
+#include <builddefines.h>
 
 #include "client.h"
 #include "packet.h"

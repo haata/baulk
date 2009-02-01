@@ -33,6 +33,7 @@
 #include <baulkwidget.h>
 #include <baulkwindow.h>
 #include <baulkxml.h>
+#include <builddefines.h>
 #include <qtermwidget.h>
 
 #include "rightclickmenu.h"

@@ -96,6 +96,33 @@ set( LIB_BXML
 )
 
 
+###| Build Information
+execute_process ( 	
+	# This will fail if you don't have git in your path; however,
+	#  if you don't have git in your path, you fail at life.
+	#  I also don't feel like writing a detection module.
+	COMMAND git log --pretty=format:%h -n 1
+	OUTPUT_VARIABLE git_hash
+)
+
+if ( WIN32 )
+	execute_process (
+		COMMAND date /t
+		OUTPUT_VARIABLE BUILD_DATE_TMP
+	)
+	set ( BUILD_DATE ${BUILD_DATE_TMP}"
+else ( WIN32 )
+	execute_process (
+		COMMAND date +%c\"
+		OUTPUT_VARIABLE BUILD_DATE
+	)
+endif ( WIN32 )
+
+set ( BUILD_VERSION "${git_hash}" )
+set ( CONFIG_FILE builddefines )
+configure_file ( ${PROJECT_SOURCE_DIR}/${CONFIG_FILE}.cmake ${PROJECT_SOURCE_DIR}/${CONFIG_FILE}.h )
+
+
 ###| Misc Qt4
 add_definitions( 
 	-Wall 

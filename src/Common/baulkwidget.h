@@ -18,11 +18,15 @@
 #ifndef __BAULKWIDGET_H
 #define __BAULKWIDGET_H
 
+#include <iostream>
+
 #include <QApplication>
 #include <QResizeEvent>
 #include <QVariant>
 #include <QVBoxLayout>
 #include <QWidget>
+
+#include "builddefines.h"
 
 /**
  * @author Jacob Alexander (HaaTa)

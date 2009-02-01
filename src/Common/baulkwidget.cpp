@@ -77,6 +77,10 @@ bool BaulkWidget::processCommandArgs() {
 		return false;
 	}
 	if ( args.contains( tr("--v") ) || args.contains( tr("--version") ) ) {
+		QString out = tr(
+		"Baulk Version 0.1.git(%1) - %2\n"
+		).arg( BUILDVERSION ).arg( BUILDDATE );
+		std::cout << out.toUtf8().data();
 		return false;
 	}
 
