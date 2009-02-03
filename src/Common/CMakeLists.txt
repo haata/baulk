@@ -110,7 +110,7 @@ if ( WIN32 )
 		COMMAND date /t
 		OUTPUT_VARIABLE BUILD_DATE_TMP
 	)
-	set ( BUILD_DATE ${BUILD_DATE_TMP}"
+	set ( BUILD_DATE ${BUILD_DATE_TMP}\" )
 else ( WIN32 )
 	execute_process (
 		COMMAND date +%c\"
