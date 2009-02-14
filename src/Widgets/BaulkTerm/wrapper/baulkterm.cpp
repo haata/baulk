@@ -58,6 +58,12 @@ void BaulkTerm::configurationDefaults() {
 	historyType = "HistoryTypeNone";
 	historySize = 0;	// No History
 
+	// Window Size and position
+	windowHeight = 300;
+	windowWidth = 300;
+	windowXpos = 20;
+	windowYpos = 20;
+
 	// Tabs
 	useTabBar = false;		// TEMP
 
@@ -96,19 +102,33 @@ void BaulkTerm::configurationDefaults() {
 void BaulkTerm::configurationLoad() {
 	QVariant tmp;
 
+	// Window Size and Position
+	windowHeight = ( tmp = xmlConfig->option("terminalWindowHeight") ) == QVariant("") ? windowHeight
+		: tmp.toInt();
+	windowWidth = ( tmp = xmlConfig->option("terminalWindowWidth") ) == QVariant("") ? windowWidth
+		: tmp.toInt();
+	windowXpos = ( tmp = xmlConfig->option("terminalWindowXpos") ) == QVariant("") ? windowXpos
+		: tmp.toInt();
+	windowYpos = ( tmp = xmlConfig->option("terminalWindowYpos") ) == QVariant("") ? windowYpos
+		: tmp.toInt();
+
+	// Opacity
 	opacity = ( tmp = xmlConfig->option("terminalOpacity") ) == QVariant("") ? opacity
 		: tmp.toDouble();
 	fadeOpacity = ( tmp = xmlConfig->option("terminalFadeOpacity") ) == QVariant("") ? fadeOpacity
 		: tmp.toDouble();
 
+	// Daemon
 	daemonEnabled = ( tmp = xmlConfig->option("terminalUseDaemon") ) == QVariant("") ? daemonEnabled
 		: tmp.toBool();
 	daemonListenName = ( tmp = xmlConfig->option("terminalDaemonListenName") ) == QVariant("")
 		? daemonListenName : tmp.toString();
 
+	// Font
 	font.fromString( ( tmp = xmlConfig->option("terminalFont") ) == QVariant("") ? font.toString()
 		: tmp.toString() );
 
+	// History
 	historyType = ( tmp = xmlConfig->option("terminalHistoryType") ) == QVariant("") ? historyType
 		: tmp.toString();
 	historySize = ( tmp = xmlConfig->option("terminalHistorySize") ) == QVariant("") ? historySize
@@ -188,6 +208,10 @@ void BaulkTerm::configurationLoad() {
 }
 
 void BaulkTerm::configurationSave() {
+	xmlConfig->setOption( "terminalWindowHeight", QVariant( windowHeight ) );
+	xmlConfig->setOption( "terminalWindowWidth", QVariant( windowWidth ) );
+	xmlConfig->setOption( "terminalWindowXpos", QVariant( windowXpos ) );
+	xmlConfig->setOption( "terminalWindowYpos", QVariant( windowYpos ) );
 	xmlConfig->setOption( "terminalOpacity", QVariant( opacity ) );
 	xmlConfig->setOption( "terminalFadeOpacity", QVariant( fadeOpacity ) );
 	xmlConfig->setOption( "terminalUseDaemon", QVariant( daemonEnabled ) );
@@ -317,6 +341,7 @@ void BaulkTerm::newTerminal( bool useMainWindow ) {
 
 		// Widget Settings
 		setWindowTitle( tr("BaulkTerm") );
+		setGeometry( windowXpos, windowYpos, windowWidth, windowHeight );
 
 		// Layout Setup
 		setLayout( termLayout );
@@ -340,6 +365,7 @@ void BaulkTerm::newTerminal( bool useMainWindow ) {
 		window->setStyleSheet("QWidget {"
 				"background: black;"
 				"}");
+		window->setGeometry( windowXpos, windowYpos, windowWidth, windowHeight );
 		
 		// Layout Setup
 		window->setCentralWidget( term );
@@ -423,7 +449,7 @@ bool BaulkTerm::processCommandArgs() {
 	QStringList args = qApp->arguments();
 
 	// Help
-	if ( args.contains( tr("--h" ) ) || args.contains( tr("--help") ) ) {
+	if ( args.contains( tr("-h" ) ) || args.contains( tr("--help") ) ) {
 		QString out = tr(
 		"BaulkTerm - A Konsole based Qt4 terminal emulator\n"
 		"Note: Some options may not be implemented yet\n"
@@ -431,18 +457,23 @@ bool BaulkTerm::processCommandArgs() {
 		"  baulkTerm [OPTION...]\n"
 		"\n"
 		"Usual Options:\n"
-		"  --h, --help             Show help options (this list)\n"
-		"  --v, --version          BaulkTerm version\n"
+		"  -h, --help              Show help options (this list)\n"
+		"  -v, --version           BaulkTerm version\n"
+		"\n"
+		"  --height                Height of the terminal in pixels\n"
+		"  --width                 Width of the terminal in pixels\n"
+		"  --X                     X position of the terminal on the desktop\n"
+		"  --Y                     Y position of the terminal on the desktop\n"
 		"\n"
 		"Application Options:\n"
 		"   Note: These options override the configuration file\n"
-		"  --columns               Set number of columns\n"
+		//"  --columns               Set number of columns\n"
 		"  --daemonListenName      Use a daemon name different from default.\n"
 		"                          This is also useful for starting another daemon.\n"
-		"  --e, --execute          Execute command\n"
+		"  -e, --execute <command> Execute command\n"
 		"  --font <font family> <font size>\n"
 		"                          Terminal font used\n"
-		"  --rows                  Set number of rows\n"
+		//"  --rows                  Set number of rows\n"
 		"  --shell <shell program> ie. /bin/bash, /bin/zsh, etc.\n"
 		"  --useDaemon <true/false>\n"
 		"                          Run terminal in Daemon mode.\n"
@@ -452,34 +483,94 @@ bool BaulkTerm::processCommandArgs() {
 	}
 
 	// Version
-	if ( args.contains( tr("--v") ) || args.contains( tr("--version") ) ) {
+	if ( args.contains( tr("-v") ) || args.contains( tr("--version") ) ) {
 		QString out = tr(
-		"BaulkTerm Version 0.1.git(%1)\n"
-		).arg( "TODO" );
+		"BaulkTerm Version 0.1.git(%1) - %2\n"
+		).arg( BUILDVERSION ).arg( BUILDDATE );
 		std::cout << out.toUtf8().data();
 		return false;
 	}
 
-	// Columns and Rows
+	// Height, Width, X and Y
+	QString heightArg = tr("--height");
+	QString widthArg = tr("--width");
+	QString xArg = tr("--X");
+	QString yArg = tr("--Y");
+	if ( args.contains( heightArg ) || args.contains( widthArg ) || args.contains( xArg ) || args.contains( yArg ) ) {
+		bool ok;
+		bool process = false;
+		int height = 0;
+		int width = 0;
+		int xpos = 0;
+		int ypos = 0;
+
+		for ( int c = 0; c + 1 < args.count(); ++c ) {
+			if ( args[c] == heightArg ) {
+				height = args[c + 1].toInt( &ok );
+				process = true;
+			}
+			if ( args[c] == widthArg ) {
+				width = args[c + 1].toInt( &ok );
+				process = true;
+			}
+			if ( args[c] == xArg ) {
+				xpos = args[c + 1].toInt( &ok );
+				process = true;
+			}
+			if ( args[c] == yArg ) {
+				ypos = args[c + 1].toInt( &ok );
+				process = true;
+			}
+
+			if ( process ) {
+				if ( ok ) {
+					args.removeAt( c );
+					args.removeAt( c );
+					--c;
+					if ( c + 1 >= args.count() )
+						break;
+				}
+				else {
+					qFatal( tr("Invalid number, please use an integer").toUtf8() );
+					return false;
+				}
+
+				process = false;
+			}
+		}
+
+		// Set size variables
+		if ( height != 0 )
+		       	windowHeight = height;
+		if ( width != 0 )
+			windowWidth = width;
+		if ( xpos != 0 )
+			windowXpos = xpos;
+		if ( ypos != 0 ) 
+			windowYpos = ypos;
+
+		// Set Terminal Size and Size Variables - TODO
+	}
+
+	// Columns and Rows - TODO Fix Segfault
 	QString columns = tr("--columns");
 	QString rows = tr("--rows");
 	if ( args.contains( columns ) || args.contains( rows ) ) {
 		bool ok;
+		bool process = false;
 		int horizontal = 80;
 		int vertical = 60;
 		for ( int c = 0; c + 1 < args.count(); ++c ) {
 			if ( args[c] == columns ) {
 				horizontal = args[c + 1].toInt( &ok );
-				if ( ok ) {
-					args.removeAt( c );
-					args.removeAt( c );
-					--c;
-					if ( c + 1 >= args.count() )
-						break;
-				}
+				process = true;
 			}
 			if ( args[c] == rows ) {
 				vertical = args[c + 1].toInt( &ok );
+				process = true;
+			}
+
+			if ( process ) {
 				if ( ok ) {
 					args.removeAt( c );
 					args.removeAt( c );
@@ -487,10 +578,16 @@ bool BaulkTerm::processCommandArgs() {
 					if ( c + 1 >= args.count() )
 						break;
 				}
+				else {
+					qFatal( tr("Invalid number, please use an integer").toUtf8() );
+					return false;
+				}
+
+				process = false;
 			}
 		}
 
-		qWarning("This feature isn't used by the developer that much, log bugs if it doesn't work");
+		qWarning( tr("This feature isn't used by the developer that much, log bugs if it doesn't work").toUtf8());
 		term->setSize( horizontal, vertical );
 	}
 
@@ -554,7 +651,7 @@ bool BaulkTerm::processCommandArgs() {
 	}
 
 	// Execute Command (assumed last command decyphered)
-	if ( args.contains( tr("--e") ) || args.contains( tr("--execute") ) ) {
+	if ( args.contains( tr("-e") ) || args.contains( tr("--execute") ) ) {
 		QString command;
 
 		int count = 2;

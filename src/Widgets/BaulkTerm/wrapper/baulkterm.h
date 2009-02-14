@@ -33,6 +33,7 @@
 #include <baulkwidget.h>
 #include <baulkwindow.h>
 #include <baulkxml.h>
+#include <builddefines.h>
 #include <qtermwidget.h>
 
 #include "rightclickmenu.h"
@@ -83,6 +84,11 @@ private:
 	// Configuration Settings
 	qreal opacity;
 	qreal fadeOpacity;
+
+	int windowHeight;
+	int windowWidth;
+	int windowXpos;
+	int windowYpos;
 
 	bool daemonEnabled;
 	QString daemonListenName;

@@ -57,7 +57,7 @@ int main( int argc, char *argv[] ) {
 		if ( baulk->useDaemon() ) {
 			QString serverListenName = baulk->listenName();
 
-			// Daemon - Quit if only starting a client
+			// Daemon - Will quit if only starting a client
 			InformationServer *serv = new InformationServer( serverListenName, baulk );
 			QObject::connect( serv, SIGNAL( destroyed() ), app, SLOT( quit() ));
 
