@@ -70,7 +70,6 @@ void TextureFont::setFont( QFont font ) {
 	delete textureImage;
 
 	generateTexture();
-	renderText();
 }
 
 void TextureFont::setInputText( QString inputText ) {
