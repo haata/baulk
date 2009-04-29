@@ -39,7 +39,7 @@ QString baulkterm_widgetName() {
 BaulkWidget *baulkterm_mainWidget( QWidget *parent ) {
 	qDebug("Loading BaulkTerm");
 
-	term = new BaulkTerm();
+	term = new BaulkTerm( 1, true );
 	BaulkWidget *wrapper = new BaulkWidget( term, parent );
 
 	QObject::connect( term, SIGNAL( finished() ), wrapper, SLOT( close() ) );
