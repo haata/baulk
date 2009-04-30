@@ -43,12 +43,11 @@
 #include <baulkwidget.h>
 
 
-/**
- * @author Jacob Alexander (HaaTa)
- *
- * INSERT DESCRIPTION HERE
- */
 // Exported Symbols *******************************************************************************
+//! SHORT DESCRIPTION
+/*!
+ * LONGER DESCRIPTION
+ */
 extern "C" EXPORTDLL {
 	QStringList symbolList();
 
