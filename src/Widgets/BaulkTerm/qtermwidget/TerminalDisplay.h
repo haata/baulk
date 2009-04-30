@@ -1,25 +1,21 @@
-/*
-    Copyright (C) 2007 by Robert Knight <robertknight@gmail.com>
-    Copyright (C) 1997,1998 by Lars Doelle <lars.doelle@on-line.de>
-
-    Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
-    Additional fixes for BaulkTerm by Jacob Alexander (HaaTa) <haata at users.sourceforge.net>, Copyright (C) 2008
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
-*/
+//  Copyright (C) 2007 by Robert Knight <robertknight@gmail.com>
+//  Copyright (C) 1997,1998 by Lars Doelle <lars.doelle@on-line.de>
+//
+//  Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
+//  Forked for Baulk - Copyright (C) 2008-2009 - Jacob Alexander <haata at users.sf.net>
+//
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation; either version 2 of the License, or
+//  any later version, including version 3 of the License.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifndef TERMINALDISPLAY_H
 #define TERMINALDISPLAY_H
@@ -57,7 +53,7 @@ extern unsigned short vt100_graphics[32];
 
 class ScreenWindow;
 
-/**
+/*!
  * A widget which displays output from a terminal emulation and sends input keypresses and mouse activity
  * to the terminal.
  *
@@ -71,49 +67,49 @@ class TerminalDisplay : public QWidget
    Q_OBJECT
 
 public:
-    /** Constructs a new terminal display widget with the specified parent. */
+    /*! Constructs a new terminal display widget with the specified parent. */
     TerminalDisplay(QWidget *parent=0);
     virtual ~TerminalDisplay();
 
-    /** Returns the terminal color palette used by the display. */
+    /*! Returns the terminal color palette used by the display. */
     const ColorEntry* colorTable() const;
-    /** Sets the terminal color palette used by the display. */
+    /*! Sets the terminal color palette used by the display. */
     void setColorTable(const ColorEntry table[]);
-    /** Sets an Entry in the ColorTable */
+    /*! Sets an Entry in the ColorTable */
     void setColorTableEntry( int colorEntry, QColor color, bool transparency, bool bold );
-    /**
+    /*!
      * Sets the seed used to generate random colors for the display
      * (in color schemes that support them).
      */
     void setRandomSeed(uint seed);
-    /**
+    /*!
      * Returns the seed used to generate random colors for the display
      * (in color schemes that support them).
      */
     uint randomSeed() const;
 
-    /** Sets the opacity of the terminal display. */
+    /*! Sets the opacity of the terminal display. */
     void setOpacity(qreal opacity);
 
-    /** 
+    /*! 
      * This enum describes the location where the scroll bar is positioned in the display widget.
      */
     enum ScrollBarPosition 
     { 
-        /** Do not show the scroll bar. */
+        /*! Do not show the scroll bar. */
         NoScrollBar=0, 
-        /** Show the scroll bar on the left side of the display. */
+        /*! Show the scroll bar on the left side of the display. */
         ScrollBarLeft=1, 
-        /** Show the scroll bar on the right side of the display. */
+        /*! Show the scroll bar on the right side of the display. */
         ScrollBarRight=2 
     };
-    /** 
+    /*! 
      * Specifies whether the terminal display has a vertical scroll bar, and if so whether it
      * is shown on the left or right side of the display.
      */
     void setScrollBarPosition(ScrollBarPosition position);
 
-    /** 
+    /*! 
      * Sets the current position and range of the display's scroll bar.
      *
      * @param cursor The position of the scroll bar's thumb.
@@ -121,7 +117,7 @@ public:
      */
     void setScroll(int cursor, int lines);
 
-    /** 
+    /*! 
      * Returns the display's filter chain.  When the image for the display is updated,
      * the text is passed through each filter in the chain.  Each filter can define
      * hotspots which correspond to certain strings (such as URLs or particular words).
@@ -134,7 +130,7 @@ public:
      */
     FilterChain* filterChain() const;
 
-    /** 
+    /*! 
      * Updates the filters in the display's filter chain.  This will cause
      * the hotspots to be updated to match the current image.
      *
@@ -150,34 +146,34 @@ public:
      */  
     void processFilters();
 
-    /** 
+    /*! 
      * Returns a list of menu actions created by the filters for the content
      * at the given @p position.
      */
     QList<QAction*> filterActions(const QPoint& position);
 
-    /** Returns true if the cursor is set to blink or false otherwise. */
+    /*! Returns true if the cursor is set to blink or false otherwise. */
     bool blinkingCursor() { return _hasBlinkingCursor; }
-    /** Specifies whether or not the cursor blinks. */
+    /*! Specifies whether or not the cursor blinks. */
     void setBlinkingCursor(bool blink);
 
     void setCtrlDrag(bool enable) { _ctrlDrag=enable; }
     bool ctrlDrag() { return _ctrlDrag; }
 
-	/** 
+	/*! 
      *  This enum describes the methods for selecting text when
  	 *  the user triple-clicks within the display. 
  	 */
 	enum TripleClickMode
 	{
-		/** Select the whole line underneath the cursor. */
+		/*! Select the whole line underneath the cursor. */
 		SelectWholeLine,
-		/** Select from the current cursor position to the end of the line. */
+		/*! Select from the current cursor position to the end of the line. */
 		SelectForwardsFromCursor
 	};
-    /** Sets how the text is selected when the user triple clicks within the display. */	
+    /*! Sets how the text is selected when the user triple clicks within the display. */	
     void setTripleClickMode(TripleClickMode mode) { _tripleClickMode = mode; }
-	/** See setTripleClickSelectionMode() */
+	/*! See setTripleClickSelectionMode() */
     TripleClickMode tripleClickMode() { return _tripleClickMode; }
 
     void setLineSpacing(uint);
@@ -185,26 +181,26 @@ public:
 
     void emitSelection(bool useXselection,bool appendReturn);
 
-    /**
+    /*!
      * This enum describes the available shapes for the keyboard cursor.
      * See setKeyboardCursorShape()
      */
     enum KeyboardCursorShape
     {
-        /** A rectangular block which covers the entire area of the cursor character. */
+        /*! A rectangular block which covers the entire area of the cursor character. */
         BlockCursor,
-        /** 
+        /*! 
          * A single flat line which occupies the space at the bottom of the cursor
          * character's area.
          */
         UnderlineCursor,
-        /** 
+        /*! 
          * An cursor shaped like the capital letter 'I', similar to the IBeam 
          * cursor used in Qt/KDE text editors.
          */
         IBeamCursor
     };
-    /** 
+    /*! 
      * Sets the shape of the keyboard cursor.  This is the cursor drawn   
      * at the position in the terminal where keyboard input will appear.
      *
@@ -215,12 +211,12 @@ public:
      * Defaults to BlockCursor
      */
     void setKeyboardCursorShape(KeyboardCursorShape shape);
-    /**
+    /*!
      * Returns the shape of the keyboard cursor.  See setKeyboardCursorShape()
      */
     KeyboardCursorShape keyboardCursorShape() const;
 
-    /**
+    /*!
      * Sets the color used to draw the keyboard cursor.  
      *
      * The keyboard cursor defaults to using the foreground color of the character
@@ -235,21 +231,21 @@ public:
      */
     void setKeyboardCursorColor(bool useForegroundColor , const QColor& color);
 
-    /** 
+    /*! 
      * Returns the color of the keyboard cursor, or an invalid color if the keyboard
      * cursor color is set to change according to the foreground color of the character
      * underneath it. 
      */
     QColor keyboardCursorColor() const;
 
-    /**
+    /*!
      * Returns the number of lines of text which can be displayed in the widget.
      *
      * This will depend upon the height of the widget and the current font.
      * See fontHeight()
      */
     int  lines()   { return _lines;   }
-    /**
+    /*!
      * Returns the number of characters of text which can be displayed on
      * each line in the widget.
      *
@@ -258,11 +254,11 @@ public:
      */
     int  columns() { return _columns; }
 
-    /**
+    /*!
      * Returns the height of the characters in the font used to draw the text in the display.
      */
     int  fontHeight()   { return _fontHeight;   }
-    /**
+    /*!
      * Returns the width of the characters in the display.  
      * This assumes the use of a fixed-width font.
      */
@@ -274,7 +270,7 @@ public:
     // reimplemented
     QSize sizeHint() const;
 
-    /**
+    /*!
      * Sets which characters, in addition to letters and numbers, 
      * are regarded as being part of a word for the purposes
      * of selecting words in the display by double clicking on them.
@@ -286,7 +282,7 @@ public:
      * of a word ( in addition to letters and numbers ).
      */
     void setWordCharacters(const QString& wc);
-    /** 
+    /*! 
      * Returns the characters which are considered part of a word for the 
      * purpose of selecting words in the display with the mouse.
      *
@@ -294,7 +290,7 @@ public:
      */
     QString wordCharacters() { return _wordCharacters; }
 
-    /** 
+    /*! 
      * Sets the type of effect used to alert the user when a 'bell' occurs in the 
      * terminal session.
      *
@@ -302,7 +298,7 @@ public:
      * the alert message.
      */
     void setBellMode(int mode);
-    /** 
+    /*! 
      * Returns the type of effect used to alert the user when a 'bell' occurs in
      * the terminal session.
      * 
@@ -310,66 +306,66 @@ public:
      */
     int bellMode() { return _bellMode; }
 
-    /**
+    /*!
      * This enum describes the different types of sounds and visual effects which
      * can be used to alert the user when a 'bell' occurs in the terminal
      * session.
      */
     enum BellMode
     { 
-        /** A system beep. */
+        /*! A system beep. */
         SystemBeepBell=0, 
-        /** 
+        /*! 
          * KDE notification.  This may play a sound, show a passive popup
          * or perform some other action depending on the user's settings.
          */
         NotifyBell=1, 
-        /** A silent, visual bell (eg. inverting the display's colors briefly) */
+        /*! A silent, visual bell (eg. inverting the display's colors briefly) */
         VisualBell=2, 
-        /** No bell effects */
+        /*! No bell effects */
         NoBell=3 
     };
 
     void setSelection(const QString &t);
 
-    /** 
+    /*! 
      * Reimplemented.  Has no effect.  Use setVTFont() to change the font
      * used to draw characters in the display.
      */
     virtual void setFont(const QFont &);
 
-    /** Returns the font used to draw characters in the display */
+    /*! Returns the font used to draw characters in the display */
     QFont getVTFont() { return font(); }
 
-    /** 
+    /*! 
      * Sets the font used to draw the display.  Has no effect if @p font
      * is larger than the size of the display itself.    
      */
     void setVTFont(const QFont& font);
 
-    /**
+    /*!
      * Specified whether anti-aliasing of text in the terminal display
      * is enabled or not.  Defaults to enabled.
      */
     static void setAntialias( bool antialias ) { _antialiasText = antialias; }
-    /** 
+    /*! 
      * Returns true if anti-aliasing of text in the terminal is enabled.
      */
     static bool antialias()                 { return _antialiasText;   }
     
-    /**
+    /*!
      * Sets whether or not the current height and width of the 
      * terminal in lines and columns is displayed whilst the widget
      * is being resized.
      */
     void setTerminalSizeHint(bool on) { _terminalSizeHint=on; }
-    /** 
+    /*! 
      * Returns whether or not the current height and width of
      * the terminal in lines and columns is displayed whilst the widget
      * is being resized.
      */
     bool terminalSizeHint() { return _terminalSizeHint; }
-    /** 
+    /*! 
      * Sets whether the terminal size display is shown briefly
      * after the widget is first shown.
      *
@@ -380,7 +376,7 @@ public:
     void setBidiEnabled(bool set) { _bidiEnabled=set; }
     bool isBidiEnabled() { return _bidiEnabled; }
 
-    /**
+    /*!
      * Sets the terminal screen section which is displayed in this widget.
      * When updateImage() is called, the display fetches the latest character image from the
      * the associated terminal screen window.
@@ -389,44 +385,44 @@ public:
      * by the TerminalDisplay.
      */
     void setScreenWindow( ScreenWindow* window );
-    /** Returns the terminal screen section which is displayed in this widget.  See setScreenWindow() */
+    /*! Returns the terminal screen section which is displayed in this widget.  See setScreenWindow() */
     ScreenWindow* screenWindow() const;
 
     static bool HAVE_TRANSPARENCY;
 
 public slots:
 
-    /** 
+    /*! 
      * Causes the terminal display to fetch the latest character image from the associated
      * terminal screen ( see setScreenWindow() ) and redraw the display.
      */
     void updateImage(); 
-    /**
+    /*!
      * Causes the terminal display to fetch the latest line status flags from the 
      * associated terminal screen ( see setScreenWindow() ).  
      */ 
     void updateLineProperties();
 
-    /** Copies the selected text to the clipboard. */
+    /*! Copies the selected text to the clipboard. */
     void copyClipboard();
-    /** 
+    /*! 
      * Pastes the content of the clipboard into the 
      * display.
      */
     void pasteClipboard();
-    /**
+    /*!
      * Pastes the content of the selection into the
      * display.
      */
     void pasteSelection();
 
-	/** 
+	/*! 
  	  * Changes whether the flow control warning box should be shown when the flow control
  	  * stop key (Ctrl+S) are pressed.
  	  */
 	void setFlowControlWarningEnabled(bool enabled);
 	
-    /** 
+    /*! 
 	 * Causes the widget to display or hide a message informing the user that terminal
 	 * output has been suspended (by using the flow control key combination Ctrl+S)
 	 *
@@ -436,7 +432,7 @@ public slots:
 	 */ 
 	void outputSuspended(bool suspended);
 
-    /**
+    /*!
      * Sets whether the program whoose output is being displayed in the view
      * is interested in mouse events.
      *
@@ -452,10 +448,10 @@ public slots:
      */
     void setUsesMouse(bool usesMouse);
   
-    /** See setUsesMouse() */
+    /*! See setUsesMouse() */
     bool usesMouse() const;
 
-    /** 
+    /*! 
      * Shows a notification that a bell event has occurred in the terminal.
      * TODO: More documentation here
      */
@@ -463,12 +459,12 @@ public slots:
 
 signals:
 
-    /**
+    /*!
      * Emitted when the user presses a key whilst the terminal widget has focus.
      */
     void keyPressedSignal(QKeyEvent *e);
 
-    /**
+    /*!
      * Emitted when the user presses the suspend or resume flow control key combinations 
      * 
      * @param suspend true if the user pressed Ctrl+S (the suspend output key combination) or
@@ -476,7 +472,7 @@ signals:
      */
     void flowControlKeyPressed(bool suspend);
     
-    /** 
+    /*! 
      * A mouse event occurred.
      * @param button The mouse button (0 for left button, 1 for middle button, 2 for right button, 3 for release)
      * @param column The character column where the event occurred
@@ -487,7 +483,7 @@ signals:
     void changedFontMetricSignal(int height, int width);
     void changedContentSizeSignal(int height, int width);
 
-    /** 
+    /*! 
      * Emitted when the user right clicks on the display, or right-clicks with the Shift
      * key held down if usesMouse() is true.
      *
@@ -756,3 +752,4 @@ public:
 }
 
 #endif // TERMINALDISPLAY_H
+

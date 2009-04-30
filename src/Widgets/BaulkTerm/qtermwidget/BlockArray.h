@@ -1,24 +1,21 @@
-/*
-    This file is part of Konsole, an X terminal.
-    Copyright (C) 2000 by Stephan Kulow <coolo@kde.org>
-   
-    Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
-*/
+//  This file is part of Konsole, an X terminal.
+//  Copyright (C) 2000 by Stephan Kulow <coolo@kde.org>
+//   
+//  Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
+//  Forked for Baulk - Copyright (C) 2008-2009 - Jacob Alexander <haata at users.sf.net>
+//
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation; either version 2 of the License, or
+//  any later version, including version 3 of the License.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifndef BLOCKARRAY_H
 #define BLOCKARRAY_H
@@ -39,11 +36,11 @@ struct Block {
     size_t size;
 };
 
-// ///////////////////////////////////////////////////////
+
 
 class BlockArray {
 public:
-    /**
+    /*!
     * Creates a history file for holding
     * maximal size blocks. If more blocks
     * are requested, then it drops earlier
@@ -51,10 +48,10 @@ public:
     */
     BlockArray();
 
-    /// destructor
+    //! destructor
     ~BlockArray();
 
-    /**
+    /*!
     * adds the Block at the end of history.
     * This may drop other blocks.
     *
@@ -67,7 +64,7 @@ public:
     */
     size_t append(Block *block);
 
-    /**
+    /*!
     * gets the block at the index. Function may return
     * 0 if the block isn't available any more.
     *
@@ -77,7 +74,7 @@ public:
     */
     const Block *at(size_t index);
 
-    /**
+    /*!
     * reorders blocks as needed. If newsize is null,
     * the history is emptied completely. The indices
     * returned on append won't change their semantic,
@@ -89,7 +86,7 @@ public:
 
     Block *lastBlock() const;
 
-    /**
+    /*!
     * Convenient function to set the size in KBytes
     * instead of blocks
     */
@@ -107,7 +104,7 @@ private:
     void decreaseBuffer(size_t newsize);
 
     size_t size;
-    // current always shows to the last inserted block
+    //! current always shows to the last inserted block
     size_t current;
     size_t index;
 

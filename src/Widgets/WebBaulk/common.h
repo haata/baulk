@@ -15,22 +15,20 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * @author Jacob Alexander (HaaTa)
- *
- * Common Functions and Classes for WebBaulk
- */
-
 #ifndef __COMMON_H
 #define __COMMON_H
 
 #include <QToolButton>
 #include <QTreeWidget>
 
+// Common Functions and Classes for WebBaulk
+
+//! ToolButton Convenience class
 class ToolButton : public QToolButton {
 	Q_OBJECT
 
 public:
+	//! Constructor allowing for text to be added directly
 	ToolButton( QString text, QWidget *parent = 0 );
 };
 

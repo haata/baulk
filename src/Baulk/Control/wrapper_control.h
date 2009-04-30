@@ -35,22 +35,20 @@
 
 #include "control.h"
 
-/**
- * @author Jacob Alexander (HaaTa)
- *
- * DLL Wrapper for BaulkControl
- */
+//! DLL Wrapper for BaulkControl
 // Exported Symbols *******************************************************************************
+//! C Exported Symbols
 extern "C" EXPORTDLL {
+	//! List of available symbols
 	QStringList symbolList();
 
-	// Main Widget
+	//! Main Widget
 	BaulkWidget *control_mainWidget( QWidget *parent = 0 );
 
-	// Widget Name
+	//! Widget Name
 	QString control_widgetName();
 
-	// Quit Event
+	//! Quit Event
 	bool allowQuit();
 }
 

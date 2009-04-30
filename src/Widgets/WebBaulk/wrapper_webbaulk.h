@@ -31,12 +31,8 @@
 
 #include "webbaulk.h"
 
-/**
- * @author Jacob Alexander (HaaTa)
- *
- * DLL Wrapper for WebBaulk
- */
-// Exported Symbols
+// Exported Symbols *******************************************************************************
+//! DLL Wrapper for WebBaulk
 extern "C" EXPORTDLL {
 	QStringList symbolList();
 

@@ -15,11 +15,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * @author Jacob Alexander (HaaTa)
- *
- * A container for Terminal Colours
- *
+//! A container for Terminal Colours
+/*!
  * Contains, QColor, transparency bool, and bold bool
  */
 
@@ -33,27 +30,39 @@
 
 class TerminalColour {
 public:
-	// Constructors
+	//! Default Constructor
 	TerminalColour();
+	//! Convenience Constructor
+	/*!
+	 * The same as setOptions
+	 * \param useColour colour to set \see setColour
+	 * \param useTransparency \see setTransparency
+	 * \param useBold \see useBold
+	 */
 	TerminalColour( QColor useColour, bool useTransparency, bool useBold );
 
-	// Colour
+	//! Colour
 	QColor colour() const;
 	void setColour( QColor useColour );
 
-	// Bold
+	//! Bold
 	bool bold() const;
 	void setBold( bool useBold );
 
-	// Transparency
+	//! Transparency
 	bool transparency() const;
 	void setTransparency( bool useTransparency );
 
-	// Encompassing
+	//! !String representation
 	QString toString() const;
+	//! QVariant representation
 	QVariant toVariant() const;
+
+	//! Convience set for Colour, Transparency and Bold
 	void setOptions( QColor useColour, bool useTransparency, bool useBold );
+	//! Set options from QString representation
 	void setFromString( QString config );
+	//! Set options from QVariant representation
 	void setFromVariant( QVariant config );
 
 private:

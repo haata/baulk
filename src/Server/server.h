@@ -33,24 +33,29 @@
 #include "client.h"
 #include "packet.h"
 
+//! Responsible for Passing information between GUI instances of Baulk.
 /**
- * @author Jacob Alexander (HaaTa)
- *
- * Responsible for Passing information between GUI instances of Baulk.
- *
  * The server takes data thrown at it and passes it to the designated client.
  */
 class InformationServer : public QObject {
 	Q_OBJECT
 
 public:
+	//! Default Constructor
+	/*!
+	 * One important parameter
+	 * \param listen Server name that clients listen for
+	 */
 	InformationServer( QString listen, QObject *parent = 0 );
+	//! Destructor
 	~InformationServer();
 
 	QLocalServer *serverOpen() const { return server; }
 
+	//! Close Server
 	bool terminate();
 
+	//! Command line arguments for executable
 	bool processCommandArgs();
 
 private:
@@ -58,6 +63,7 @@ private:
 
 	int connectedClients;
 
+	//! Packet incoming from client
 	Packet *incomingPacket;
 
 	QLocalServer *server;
@@ -68,6 +74,7 @@ private:
 	QVector<QLocalSocket*> clientList;
 	QList<int> emptyClientListEntries;
 
+	//! Log name for log information
 	QString errorName() const { return tr("InformationServer"); }
 
 	void clientRedirect();
@@ -76,7 +83,9 @@ private:
 	void serverRequest();
 
 private slots:
+	//! Called on a connection from a client
 	void connection();
+	//! Called when data is sent to the server
 	void incomingData();
 
 signals:

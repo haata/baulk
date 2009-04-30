@@ -1,28 +1,26 @@
-/*
-    This file is part of Konsole, an X terminal.
-    
-    Copyright (C) 2007 by Robert Knight <robertknight@gmail.com>
-    Copyright (C) 1997,1998 by Lars Doelle <lars.doelle@on-line.de>
-
-    Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
-*/
+//  This file is part of Konsole, an X terminal.
+//
+//  Copyright (C) 2007 by Robert Knight <robertknight@gmail.com>
+//  Copyright (C) 1997,1998 by Lars Doelle <lars.doelle@on-line.de>
+//   
+//  Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
+//  Forked for Baulk - Copyright (C) 2008-2009 - Jacob Alexander <haata at users.sf.net>
+//
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation; either version 2 of the License, or
+//  any later version, including version 3 of the License.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifndef EMULATION_H
+
 #define EMULATION_H
 
 // System
@@ -45,7 +43,7 @@ class Screen;
 class ScreenWindow;
 class TerminalCharacterDecoder;
 
-/** 
+/*! 
  * This enum describes the available states which 
  * the terminal emulation may be set to.
  *
@@ -53,14 +51,14 @@ class TerminalCharacterDecoder;
  */
 enum 
 { 
-    /** The emulation is currently receiving user input. */
+    /*! The emulation is currently receiving user input. */
     NOTIFYNORMAL=0, 
-    /** 
+    /*! 
      * The terminal program has triggered a bell event
      * to get the user's attention.
      */
     NOTIFYBELL=1, 
-    /** 
+    /*! 
      * The emulation is currently receiving data from its 
      * terminal input.
      */
@@ -70,7 +68,7 @@ enum
     NOTIFYSILENCE=3 
 };
 
-/**
+/*!
  * Base class for terminal emulation back-ends.
  *
  * The back-end is responsible for decoding an incoming character stream and 
@@ -125,27 +123,27 @@ Q_OBJECT
 
 public:
  
-   /** Constructs a new terminal emulation */ 
+   /*! Constructs a new terminal emulation */ 
    Emulation();
   ~Emulation();
 
-  /**
+  /*!
    * Creates a new window onto the output from this emulation.  The contents
    * of the window are then rendered by views which are set to use this window using the
    * TerminalDisplay::setScreenWindow() method.
    */
   ScreenWindow* createWindow();
 
-  /** Returns the size of the screen image which the emulation produces */
+  /*! Returns the size of the screen image which the emulation produces */
   QSize imageSize();
 
-  /**
+  /*!
    * Returns the total number of lines, including those stored in the history.
    */ 
   int lineCount();
 
   
-  /** 
+  /*! 
    * Sets the history store used by this emulation.  When new lines
    * are added to the output, older lines at the top of the screen are transferred to a history
    * store.   
@@ -154,12 +152,12 @@ public:
    * type of store.
    */
   void setHistory(const HistoryType&);
-  /** Returns the history store used by this emulation.  See setHistory() */
+  /*! Returns the history store used by this emulation.  See setHistory() */
   const HistoryType& history();
-  /** Clears the history scroll. */
+  /*! Clears the history scroll. */
   void clearHistory();
 
-  /** 
+  /*! 
    * Copies the output history from @p startLine to @p endLine 
    * into @p stream, using @p decoder to convert the terminal
    * characters into text. 
@@ -172,12 +170,12 @@ public:
   virtual void writeToStream(TerminalCharacterDecoder* decoder,int startLine,int endLine);
   
   
-  /** Returns the codec used to decode incoming characters.  See setCodec() */
+  /*! Returns the codec used to decode incoming characters.  See setCodec() */
   const QTextCodec* codec() { return _codec; }
-  /** Sets the codec used to decode incoming characters.  */
+  /*! Sets the codec used to decode incoming characters.  */
   void setCodec(const QTextCodec*);
 
-  /** 
+  /*! 
    * Convenience method.  
    * Returns true if the current codec used to decode incoming
    * characters is UTF-8
@@ -185,30 +183,30 @@ public:
   bool utf8() { Q_ASSERT(_codec); return _codec->mibEnum() == 106; }
   
 
-  /** TODO Document me */
+  /*! TODO Document me */
   virtual char getErase() const;
 
-  /** 
+  /*! 
    * Sets the key bindings used to key events
    * ( received through sendKeyEvent() ) into character
    * streams to send to the terminal.
    */
   void setKeyBindings(const QString& name);
-  /** 
+  /*! 
    * Returns the name of the emulation's current key bindings.
    * See setKeyBindings()
    */
   QString keyBindings();
 
-  /** 
+  /*! 
    * Copies the current image into the history and clears the screen.
    */
   virtual void clearEntireScreen() =0;
 
-  /** Resets the state of the terminal. */
+  /*! Resets the state of the terminal. */
   virtual void reset() =0;
 
-  /** 
+  /*! 
    * Returns true if the active terminal program wants
    * mouse input events.
    *
@@ -219,28 +217,28 @@ public:
 
 public slots: 
 
-  /** Change the size of the emulation's image */
+  /*! Change the size of the emulation's image */
   virtual void setImageSize(int lines, int columns);
   
-  /** 
+  /*! 
    * Interprets a sequence of characters and sends the result to the terminal.
    * This is equivalent to calling sendKeyEvent() for each character in @p text in succession.
    */
   virtual void sendText(const QString& text) = 0;
 
-  /** 
+  /*! 
    * Interprets a key press event and emits the sendData() signal with
    * the resulting character stream. 
    */
   virtual void sendKeyEvent(QKeyEvent*);
  
-  /** 
+  /*! 
    * Converts information about a mouse event into an xterm-compatible escape
    * sequence and emits the character sequence via sendData()
    */
   virtual void sendMouseEvent(int buttons, int column, int line, int eventType);
   
-  /**
+  /*!
    * Sends a string of characters to the foreground terminal process. 
    *
    * @param string The characters to send.  
@@ -249,7 +247,7 @@ public slots:
    */
   virtual void sendString(const char* string, int length = -1) = 0;
 
-  /** 
+  /*! 
    * Processes an incoming stream of characters.  receiveData() decodes the incoming
    * character buffer using the current codec(), and then calls receiveChar() for
    * each unicode character in the resulting buffer.  
@@ -265,7 +263,7 @@ public slots:
 
 signals:
 
-  /** 
+  /*! 
    * Emitted when a buffer of data is ready to send to the 
    * standard input of the terminal.
    *
@@ -274,7 +272,7 @@ signals:
    */
   void sendData(const char* data,int len);
 
-  /** 
+  /*! 
    * Requests that sending of input to the emulation
    * from the terminal process be suspended or resumed.
    *
@@ -285,7 +283,7 @@ signals:
    */
   void lockPtyRequest(bool suspend);
 
-  /**
+  /*!
    * Requests that the pty used by the terminal process
    * be set to UTF 8 mode.  
    *
@@ -293,7 +291,7 @@ signals:
    */
   void useUtf8Request(bool);
 
-  /**
+  /*!
    * Emitted when the activity state of the emulation is set.
    *
    * @param state The new activity state, one of NOTIFYNORMAL, NOTIFYACTIVITY
@@ -301,11 +299,11 @@ signals:
    */
   void stateSet(int state);
 
-  /** TODO Document me */
+  /*! TODO Document me */
   void zmodemDetected();
 
 
-  /**
+  /*!
    * Requests that the color of the text used
    * to represent the tabs associated with this
    * emulation be changed.  This is a Konsole-specific
@@ -315,7 +313,7 @@ signals:
    */
   void changeTabTextColorRequest(int color);
 
-  /** 
+  /*! 
    * This is emitted when the program running in the shell indicates whether or
    * not it is interested in mouse events.
    *
@@ -324,7 +322,7 @@ signals:
    */
   void programUsesMouseChanged(bool usesMouse);
 
-  /** 
+  /*! 
    * Emitted when the contents of the screen image change.
    * The emulation buffers the updates from successive image changes,
    * and only emits outputChanged() at sensible intervals when
@@ -338,7 +336,7 @@ signals:
    */
   void outputChanged();
 
-  /**
+  /*!
    * Emitted when the program running in the terminal wishes to update the 
    * session's title.  This also allows terminal programs to customize other
    * aspects of the terminal emulation display. 
@@ -372,13 +370,13 @@ signals:
 
   void titleChanged(int title,const QString& newTitle);
 
-  /**
+  /*!
    * Emitted when the program running in the terminal changes the
    * screen size.
    */
   void imageSizeChanged(int lineCount , int columnCount);
 
-  /** 
+  /*! 
    * Emitted when the terminal program requests to change various properties
    * of the terminal display.  
    *
@@ -395,13 +393,13 @@ protected:
   virtual void setMode  (int mode) = 0;
   virtual void resetMode(int mode) = 0;
    
- /** 
+ /*! 
    * Processes an incoming character.  See receiveData()
    * @p ch A unicode character code. 
    */
   virtual void receiveChar(int ch);
 
-  /** 
+  /*! 
    * Sets the active screen.  The terminal has two screens, primary and alternate.
    * The primary screen is used by default.  When certain interactive programs such
    * as Vim are run, they trigger a switch to the alternate screen.
@@ -437,7 +435,7 @@ protected:
   const KeyboardTranslator* _keyTranslator; // the keyboard layout
 
 protected slots:
-  /** 
+  /*! 
    * Schedules an update of attached views.
    * Repeated calls to bufferedUpdate() in close succession will result in only a single update,
    * much like the Qt buffered update of widgets. 
@@ -463,3 +461,4 @@ private:
 }
 
 #endif // ifndef EMULATION_H
+

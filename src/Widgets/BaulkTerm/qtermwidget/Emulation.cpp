@@ -1,27 +1,24 @@
-/*
-    This file is part of Konsole, an X terminal.
-
-    Copyright (C) 2007 Robert Knight <robertknight@gmail.com> 
-    Copyright (C) 1997,1998 by Lars Doelle <lars.doelle@on-line.de>
-    Copyright (C) 1996 by Matthias Ettrich <ettrich@kde.org>
-
-    Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
-*/
+//  This file is part of Konsole, an X terminal.
+//
+//  Copyright (C) 2007 Robert Knight <robertknight@gmail.com> 
+//  Copyright (C) 1997,1998 by Lars Doelle <lars.doelle@on-line.de>
+//  Copyright (C) 1996 by Matthias Ettrich <ettrich@kde.org>
+//
+//  Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
+//  Forked for Baulk - Copyright (C) 2008-2009 - Jacob Alexander <haata at users.sf.net>
+//
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation; either version 2 of the License, or
+//  any later version, including version 3 of the License.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // Own
 #include "Emulation.h"
@@ -192,16 +189,12 @@ QString Emulation::keyBindings()
 
 // Interpreting Codes ---------------------------------------------------------
 
-/*
+/*!
    This section deals with decoding the incoming character stream.
    Decoding means here, that the stream is first separated into `tokens'
    which are then mapped to a `meaning' provided as operations by the
    `Screen' class.
 */
-
-/*!
-*/
-
 void Emulation::receiveChar(int c)
 // process application unicode input to terminal
 // this is a trivial scanner
@@ -254,11 +247,10 @@ void Emulation::sendMouseEvent(int /*buttons*/, int /*column*/, int /*row*/, int
 
 // Unblocking, Byte to Unicode translation --------------------------------- --
 
-/*
+/*!
    We are doing code conversion from locale to unicode first.
 TODO: Character composition from the old code.  See #96536
 */
-
 void Emulation::receiveData(const char* text, int length)
 {
 	emit stateSet(NOTIFYACTIVITY);

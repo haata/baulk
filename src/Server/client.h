@@ -26,28 +26,38 @@
 
 #include "packet.h"
 
-/**
- * @author Jacob Alexander (HaaTa)
- *
- * Responsible for Communicating with the InformationServer
- *
+//! Responsible for Communicating with the InformationServer
+/*! 
  * Provides an interface for sending/recieving information to/from
- *  different instances of Baulk.
+ * different instances of Baulk.
  */
 class InformationClient : public QObject {
 	Q_OBJECT
 
 public:
+	//! Default Constructor
+	/*!
+	 * Important parameters
+	 * \param call Server Name to connect to
+	 * \param informDaemonOnClose Send a signal to the Server on client exit
+	 */ 
 	InformationClient( QString call, bool informDaemonOnClose = true, QObject *parent = 0 );
+
+	//! Destructor
 	~InformationClient();
 
+	//! Attempt to instanciate connection to server
 	void connectToServer();
+	//! Request client ID from server
 	void requestId();
 
+	//! Client ID assigned by the server
 	int id() const { return currentId; }
 
 public slots:
+	//! Called when data is sent from the server to client
 	void incomingData();
+	//! Attempt to start a new server
 	void requestStartNewHostInstance();
 
 private:
@@ -63,10 +73,13 @@ private:
 	QString errorName() const { return tr("InformationClient"); }
 
 	void clientRequest();
+	//! Sets the new client ID
 	void newId( int newId );
+	//! Sends data to server
 	void outgoingData( QString data );
 
 signals:
+	//! Signaled if the client ID has changed
 	void idChanged();
 };
 

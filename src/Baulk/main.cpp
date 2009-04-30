@@ -21,15 +21,13 @@
 
 #include "baulk.h"
 
-/// Baulk Declaration for use in handler.h
+//! Baulk Declaration for use in handler.h
 Baulk *baulk;
 
 #include <handler.h>
 #include <compositing.h> // Used in X11 only
 
-/**
- * @author Jacob Alexander (HaaTa)
- *
+/*!
  * First point of entry, which passes to baulk.h. 
  * Captures all debug output for this instance of Baulk.
  */

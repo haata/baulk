@@ -31,12 +31,8 @@
 
 #include "baulkstatus.h"
 
-/**
- * @author Jacob Alexander (HaaTa)
- *
- * DLL Wrapper for Baulk Status
- */
 // Exported Symbols *******************************************************************************
+//! DLL Wrapper for Baulk Status
 extern "C" EXPORTDLL {
 	QStringList symbolList();
 

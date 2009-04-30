@@ -35,25 +35,22 @@
 #include <baulkwidget.h>
 #include <libraryloader.h>
 
-/**
- * @author Jacob Alexander (HaaTa)
- *
- * The GUI Controller for all control options in Baulk.
- */
+//! The GUI Controller for all control options in Baulk.
 class BaulkInterfaceDialog : public QObject {
 	Q_OBJECT
 
 public:
+	//! Default Constructor
 	BaulkInterfaceDialog( BaulkWidget *parent );
 
 public slots:
-	// Control -> Dialog Connectors
+	//! Control -> Dialog Connectors
 	void actionsDialogLoader();
 	void configurationDialogLoader();
 	void newWidgetDialogLoader();
 
 private:
-	// Dialogs
+	//! Dialogs
 	BaulkDialog *actionsDialog;
 	BaulkDialog *configurationDialog;
 	BaulkDialog *newWidgetDialog;
@@ -61,31 +58,31 @@ private:
 	// Controller
 	BaulkWidget *parentWidget;
 
-	// New Widget List
+	//! New Widget List
 	QListView *newListView;
 	QStringListModel *newListViewModel;
 
-	// Configuration Tree
+	//! Configuration Tree
 	QTreeWidget *configurationTree;
 
-	// Hotkey List
+	//! Hotkey List
 	QTableWidget *actionsTableView;
 
 
-	// Application Name for Errors
+	//! Application Name for Errors
 	QString errorName() const { return tr("BaulkInterfaceDialog"); }
 
 private slots:
-	// Dialog -> Control Connectors
+	//! Dialog -> Control Connectors
 	void actionsDialogHotkeyAccepted( int row, int column );
 	void actionsDialogHotkeyModified( int row, int column );
 	void newWidgetAccepted( QModelIndex index );
 
-	// Dialog Functionality
+	//! Dialog Functionality
 	void actionsDialogHotkeyEdit( QTableWidgetItem *item );
 
 signals:
-	// Dialog -> Control Signals
+	//! Dialog -> Control Signals
 	void newWidget( LibraryLoader *library );
 };
 

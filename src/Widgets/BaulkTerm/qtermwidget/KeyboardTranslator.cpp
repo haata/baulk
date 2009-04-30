@@ -1,25 +1,22 @@
-/*
-    This source file was part of Konsole, a terminal emulator.
-
-    Copyright (C) 2007 by Robert Knight <robertknight@gmail.com>
-
-    Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
-*/
+//  This source file was part of Konsole, a terminal emulator.
+//
+//  Copyright (C) 2007 by Robert Knight <robertknight@gmail.com>
+//
+//  Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
+//  Forked for Baulk - Copyright (C) 2008-2009 - Jacob Alexander <haata at users.sf.net>
+//
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation; either version 2 of the License, or
+//  any later version, including version 3 of the License.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // Own
 #include "KeyboardTranslator.h"
@@ -221,24 +218,24 @@ void KeyboardTranslatorWriter::writeEntry( const KeyboardTranslator::Entry& entr
 }
 
 
-// each line of the keyboard translation file is one of:
-//
-// - keyboard "name"
-// - key KeySequence : "characters"
-// - key KeySequence : CommandName
-//
-// KeySequence begins with the name of the key ( taken from the Qt::Key enum )
-// and is followed by the keyboard modifiers and state flags ( with + or - in front
-// of each modifier or flag to indicate whether it is required ).  All keyboard modifiers
-// and flags are optional, if a particular modifier or state is not specified it is 
-// assumed not to be a part of the sequence.  The key sequence may contain whitespace
-//
-// eg:  "key Up+Shift : scrollLineUp"
-//      "key Next-Shift : "\E[6~"
-//
-// (lines containing only whitespace are ignored, parseLine assumes that comments have
-// already been removed)
-//
+//! each line of the keyboard translation file is one of:
+//!
+//! - keyboard "name"
+//! - key KeySequence : "characters"
+//! - key KeySequence : CommandName
+//!
+//! KeySequence begins with the name of the key ( taken from the Qt::Key enum )
+//! and is followed by the keyboard modifiers and state flags ( with + or - in front
+//! of each modifier or flag to indicate whether it is required ).  All keyboard modifiers
+//! and flags are optional, if a particular modifier or state is not specified it is 
+//! assumed not to be a part of the sequence.  The key sequence may contain whitespace
+//!
+//! eg:  "key Up+Shift : scrollLineUp"
+//!      "key Next-Shift : "\E[6~"
+//!
+//! (lines containing only whitespace are ignored, parseLine assumes that comments have
+//! already been removed)
+//!
 
 KeyboardTranslatorReader::KeyboardTranslatorReader( QIODevice* source )
     : _source(source)
@@ -901,3 +898,4 @@ KeyboardTranslatorManager* KeyboardTranslatorManager::instance()
 {
     return theKeyboardTranslatorManager;
 }
+

@@ -23,11 +23,8 @@
 
 #include <baulkwidget.h>
 
-/**
- * @author Jacob Alexander (HaaTa)
- *
- * Console Output Viewer for Baulk
- *
+//! Console Output Viewer for Baulk
+/*!
  * Provides information to the user on running information of Baulk Control 
  *  and the window instance that houses it.
  */
@@ -35,14 +32,17 @@ class BaulkStatus : public BaulkWidget {
 	Q_OBJECT
 
 public:
+	//! Default Constructor
 	BaulkStatus( BaulkWidget *parent = 0 );
 
 private:
+	//! Current log
 	QStringList current;
 
 	QTextBrowser *messageBrowser;
 
 private slots:
+	//! Updates log (ie. adds to it)
 	void updateMsgLog( QStringList msgLogs );
 };
 

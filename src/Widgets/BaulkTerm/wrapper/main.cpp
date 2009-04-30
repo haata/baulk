@@ -23,23 +23,21 @@
 
 #include "baulkterm.h"
 
-/// Baulk Declaration for use in handler.h
+//! Baulk Declaration for use in handler.h
 BaulkTerm *baulk;
 
 #include <handler.h>
 #include <compositing.h>
 
-/**
- * @author Jacob Alexander (HaaTa)
- *
+/*!
  * First point of entry, which passes to baulk.h. 
  * Captures all debug output for this instance of Baulk.
  */
 int main( int argc, char *argv[] ) {
-	// Message Handler
+	//! Message Handler
 	qInstallMsgHandler( handler );
 
-	// Compositing Information
+	//! Compositing Information
 	Display* display = 0;
 	Visual* visual = 0;
 	Colormap colormap = 0;

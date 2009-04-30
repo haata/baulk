@@ -28,30 +28,33 @@
 
 #include "builddefines.h"
 
-/**
- * @author Jacob Alexander (HaaTa)
- *
- * QWidget Reimplementation for Baulk
+//! QWidget Reimplementation for Baulk
+/*!
+ *  A QWidget Reimplementation useful for adding subfeatures to all widgets in Baulk.
  */
 class BaulkWidget : public QWidget {
 	Q_OBJECT
 
 public:
+	//! Default Constructor
 	BaulkWidget( QWidget *parent = 0 );
-	// For using a QWidget (or derivative) as BaulkWidget
+	//! Constructor for using a QWidget (or derivative) as BaulkWidget
 	BaulkWidget( QWidget *wrapWidget, QWidget *parent );
 
-	// Properties
+	//! Internal message logs
 	QStringList msgLogs() const;
+	//! Add to internal message logs
 	void setMsgLogs( QStringList msgLogs );
 
+
+	//! BaulkServ Listen Name
 	QString serverListenName() const;
 	void setServerListenName( QString listenName );
 
 	QString windowTitleName() const;
 	void setWindowTitleName( QString titleName );
 
-	// Command Line Argument Processing
+	//! Command Line Argument Processing
 	virtual bool processCommandArgs();
 
 public slots:

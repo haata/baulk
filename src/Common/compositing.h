@@ -26,6 +26,7 @@
 #include <X11/Xlib.h>
 #include <X11/extensions/Xrender.h>
 
+//! Provides QT with the information required to do compositing
 void getDisplayInformation( Display*& display , Visual*& visual , Colormap& colormap )
 {
 	display = XOpenDisplay( 0 ); // open default display

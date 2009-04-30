@@ -1,25 +1,22 @@
-/*
-    This file is part of Konsole, an X terminal.
-    
-    Copyright (C) 2006-7 by Robert Knight <robertknight@gmail.com>
-    
-    Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU Lesser General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
-*/
+//  This file is part of Konsole, an X terminal.
+//  
+//  Copyright (C) 2006-7 by Robert Knight <robertknight@gmail.com>
+//  
+//  Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
+//  Forked for Baulk - Copyright (C) 2008-2009 - Jacob Alexander <haata at users.sf.net>
+//
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation; either version 2 of the License, or
+//  any later version, including version 3 of the License.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifndef TERMINAL_CHARACTER_DECODER_H
 #define TERMINAL_CHARACTER_DECODER_H
@@ -31,7 +28,7 @@ class QTextStream;
 namespace Konsole
 {
 
-/**
+/*!
  * Base class for terminal character decoders
  *
  * The decoder converts lines of terminal characters which consist of a unicode character, foreground
@@ -45,12 +42,12 @@ class TerminalCharacterDecoder
 public:
 	virtual ~TerminalCharacterDecoder() {}
 
-    /** Begin decoding characters.  The resulting text is appended to @p output. */
+    /*! Begin decoding characters.  The resulting text is appended to @p output. */
     virtual void begin(QTextStream* output) = 0;
-    /** End decoding. */
+    /*! End decoding. */
     virtual void end() = 0;
 
-	/**
+	/*!
 	 * Converts a line of terminal characters with associated properties into a text string
 	 * and writes the string into an output QTextStream.
 	 *
@@ -63,7 +60,7 @@ public:
 							LineProperty properties) = 0; 
 };
 
-/**
+/*!
  * A terminal character decoder which produces plain text, ignoring colours and other appearance-related
  * properties of the original characters.
  */
@@ -72,13 +69,13 @@ class PlainTextDecoder : public TerminalCharacterDecoder
 public:
 	PlainTextDecoder(); 
 
-    /** 
+    /*! 
      * Set whether trailing whitespace at the end of lines should be included 
      * in the output.
      * Defaults to true.
      */
     void setTrailingWhitespace(bool enable);
-    /**
+    /*!
      * Returns whether trailing whitespace at the end of lines is included
      * in the output.
      */
@@ -97,18 +94,18 @@ private:
     bool _includeTrailingWhitespace;
 };
 
-/**
+/*!
  * A terminal character decoder which produces pretty HTML markup
  */
 class HTMLDecoder : public TerminalCharacterDecoder
 {
 public:
-	/** 
+	/*! 
 	 * Constructs an HTML decoder using a default black-on-white color scheme.
 	 */
 	HTMLDecoder();
 
-	/**
+	/*!
 	 * Sets the colour table which the decoder uses to produce the HTML colour codes in its
 	 * output
 	 */

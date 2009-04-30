@@ -22,10 +22,9 @@
 #include <QMainWindow>
 #include <QWidget>
 
-/**
- * @author Jacob Alexander (HaaTa)
- *
- * Baulk reimplementation of QMainWindow
+//! Baulk reimplementation of QMainWindow
+/*!
+ * A QMainWindow reimplementation useful for adding features to all of Baulk
  */
 class BaulkWindow : public QMainWindow {
 	Q_OBJECT

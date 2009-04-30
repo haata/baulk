@@ -21,11 +21,8 @@
 
 #include "server.h"
 
-/**
- * @author Jacob Alexander (HaaTa)
- *
- * Baulk Server Daemon
- *
+//! Baulk Server Daemon
+/*!
  * Executable for instanciating the Daemon. 
  * Uses the message handler to enable Message Output formatting.
  */

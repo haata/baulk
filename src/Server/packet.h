@@ -23,11 +23,8 @@
 #include <QRegExp>
 #include <QStringList>
 
-/**
- * @author Jacob Alexander (HaaTa)
- *
- * Encodes/Decodes BaulkPackets for use with InformationServer.
- *
+//! Encodes/Decodes BaulkPackets for use with InformationServer.
+/*!
  * <b>Packet Details:</b>
  *
  *  - TO:"destination ID"|FROM:"source ID"|"data flag":"data"
@@ -56,20 +53,23 @@ class Packet : public QObject {
 	Q_OBJECT
 
 public:
-	// Decode Packet Constructor
+	//! Decode Packet Constructor
 	Packet( QString packet, QObject *parent = 0 );
-	// Encode Packet Constructor
-	// 	- Note: Each String of data MUST be accompanied with a dataFlag string
+	//! Encode Packet Constructor
+	/*! 	- Note: Each String of data MUST be accompanied with a dataFlag string
+	 */
 	Packet( QString destinationId, QString senderId, QStringList dataFlags = QStringList(), QStringList data = QStringList(), QObject *parent = 0 );
 
 
-	// Id Conversion
+	//! Id Conversion struct
 	struct PacketIdInformation {
 		int screenId;
 		int windowId;
 	};
 
+	//! Converts client ID to PacketInformation
 	static PacketIdInformation idToInfo( QString id );
+	//! Converts PacketInformation to client ID
 	static QString infoToId( int screenId, int windowId );
 
 
@@ -108,6 +108,7 @@ public:
 		encode(); 
 	}
 
+	//! Encode data to be sent
 	void setEncode( QString destinationId, QString senderId, QStringList dataFlags, QStringList data ) {
 		QList<bool> success;
 		success << destinationIdSanityStore( destinationId )
@@ -140,7 +141,7 @@ private:
 
 	QString errorName() const { return tr("Packet"); }
 
-	// Called on encode/decode failure
+	//! Called on encode/decode failure
 	void debugOutput();
 
 	void decode();

@@ -1,25 +1,22 @@
-/*
-    This source file is part of Konsole, a terminal emulator.
-
-    Copyright (C) 2007 by Robert Knight <robertknight@gmail.com>
-
-    Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
-*/
+//  This source file is part of Konsole, a terminal emulator.
+//
+//  Copyright (C) 2007 by Robert Knight <robertknight@gmail.com>
+//
+//  Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
+//  Forked for Baulk - Copyright (C) 2008-2009 - Jacob Alexander <haata at users.sf.net>
+//
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation; either version 2 of the License, or
+//  any later version, including version 3 of the License.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifndef KEYBOARDTRANSLATOR_H
 #define KEYBOARDTRANSLATOR_H
@@ -34,7 +31,7 @@
 
 typedef void (*CleanUpFunction)();
 
-/**
+/*!
  * @internal
  *
  * Helper class for K_GLOBAL_STATIC to clean up the object on library unload or application
@@ -113,7 +110,7 @@ class QTextStream;
 namespace Konsole
 {
 
-/** 
+/*! 
  * A convertor which maps between key sequences pressed by the user and the
  * character strings which should be sent to the terminal and commands
  * which should be invoked when those character sequences are pressed.
@@ -129,7 +126,7 @@ namespace Konsole
 class KeyboardTranslator
 {
 public:
-    /** 
+    /*! 
      * The meaning of a particular key sequence may depend upon the state which
      * the terminal emulation is in.  Therefore findEntry() may return a different
      * Entry depending upon the state flags supplied.
@@ -139,56 +136,56 @@ public:
      */
     enum State
     {
-        /** Indicates that no special state is active */
+        /*! Indicates that no special state is active */
         NoState = 0,
-        /**
+        /*!
          * TODO More documentation
          */
         NewLineState = 1,
-        /** 
+        /*! 
          * Indicates that the terminal is in 'Ansi' mode.
          * TODO: More documentation
          */
         AnsiState = 2,
-        /**
+        /*!
          * TODO More documentation
          */
         CursorKeysState = 4,
-        /**
+        /*!
          * Indicates that the alternate screen ( typically used by interactive programs
          * such as screen or vim ) is active 
          */
         AlternateScreenState = 8,
-        /** Indicates that any of the modifier keys is active. */ 
+        /*! Indicates that any of the modifier keys is active. */ 
         AnyModifierState = 16
     };
     Q_DECLARE_FLAGS(States,State)
 
-    /**
+    /*!
      * This enum describes commands which are associated with particular key sequences.
      */
     enum Command
     {
-        /** Indicates that no command is associated with this command sequence */
+        /*! Indicates that no command is associated with this command sequence */
         NoCommand = 0,
-        /** TODO Document me */
+        /*! TODO Document me */
         SendCommand = 1,
-        /** Scroll the terminal display up one page */
+        /*! Scroll the terminal display up one page */
         ScrollPageUpCommand = 2,
-        /** Scroll the terminal display down one page */
+        /*! Scroll the terminal display down one page */
         ScrollPageDownCommand = 4,
-        /** Scroll the terminal display up one line */
+        /*! Scroll the terminal display up one line */
         ScrollLineUpCommand = 8,
-        /** Scroll the terminal display down one line */
+        /*! Scroll the terminal display down one line */
         ScrollLineDownCommand = 16,
-        /** Toggles scroll lock mode */
+        /*! Toggles scroll lock mode */
         ScrollLockCommand = 32,
-		/** Echos the operating system specific erase character. */
+		/*! Echos the operating system specific erase character. */
 		EraseCommand = 64
     };
     Q_DECLARE_FLAGS(Commands,Command)
 
-    /**
+    /*!
      * Represents an association between a key sequence pressed by the user
      * and the character sequence and commands associated with it for a particular
      * KeyboardTranslator.
@@ -196,23 +193,23 @@ public:
     class Entry
     {
     public:
-        /** 
+        /*! 
          * Constructs a new entry for a keyboard translator.
          */
         Entry();
 
-        /** 
+        /*! 
          * Returns true if this entry is null.
          * This is true for newly constructed entries which have no properties set. 
          */
         bool isNull() const;
 
-        /** Returns the commands associated with this entry */
+        /*! Returns the commands associated with this entry */
         Command command() const;
-        /** Sets the command associated with this entry. */
+        /*! Sets the command associated with this entry. */
         void setCommand(Command command);
 
-        /** 
+        /*! 
          * Returns the character sequence associated with this entry, optionally replacing 
          * wildcard '*' characters with numbers to indicate the keyboard modifiers being pressed.
          *
@@ -227,10 +224,10 @@ public:
         QByteArray text(bool expandWildCards = false,
                         Qt::KeyboardModifiers modifiers = Qt::NoModifier) const;
 
-        /** Sets the character sequence associated with this entry */
+        /*! Sets the character sequence associated with this entry */
         void setText(const QByteArray& text);
 
-        /** 
+        /*! 
          * Returns the character sequence associated with this entry,
          * with any non-printable characters replaced with escape sequences.
          *
@@ -242,12 +239,12 @@ public:
         QByteArray escapedText(bool expandWildCards = false,
                                Qt::KeyboardModifiers modifiers = Qt::NoModifier) const;
 
-        /** Returns the character code ( from the Qt::Key enum ) associated with this entry */
+        /*! Returns the character code ( from the Qt::Key enum ) associated with this entry */
         int keyCode() const;
-        /** Sets the character code associated with this entry */
+        /*! Sets the character code associated with this entry */
         void setKeyCode(int keyCode);
 
-        /** 
+        /*! 
          * Returns a bitwise-OR of the enabled keyboard modifiers associated with this entry. 
          * If a modifier is set in modifierMask() but not in modifiers(), this means that the entry
          * only matches when that modifier is NOT pressed.
@@ -257,15 +254,15 @@ public:
          */
         Qt::KeyboardModifiers modifiers() const;
 
-        /** Returns the keyboard modifiers which are valid in this entry.  See modifiers() */
+        /*! Returns the keyboard modifiers which are valid in this entry.  See modifiers() */
         Qt::KeyboardModifiers modifierMask() const;
 
-        /** See modifiers() */
+        /*! See modifiers() */
         void setModifiers( Qt::KeyboardModifiers modifiers );
-        /** See modifierMask() and modifiers() */
+        /*! See modifierMask() and modifiers() */
         void setModifierMask( Qt::KeyboardModifiers modifiers );
 
-        /** 
+        /*! 
          * Returns a bitwise-OR of the enabled state flags associated with this entry. 
          * If flag is set in stateMask() but not in state(), this means that the entry only 
          * matches when the terminal is NOT in that state.
@@ -275,27 +272,27 @@ public:
          */
         States state() const;
 
-        /** Returns the state flags which are valid in this entry.  See state() */
+        /*! Returns the state flags which are valid in this entry.  See state() */
         States stateMask() const;
 
-        /** See state() */
+        /*! See state() */
         void setState( States state );
-        /** See stateMask() */
+        /*! See stateMask() */
         void setStateMask( States mask );
 
-        /** 
+        /*! 
          * Returns the key code and modifiers associated with this entry 
          * as a QKeySequence
          */
         //QKeySequence keySequence() const;
 
-        /** 
+        /*! 
          * Returns this entry's conditions ( ie. its key code, modifier and state criteria )
          * as a string.
          */
         QString conditionToString() const;
 
-        /**
+        /*!
          * Returns this entry's result ( ie. its command or character sequence )
          * as a string.
          *
@@ -305,7 +302,7 @@ public:
         QString resultToString(bool expandWildCards = false,
                                Qt::KeyboardModifiers modifiers = Qt::NoModifier) const;
 
-        /** 
+        /*! 
          * Returns true if this entry matches the given key sequence, specified
          * as a combination of @p keyCode , @p modifiers and @p state.
          */
@@ -330,24 +327,24 @@ public:
         QByteArray _text;
     };
 
-    /** Constructs a new keyboard translator with the given @p name */
+    /*! Constructs a new keyboard translator with the given @p name */
     KeyboardTranslator(const QString& name);
    
     //KeyboardTranslator(const KeyboardTranslator& other);
 
-    /** Returns the name of this keyboard translator */
+    /*! Returns the name of this keyboard translator */
     QString name() const;
 
-    /** Sets the name of this keyboard translator */
+    /*! Sets the name of this keyboard translator */
     void setName(const QString& name);
 
-    /** Returns the descriptive name of this keyboard translator */
+    /*! Returns the descriptive name of this keyboard translator */
     QString description() const;
 
-    /** Sets the descriptive name of this keyboard translator */
+    /*! Sets the descriptive name of this keyboard translator */
     void setDescription(const QString& description);
 
-    /**
+    /*!
      * Looks for an entry in this keyboard translator which matches the given
      * key code, keyboard modifiers and state flags.
      * 
@@ -362,24 +359,24 @@ public:
                     Qt::KeyboardModifiers modifiers , 
                     States state = NoState) const;
 
-    /** 
+    /*! 
      * Adds an entry to this keyboard translator's table.  Entries can be looked up according
      * to their key sequence using findEntry()
      */
     void addEntry(const Entry& entry);
 
-    /**
+    /*!
      * Replaces an entry in the translator.  If the @p existing entry is null,
      * then this is equivalent to calling addEntry(@p replacement)
      */
     void replaceEntry(const Entry& existing , const Entry& replacement);
 
-    /**
+    /*!
      * Removes an entry from the table.
      */
     void removeEntry(const Entry& entry);
 
-    /** Returns a list of all entries in the translator. */
+    /*! Returns a list of all entries in the translator. */
     QList<Entry> entries() const;
 
 private:
@@ -393,7 +390,7 @@ private:
 Q_DECLARE_OPERATORS_FOR_FLAGS(KeyboardTranslator::States)
 Q_DECLARE_OPERATORS_FOR_FLAGS(KeyboardTranslator::Commands)
 
-/** 
+/*! 
  * Parses the contents of a Keyboard Translator (.keytab) file and 
  * returns the entries found in it.
  *
@@ -424,27 +421,27 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(KeyboardTranslator::Commands)
 class KeyboardTranslatorReader
 {
 public:
-    /** Constructs a new reader which parses the given @p source */
+    /*! Constructs a new reader which parses the given @p source */
     KeyboardTranslatorReader( QIODevice* source );
 
-    /** 
+    /*! 
      * Returns the description text. 
      * TODO: More documentation 
      */
     QString description() const;
 
-    /** Returns true if there is another entry in the source stream */
+    /*! Returns true if there is another entry in the source stream */
     bool hasNextEntry();
-    /** Returns the next entry found in the source stream */
+    /*! Returns the next entry found in the source stream */
     KeyboardTranslator::Entry nextEntry(); 
 
-    /** 
+    /*! 
      * Returns true if an error occurred whilst parsing the input or
      * false if no error occurred.
      */
     bool parseError();
 
-    /**
+    /*!
      * Parses a condition and result string for a translator entry
      * and produces a keyboard translator entry.
      *
@@ -487,23 +484,23 @@ private:
     bool _hasNext;
 };
 
-/** Writes a keyboard translation to disk. */
+/*! Writes a keyboard translation to disk. */
 class KeyboardTranslatorWriter
 {
 public:
-    /** 
+    /*! 
      * Constructs a new writer which saves data into @p destination.
      * The caller is responsible for closing the device when writing is complete.
      */
     KeyboardTranslatorWriter(QIODevice* destination);
     ~KeyboardTranslatorWriter();
 
-    /** 
+    /*! 
      * Writes the header for the keyboard translator. 
      * @param description Description of the keyboard translator. 
      */
     void writeHeader( const QString& description );
-    /** Writes a translator entry. */
+    /*! Writes a translator entry. */
     void writeEntry( const KeyboardTranslator::Entry& entry ); 
 
 private:
@@ -511,14 +508,14 @@ private:
     QTextStream* _writer;
 };
 
-/**
+/*!
  * Manages the keyboard translations available for use by terminal sessions,
  * see KeyboardTranslator.
  */
 class KeyboardTranslatorManager
 {
 public:
-    /** 
+    /*! 
      * Constructs a new KeyboardTranslatorManager and loads the list of
      * available keyboard translations.
      *
@@ -528,7 +525,7 @@ public:
     KeyboardTranslatorManager();
     ~KeyboardTranslatorManager();
 
-    /**
+    /*!
      * Adds a new translator.  If a translator with the same name 
      * already exists, it will be replaced by the new translator.
      *
@@ -536,17 +533,17 @@ public:
      */
     void addTranslator(KeyboardTranslator* translator);
 
-    /**
+    /*!
      * Deletes a translator.  Returns true on successful deletion or false otherwise.
      *
      * TODO: More documentation
      */
     bool deleteTranslator(const QString& name);
 
-    /** Returns the default translator for Konsole. */
+    /*! Returns the default translator for Konsole. */
     const KeyboardTranslator* defaultTranslator();
 
-    /** 
+    /*! 
      * Returns the keyboard translator with the given name or 0 if no translator
      * with that name exists.
      *
@@ -554,7 +551,7 @@ public:
      * the on-disk .keyboard file is loaded and parsed.  
      */
     const KeyboardTranslator* findTranslator(const QString& name);
-    /**
+    /*!
      * Returns a list of the names of available keyboard translators.
      *
      * The first time this is called, a search for available 
@@ -562,7 +559,7 @@ public:
      */
     QList<QString> allTranslators();
 
-    /** Returns the global KeyboardTranslatorManager instance. */
+    /*! Returns the global KeyboardTranslatorManager instance. */
    static KeyboardTranslatorManager* instance();
 
 private:

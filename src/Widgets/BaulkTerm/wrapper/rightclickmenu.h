@@ -27,15 +27,12 @@
 
 #include "baulkdialog.h"
 
-/**
- * @author Jacob Alexander (HaaTa)
- *
- * The menu available when the user right clicks on the terminal session
- */
+//! The menu available when the user right clicks on the terminal session
 class BaulkTermRightClickMenu : public QMenu {
 	Q_OBJECT
 	
 public:
+	//! Default Constructor
 	BaulkTermRightClickMenu( QWidget *parent = 0 );
 
 	QAction *copyAction;
@@ -44,7 +41,9 @@ public:
 	QAction *transparencyAction;
 
 private slots:
+	//! Font Dialog Call
 	void fontDialog();
+	//! Transparency Dialog Call
 	void transparencyDialog();
 
 signals:

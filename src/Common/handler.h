@@ -27,11 +27,8 @@
 QStringList msgLogs;
 #endif
 
-/**
- * @author Jacob Alexander (HaaTa)
- *
- * Handles all messages sent by the application
- *
+//! Handles all messages sent by the application
+/*!
  * Baulk
  * - QDebug only sends messages into Baulk
  * - QWarning only sends messages into Baulk

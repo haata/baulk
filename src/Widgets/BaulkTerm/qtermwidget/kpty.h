@@ -1,24 +1,22 @@
-/* This file is part of the KDE libraries
-
-    Copyright (C) 2003,2007 Oswald Buddenhagen <ossi@kde.org>
-
-    Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
-
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Library General Public
-    License as published by the Free Software Foundation; either
-    version 2 of the License, or (at your option) any later version.
-
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Library General Public License for more details.
-
-    You should have received a copy of the GNU Library General Public License
-    along with this library; see the file COPYING.LIB.  If not, write to
-    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-    Boston, MA 02110-1301, USA.
-*/
+//  This file is part of the KDE libraries
+//
+//  Copyright (C) 2003,2007 Oswald Buddenhagen <ossi@kde.org>
+//
+//  Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
+//  Forked for Baulk - Copyright (C) 2008-2009 - Jacob Alexander <haata at users.sf.net>
+//
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation; either version 2 of the License, or
+//  any later version, including version 3 of the License.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifndef kpty_h
 #define kpty_h
@@ -28,7 +26,7 @@
 struct KPtyPrivate;
 struct termios;
 
-/**
+/*!
  * Provides primitives for opening & closing a pseudo TTY pair, assigning the
  * controlling TTY, utmp registration and setting various terminal attributes.
  */
@@ -37,12 +35,12 @@ class KPty {
 
 public:
 
-  /**
+  /*!
    * Constructor
    */
   KPty();
 
-  /**
+  /*!
    * Destructor:
    *
    *  If the pty is still open, it will be closed. Note, however, that
@@ -50,19 +48,19 @@ public:
   */
   ~KPty();
 
-  /**
+  /*!
    * Create a pty master/slave pair.
    *
    * @return true if a pty pair was successfully opened
    */
   bool open();
 
-  /**
+  /*!
    * Close the pty master/slave pair.
    */
   void close();
 
-  /**
+  /*!
    * Close the pty slave descriptor.
    *
    * When creating the pty, KPty also opens the slave and keeps it open.
@@ -76,13 +74,13 @@ public:
    */
   void closeSlave();
 
-  /**
+  /*!
    * Creates a new session and process group and makes this pty the
    * controlling tty.
    */
   void setCTty();
 
-  /**
+  /*!
    * Creates an utmp entry for the tty.
    * This function must be called after calling setCTty and
    * making this pty the stdin.
@@ -94,12 +92,12 @@ public:
    */
   void login(const char *user = 0, const char *remotehost = 0);
 
-  /**
+  /*!
    * Removes the utmp entry for this tty.
    */
   void logout();
 
-  /**
+  /*!
    * Wrapper around tcgetattr(3).
    *
    * This function can be used only while the PTY is open.
@@ -114,7 +112,7 @@ public:
    */
   bool tcGetAttr(struct ::termios *ttmode) const;
 
-  /**
+  /*!
    * Wrapper around tcsetattr(3) with mode TCSANOW.
    *
    * This function can be used only while the PTY is open.
@@ -125,7 +123,7 @@ public:
    */
   bool tcSetAttr(struct ::termios *ttmode);
 
-  /**
+  /*!
    * Change the logical (screen) size of the pty.
    * The default is 24 lines by 80 columns.
    *
@@ -137,7 +135,7 @@ public:
    */
   bool setWinSize(int lines, int columns);
 
-  /**
+  /*!
    * Set whether the pty should echo input.
    *
    * Echo is on by default.
@@ -151,21 +149,21 @@ public:
    */
   bool setEcho(bool echo);
 
-  /**
+  /*!
    * @return the name of the slave pty device.
    *
    * This function should be called only while the pty is open.
    */
   const char *ttyName() const;
 
-  /**
+  /*!
    * @return the file descriptor of the master pty
    *
    * This function should be called only while the pty is open.
    */
   int masterFd() const;
 
-  /**
+  /*!
    * @return the file descriptor of the slave pty
    *
    * This function should be called only while the pty slave is open.
@@ -173,12 +171,12 @@ public:
   int slaveFd() const;
 
 protected:
-  /**
+  /*!
    * @internal
    */
   KPty(KPtyPrivate *d);
 
-  /**
+  /*!
    * @internal
    */
   KPtyPrivate * const d_ptr;

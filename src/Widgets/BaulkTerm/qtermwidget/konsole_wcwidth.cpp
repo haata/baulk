@@ -214,3 +214,4 @@ int string_width( const QString &txt )
      w += konsole_wcwidth( txt[ i ].unicode() );
  return w;
 }
+

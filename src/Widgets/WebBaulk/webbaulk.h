@@ -36,22 +36,19 @@
 
 #include "common.h"
 
-/**
- * @author Jacob Alexander (HaaTa)
- *
- * A WebKit browser for Baulk, using a vim control scheme
- */
+//! A WebKit browser for Baulk, using a vim control scheme
 class WebBaulk : public BaulkWidget {
 	Q_OBJECT
 
 public:
+	//! Default Constructor
 	WebBaulk( QWidget *parent = 0 );
 
 private:
-	// Current WebView
+	//! Current WebView
 	QWebView *webview;
 
-	// Convenience Widgets
+	//! Convenience Widgets
 	QLabel *loadLabel;
 	QLineEdit *addressBarLineEdit;
 	ToolButton *backToolButton;
@@ -62,37 +59,37 @@ private:
 	ToolButton *nextTabToolButton;
 	ToolButton *previousTabToolButton;
 
-	// Information Viewer
+	//! Information Viewer
 	QStackedWidget *infoLayer;
 	QTreeWidget *tabTree;
 
-	// Tabs
+	//! Tabs
 	QStackedWidget *tabLayer;
 
-	// Misc
+	//! Misc
 	QSplitter *subLayout;
 	QVBoxLayout *mainLayout;
 
-	// Top Bar Setup
+	//! Top Bar Setup
 	void topBarSetup();
 
-	// Information Viewer Setup
+	//! Information Viewer Setup
 	void infoViewerSetup();
 
 private slots:
-	// URL
+	//! URL
 	void acceptUrl();
 	void updateUrl( QUrl url );
 
-	// Status
+	//! Status
 	void statusUpdate( int progress );
 
-	// Tabs
+	//! Tabs
 	void nextTab();
 	void prevTab();
 	void newTab();
 
-	// Title
+	//! Title
 	void updateTabTitle( QString title );
 };
 

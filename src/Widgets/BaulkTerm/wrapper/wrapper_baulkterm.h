@@ -32,12 +32,8 @@
 
 #include "baulkterm.h"
 
-/**
- * @author Jacob Alexander (HaaTa)
- *
- * DLL Wrapper for qtermwidget, for use in Baulk.
- */
 // Exported Symbols *******************************************************************************
+//! DLL Wrapper for qtermwidget, for use in Baulk.
 extern "C" EXPORTDLL {
 	QStringList symbolList();
 

@@ -28,10 +28,9 @@
 #include <QTextStream>
 #include <QVariant>
 
-/**
- * @author Jacob Alexander (HaaTa)
- *
- * Reads/Writes custom XML Configuration files for Baulk.
+//! Reads/Writes custom XML Configuration files for Baulk.
+/*!
+ * Custom XML Configuration class for reading and writing configuration files in Baulk and its sub-projects
  */
 class BaulkXML : public QObject {
 	Q_OBJECT
@@ -40,18 +39,23 @@ public:
 	BaulkXML( QString configName, QObject *parent = 0 );
 	~BaulkXML();
 
-	// Save Config to Disk
+	//! Save Config to Disk
 	bool saveConfig();
 
-	// Checks for successful XML load
+	//! Checks for successful XML load
 	bool loadSuccessful();
 
-	// Option
+	//! Load Option
 	QVariant option( QString settingName, QString propertyKey = "", QVariant property = QVariant(""), bool warnOnNotFound = true );
+	//! Save Option
 	void setOption( QString settingName, QVariant value, QString propertyKey = "", QVariant properties = QVariant("") );
 
-	// Profile
+	//! Current Profile
+	/*!
+	 * Profiles allow for different sets of options in the same configuration file.
+	 */
 	QString profile();
+	//! Set options profile to use
 	void setProfile( QString profileName );
 
 private:

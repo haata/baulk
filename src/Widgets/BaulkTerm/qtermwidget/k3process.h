@@ -1,23 +1,21 @@
-/* This file is part of the KDE libraries
-    Copyright (C) 1997 Christian Czezakte (e9025461@student.tuwien.ac.at)
-
-    Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
-
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Library General Public
-    License as published by the Free Software Foundation; either
-    version 2 of the License, or (at your option) any later version.
-
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Library General Public License for more details.
-
-    You should have received a copy of the GNU Library General Public License
-    along with this library; see the file COPYING.LIB.  If not, write to
-    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-    Boston, MA 02110-1301, USA.
-*/
+// This file is part of the KDE libraries
+// Copyright (C) 1997 Christian Czezakte (e9025461@student.tuwien.ac.at)
+//
+//  Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
+//  Forked for Baulk - Copyright (C) 2008-2009 - Jacob Alexander <haata at users.sf.net>
+//
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation; either version 2 of the License, or
+//  any later version, including version 3 of the License.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifndef K3PROCESS_H
 #define K3PROCESS_H
@@ -33,7 +31,7 @@ class QSocketNotifier;
 class K3ProcessPrivate;
 class KPty;
 
-/**
+/*!
  * @obsolete Use KProcess and KPtyProcess instead.
  *
  * Child process invocation, monitoring and control.
@@ -123,14 +121,14 @@ class KPty;
  *
  * @author Christian Czezatke e9025461@student.tuwien.ac.at
  *
- **/
+ */
 class K3Process : public QObject
 {
   Q_OBJECT
 
 public:
 
-  /**
+  /*!
    * Modes in which the communication channels can be opened.
    *
    * If communication for more than one channel is required,
@@ -140,18 +138,18 @@ public:
    *
    */
   enum CommunicationFlag {
-       NoCommunication = 0, /**< No communication with the process. */
-       Stdin = 1, /**< Connect to write to the process with writeStdin(). */
-       Stdout = 2, /**< Connect to read from the process' output. */
-       Stderr = 4, /**< Connect to read from the process' stderr. */
-       AllOutput = 6, /**< Connects to all output channels. */
-       All = 7, /**< Connects to all channels. */
-       NoRead = 8, /**< If specified with Stdout, no data is actually read from stdout,
+       NoCommunication = 0, /*!< No communication with the process. */
+       Stdin = 1, /*!< Connect to write to the process with writeStdin(). */
+       Stdout = 2, /*!< Connect to read from the process' output. */
+       Stderr = 4, /*!< Connect to read from the process' stderr. */
+       AllOutput = 6, /*!< Connects to all output channels. */
+       All = 7, /*!< Connects to all channels. */
+       NoRead = 8, /*!< If specified with Stdout, no data is actually read from stdout,
                     * only the signal receivedStdout(int fd, int &len) is emitted. */
-       CTtyOnly = NoRead, /**< Tells setUsePty() to create a PTY for the process
+       CTtyOnly = NoRead, /*!< Tells setUsePty() to create a PTY for the process
                            * and make it the process' controlling TTY, but does not
                            * redirect any I/O channel to the PTY. */
-       MergedStderr = 16  /**< If specified with Stdout, the process' stderr will be
+       MergedStderr = 16  /*!< If specified with Stdout, the process' stderr will be
                            * redirected onto the same file handle as its stdout, i.e.,
                            * all error output will be signalled with receivedStdout().
                            * Don't specify Stderr if you specify MergedStderr. */
@@ -159,36 +157,36 @@ public:
 
   Q_DECLARE_FLAGS(Communication, CommunicationFlag)
 
-  /**
+  /*!
    * Run-modes for a child process.
    */
   enum RunMode {
-      /**
+      /*!
        * The application does not receive notifications from the subprocess when
        * it is finished or aborted.
        */
        DontCare,
-       /**
+       /*!
         * The application is notified when the subprocess dies.
         */
        NotifyOnExit,
-       /**
+       /*!
         * The application is suspended until the started process is finished.
         */
        Block,
-       /**
+       /*!
         * Same as NotifyOnExit, but the process is run in an own session,
         * just like with DontCare.
         */
        OwnGroup
   };
 
-  /**
+  /*!
    * Constructor
    */
   explicit K3Process( QObject* parent=0L );
 
-  /**
+  /*!
    *Destructor:
    *
    *  If the process is running when the destructor for this class
@@ -198,7 +196,7 @@ public:
   */
   virtual ~K3Process();
 
-  /**
+  /*!
    * Sets the executable and the command line argument list for this process.
    *
    * For example, doing an "ls -l /usr/local/bin" can be achieved by:
@@ -210,34 +208,34 @@ public:
    *
    * @param arg the argument to add
    * @return a reference to this K3Process
-   **/
+   */
   K3Process &operator<<(const QString& arg);
-  /**
+  /*!
    * Similar to previous method, takes a char *, supposed to be in locale 8 bit already.
    */
   K3Process &operator<<(const char * arg);
-  /**
+  /*!
    * Similar to previous method, takes a QByteArray, supposed to be in locale 8 bit already.
    * @param arg the argument to add
    * @return a reference to this K3Process
    */
   K3Process &operator<<(const QByteArray & arg);
 
-  /**
+  /*!
    * Sets the executable and the command line argument list for this process,
    * in a single method call, or add a list of arguments.
    * @param args the arguments to add
    * @return a reference to this K3Process
-   **/
+   */
   K3Process &operator<<(const QStringList& args);
 
-  /**
+  /*!
    * Clear a command line argument list that has been set by using
    * operator<<.
   */
   void clearArguments();
 
-  /**
+  /*!
    *  Starts the process.
    *  For a detailed description of the
    *  various run modes and communication semantics, have a look at the
@@ -262,11 +260,11 @@ public:
    *
    *  @return true on success, false on error
    *  (see above for error conditions)
-   **/
+   */
   virtual bool start(RunMode  runmode = NotifyOnExit,
                      Communication comm = NoCommunication);
 
-  /**
+  /*!
    * Stop the process (by sending it a signal).
    *
    * @param signo The signal to send. The default is SIGTERM.
@@ -274,13 +272,13 @@ public:
   */
   virtual bool kill(int signo = SIGTERM);
 
-  /**
+  /*!
    * Checks whether the process is running.
    * @return true if the process is (still) considered to be running
   */
   bool isRunning() const;
 
-  /** Returns the process id of the process.
+  /*! Returns the process id of the process.
    *
    * If it is called after
    * the process has exited, it returns the process id of the last
@@ -289,20 +287,20 @@ public:
    *  Calling it before any child process has been started by this
    *  K3Process instance causes pid() to return 0.
    * @return the pid of the process or 0 if no process has been started yet.
-   **/
+   */
   pid_t pid() const;
 
-  /**
+  /*!
    * Suspend processing of data from stdout of the child process.
    */
   void suspend();
 
-  /**
+  /*!
    * Resume processing of data from stdout of the child process.
    */
   void resume();
 
-  /**
+  /*!
    * Suspend execution of the current thread until the child process dies
    * or the timeout hits. This function is not recommended for programs
    * with a GUI.
@@ -311,7 +309,7 @@ public:
    */
   bool wait(int timeout = -1);
 
-  /**
+  /*!
    * Checks whether the process exited cleanly.
    *
    * @return true if the process has already finished and has exited
@@ -319,7 +317,7 @@ public:
    */
   bool normalExit() const;
 
-  /**
+  /*!
    * Checks whether the process was killed by a signal.
    *
    * @return true if the process has already finished and has not exited
@@ -327,7 +325,7 @@ public:
    */
   bool signalled() const;
 
-  /**
+  /*!
    * Checks whether a killed process dumped core.
    *
    * @return true if signalled() returns true and the process
@@ -336,7 +334,7 @@ public:
    */
   bool coreDumped() const;
 
-  /**
+  /*!
    * Returns the exit status of the process.
    *
    * @return the exit status of the process. Note that this value
@@ -344,7 +342,7 @@ public:
    */
   int exitStatus() const;
 
-  /**
+  /*!
    * Returns the signal the process was killed by.
    *
    * @return the signal number that caused the process to exit.
@@ -352,7 +350,7 @@ public:
    */
   int exitSignal() const;
 
-  /**
+  /*!
    *	 Transmit data to the child process' stdin.
    *
    * This function may return false in the following cases:
@@ -381,10 +379,10 @@ public:
    * @param buffer the buffer to write
    * @param buflen the length of the buffer
    * @return false if an error has occurred
-   **/
+   */
   bool writeStdin(const char *buffer, int buflen);
 
-  /**
+  /*!
    * Shuts down the Stdin communication link. If no pty is used, this
    * causes "EOF" to be indicated on the child's stdin file descriptor.
    *
@@ -392,7 +390,7 @@ public:
    */
   bool closeStdin();
 
-  /**
+  /*!
    * Shuts down the Stdout communication link. If no pty is used, any further
    * attempts by the child to write to its stdout file descriptor will cause
    * it to receive a SIGPIPE.
@@ -401,7 +399,7 @@ public:
    */
   bool closeStdout();
 
-  /**
+  /*!
    * Shuts down the Stderr communication link. If no pty is used, any further
    * attempts by the child to write to its stderr file descriptor will cause
    * it to receive a SIGPIPE.
@@ -410,7 +408,7 @@ public:
    */
   bool closeStderr();
 
-  /**
+  /*!
    * Deletes the optional utmp entry and closes the pty.
    *
    * Make sure to shut down any communication links that are using the pty
@@ -420,7 +418,7 @@ public:
    */
   bool closePty();
 
-  /**
+  /*!
    * @brief Close stdin, stdout, stderr and the pty
    *
    * This is the same that calling all close* functions in a row:
@@ -428,13 +426,13 @@ public:
    */
   void closeAll();
 
-  /**
+  /*!
    * Lets you see what your arguments are for debugging.
    * @return the list of arguments
    */
   const QList<QByteArray> &args() /* const */ { return arguments; }
 
-  /**
+  /*!
    * Controls whether the started process should drop any
    * setuid/setgid privileges or whether it should keep them.
    * Note that this function is mostly a dummy, as the KDE libraries
@@ -445,14 +443,14 @@ public:
    */
   void setRunPrivileged(bool keepPrivileges);
 
-  /**
+  /*!
    * Returns whether the started process will drop any
    * setuid/setgid privileges or whether it will keep them.
    * @return true if the process runs privileged
    */
   bool runPrivileged() const;
 
-  /**
+  /*!
    * Adds the variable @p name to the process' environment.
    * This function must be called before starting the process.
    * @param name the name of the environment variable
@@ -460,7 +458,7 @@ public:
    */
   void setEnvironment(const QString &name, const QString &value);
 
-  /**
+  /*!
    * Changes the current working directory (CWD) of the process
    * to be started.
    * This function must be called before starting the process.
@@ -468,7 +466,7 @@ public:
    */
   void setWorkingDirectory(const QString &dir);
 
-  /**
+  /*!
    * Specify whether to start the command via a shell or directly.
    * The default is to start the command directly.
    * If @p useShell is true @p shell will be used as shell, or
@@ -485,7 +483,7 @@ public:
    */
   void setUseShell(bool useShell, const char *shell = 0);
 
-  /**
+  /*!
    * This function can be used to quote an argument string such that
    * the shell processes it properly. This is e. g. necessary for
    * user-provided file names which may contain spaces or quotes.
@@ -495,7 +493,7 @@ public:
    */
   static QString quote(const QString &arg);
 
-  /**
+  /*!
    * Detaches K3Process from child process. All communication is closed.
    * No exit notification is emitted any more for the child process.
    * Deleting the K3Process will no longer kill the child process.
@@ -504,7 +502,7 @@ public:
    */
   void detach();
 
-  /**
+  /*!
    * Specify whether to create a pty (pseudo-terminal) for running the
    * command.
    * This function should be called before starting the process.
@@ -516,7 +514,7 @@ public:
    */
   void setUsePty(Communication comm, bool addUtmp);
 
-  /**
+  /*!
    * Obtains the pty object used by this process. The return value is
    * valid only after setUsePty() was used with a non-zero argument.
    * The pty is open only while the process is running.
@@ -524,13 +522,13 @@ public:
    */
   KPty *pty() const;
 
-  /**
+  /*!
    * More or less intuitive constants for use with setPriority().
    */
   enum { PrioLowest = 20, PrioLow = 10, PrioLower = 5, PrioNormal = 0,
     PrioHigher = -5, PrioHigh = -10, PrioHighest = -19 };
 
-  /**
+  /*!
    * Sets the scheduling priority of the process.
    * @param prio the new priority in the range -20 (high) to 19 (low).
    * @return false on error; see setpriority(2) for possible reasons.
@@ -538,16 +536,16 @@ public:
   bool setPriority(int prio);
 
 Q_SIGNALS:
-  /**
+  /*!
    * Emitted after the process has terminated when
    * the process was run in the @p NotifyOnExit  (==default option to
    * start() ) or the Block mode.
    * @param proc a pointer to the process that has exited
-   **/
+   */
   void processExited(K3Process *proc);
 
 
-  /**
+  /*!
    * Emitted, when output from the child process has
    * been received on stdout.
    *
@@ -564,10 +562,10 @@ Q_SIGNALS:
    * \code
    *     QString myBuf = QLatin1String(buffer, buflen);
    * \endcode
-   **/
+   */
   void receivedStdout(K3Process *proc, char *buffer, int buflen);
 
-  /**
+  /*!
    * Emitted when output from the child process has
    * been received on stdout.
    *
@@ -584,11 +582,11 @@ Q_SIGNALS:
    * @param fd the file descriptor that provides the data
    * @param len the number of bytes that have been read from @p fd must
    *  be written here
-   **/
+   */
   void receivedStdout(int fd, int &len); // KDE4: change, broken API
 
 
-  /**
+  /*!
    * Emitted, when output from the child process has
    * been received on stderr.
    *
@@ -601,35 +599,35 @@ Q_SIGNALS:
    * @param proc a pointer to the process that has received the data
    * @param buffer The data received.
    * @param buflen The number of bytes that are available.
-   **/
+   */
   void receivedStderr(K3Process *proc, char *buffer, int buflen);
 
-  /**
+  /*!
    * Emitted after all the data that has been
    * specified by a prior call to writeStdin() has actually been
    * written to the child process.
    * @param proc a pointer to the process
-   **/
+   */
   void wroteStdin(K3Process *proc);
 
 
 protected Q_SLOTS:
 
- /**
+ /*!
   * This slot gets activated when data from the child's stdout arrives.
   * It usually calls childOutput().
   * @param fdno the file descriptor for the output
   */
   void slotChildOutput(int fdno);
 
- /**
+ /*!
   * This slot gets activated when data from the child's stderr arrives.
   * It usually calls childError().
   * @param fdno the file descriptor for the output
   */
   void slotChildError(int fdno);
 
-  /**
+  /*!
    * Called when another bulk of data can be sent to the child's
    * stdin. If there is no more data to be sent to stdin currently
    * available, this function must disable the QSocketNotifier innot.
@@ -639,23 +637,23 @@ protected Q_SLOTS:
 
 protected:
 
-  /**
+  /*!
    * Sets up the environment according to the data passed via
    * setEnvironment()
    */
   void setupEnvironment();
 
-  /**
+  /*!
    * The list of the process' command line arguments. The first entry
    * in this list is the executable itself.
    */
   QList<QByteArray> arguments;
-  /**
+  /*!
    * How to run the process (Block, NotifyOnExit, DontCare). You should
    *  not modify this data member directly from derived classes.
    */
   RunMode run_mode;
-  /**
+  /*!
    * true if the process is currently running. You should not
    * modify this data member directly from derived classes. Please use
    * isRunning() for reading the value of this data member since it
@@ -663,7 +661,7 @@ protected:
    */
   bool runs;
 
-  /**
+  /*!
    * The PID of the currently running process.
    * You should not modify this data member in derived classes.
    * Please use pid() instead of directly accessing this
@@ -672,7 +670,7 @@ protected:
    */
   pid_t pid_;
 
-  /**
+  /*!
    * The process' exit status as returned by waitpid(). You should not
    * modify the value of this data member from derived classes. You should
    * rather use exitStatus() than accessing this data member directly
@@ -682,14 +680,14 @@ protected:
   int status;
 
 
-  /**
+  /*!
    * If false, the child process' effective uid & gid will be reset to the
    * real values.
    * @see setRunPrivileged()
    */
   bool keepPrivs;
 
-  /**
+  /*!
    * This function is called from start() right before a fork() takes
    * place. According to the @p comm parameter this function has to initialize
    * the in, out and err data members of K3Process.
@@ -703,7 +701,7 @@ protected:
    */
   virtual int setupCommunication(Communication comm);
 
-  /**
+  /*!
    * Called right after a (successful) fork() on the parent side. This function
    * will usually do some communications cleanup, like closing in[0],
    * out[1] and out[1].
@@ -717,7 +715,7 @@ protected:
    */
   virtual int commSetupDoneP();
 
-  /**
+  /*!
    * Called right after a (successful) fork(), but before an exec() on the child
    * process' side. It usually duplicates the in[0], out[1] and
    * err[1] file handles to the respective standard I/O handles.
@@ -725,7 +723,7 @@ protected:
   virtual int commSetupDoneC();
 
 
-  /**
+  /*!
    * Immediately called after a successfully started process in NotifyOnExit
    * mode has exited. This function normally calls commClose()
    * and emits the processExited() signal.
@@ -733,7 +731,7 @@ protected:
    */
   virtual void processHasExited(int state);
 
-  /**
+  /*!
    * Cleans up the communication links to the child after it has exited.
    * This function should act upon the values of pid() and runs.
    * See the kprocess.cpp source for details.
@@ -768,73 +766,73 @@ protected:
    */
 //  virtual void commDrain(int notfd);
 
-  /**
+  /*!
    * Specify the actual executable that should be started (first argument to execve)
    * Normally the the first argument is the executable but you can
    * override that with this function.
    */
   void setBinaryExecutable(const char *filename);
 
-  /**
+  /*!
    * The socket descriptors for stdout.
    */
   int out[2];
-  /**
+  /*!
    * The socket descriptors for stdin.
    */
   int in[2];
-  /**
+  /*!
    * The socket descriptors for stderr.
    */
   int err[2];
 
-  /**
+  /*!
    * The socket notifier for in[1].
    */
   QSocketNotifier *innot;
-  /**
+  /*!
    * The socket notifier for out[0].
    */
   QSocketNotifier *outnot;
-  /**
+  /*!
    * The socket notifier for err[0].
    */
   QSocketNotifier *errnot;
 
-  /**
+  /*!
    * Lists the communication links that are activated for the child
    * process.  Should not be modified from derived classes.
    */
   Communication communication;
 
-  /**
+  /*!
    * Called by slotChildOutput() this function copies data arriving from
    * the child process' stdout to the respective buffer and emits the signal
    * receivedStdout().
    */
   int childOutput(int fdno);
 
-  /**
+  /*!
    * Called by slotChildError() this function copies data arriving from
    * the child process' stderr to the respective buffer and emits the signal
    * receivedStderr().
    */
   int childError(int fdno);
 
-  /**
+  /*!
    * The buffer holding the data that has to be sent to the child
    */
   const char *input_data;
-  /**
+  /*!
    * The number of bytes already transmitted
    */
   int input_sent;
-  /**
+  /*!
    * The total length of input_data
    */
   int input_total;
 
-  /**
+  /*!
    * K3ProcessController is a friend of K3Process because it has to have
    * access to various data members.
    */
@@ -848,7 +846,7 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(K3Process::Communication)
 
 class K3ShellProcessPrivate;
 
-/**
+/*!
 * @obsolete
 *
 * Use K3Process and K3Process::setUseShell(true) instead.
@@ -863,14 +861,14 @@ class K3ShellProcess : public K3Process
 
 public:
 
-  /**
+  /*!
    * Constructor
    *
    * If no shellname is specified, the user's default shell is used.
    */
   explicit K3ShellProcess(const char *shellname=0);
 
-  /**
+  /*!
    * Destructor.
    */
   ~K3ShellProcess();

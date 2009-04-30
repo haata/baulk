@@ -2,12 +2,6 @@
 //
 // Baulk - Copyright (C) 2008 - Jacob Alexander
 //
-//  File:	baulkswallow.h
-//  Author(s):	Jacob Alexander (HaaTa)
-//
-//  Description: 
-//	Allows the user to embed/swallow any X11 application as a Widget
-//
 //  Baulk is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation; either version 2 of the License, or
@@ -32,10 +26,12 @@
 
 #include <baulkwidget.h>
 
+//! Allows the user to embed/swallow any X11 application as a Widget
 class BaulkSwallow : public BaulkWidget {
 	Q_OBJECT
 
 public:
+	//! Default Constructor
 	BaulkSwallow( BaulkWidget *parent = 0 );
 
 private:

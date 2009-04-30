@@ -27,11 +27,8 @@
 #include <baulkwidget.h>
 #include <libraryloader.h>
 
-/**
- * @author Jacob Alexander (HaaTa)
- *
- * Main GUI Entrance class for Baulk.
- *
+//! Main GUI Entrance class for Baulk.
+/*!
  * Handles:
  * - Loading BaulkControl Shared Library
  * - Connecting message output to BaulkControl
@@ -41,10 +38,10 @@ class Baulk : public QMainWindow {
 	Q_OBJECT
 
 public:
-	/// Baulk Constructor
+	//! Baulk Constructor
 	Baulk( QWidget *parent = 0 );
 
-	/**
+	/*!
 	 * This public function allows \link handler() \endlink
 	 * to pass Console Out Messages into Baulk 
 	 */
@@ -53,18 +50,18 @@ public:
 	bool processCommandArgs();
 
 private:
-	/// BaulkControl Pointer
+	//! BaulkControl Pointer
 	BaulkWidget *controller;
 
-	/// BaulkControl Library Pointer
+	//! BaulkControl Library Pointer
 	LibraryLoader *library;
 
 private slots:
-	/// Allows BaulkControl to change the Window Title
+	//! Allows BaulkControl to change the Window Title
 	void setWindowTitleName( QString windowTitle );
 
 protected:
-	/** 
+	/*! 
 	 * Reimplemented QWidget Event that handles the application
 	 * Quit Event
 	 */ 

@@ -39,49 +39,51 @@
 #include "rightclickmenu.h"
 #include "terminalcolour.h"
 
-/**
- * @author Jacob Alexander (HaaTa)
- *
- * Additional functionality for qtermwidget
- */
+//! Additional functionality for qtermwidget
 class BaulkTerm : public BaulkWidget {
 	Q_OBJECT
 
 public:
+	//! Default Constructor
+	/*!
+	 * \param startNow 1 for starting the terminal right away, 0 for starting later
+	 * \see startShellProgram
+	 * \param standalone true if the terminal is started in standalone mode, false if used as a library
+	 */
 	BaulkTerm( int startNow = 1, bool standalone = false, QWidget *parent = 0 );
 
 
-	// Command Line Args
+	//! Command Line Args
 	virtual bool processCommandArgs();
 
-	// Start Terminal
+	//! Start Terminal
 	void startShellProgram();
 
-	// External Settings
+	//! External Settings
 	bool useDaemon() const { return daemonEnabled; }
 	QString listenName() const { return daemonListenName; }
 
 public slots:
-	// New Terminal
+	//! New Terminal
 	void newTerminal( bool useMainWindow = false );
 
 private:
 	int startPriority;
 
-	// Terminal
+	//! Terminal
 	QTermWidget *term;
 	QTermWidget *mainTerm;
 	QList<QTermWidget*> termList;
 
 	QVBoxLayout *termLayout;
 
-	// Terminal Right Click Menu
+	//! Terminal Right Click Menu
 	BaulkTermRightClickMenu *rightClickMenu;
 
-	// Configuration File Pointer
+	//! Configuration File Pointer
 	BaulkXML *xmlConfig;
 
-	// Configuration Settings
+	//! Configuration Settings
 	qreal opacity;
 	qreal fadeOpacity;
 
@@ -103,7 +105,7 @@ private:
 	QString shellProgram;
 	QStringList environmentVariables;
 
-	// Normal Colours
+	//! Normal Colours
 	TerminalColour foreground;
 	TerminalColour background;
 	TerminalColour black;
@@ -115,7 +117,7 @@ private:
 	TerminalColour cyan;
 	TerminalColour white;
 
-	// Intensive Colours
+	//! Intensive Colours
 	TerminalColour intForeground;
 	TerminalColour intBackground;
 	TerminalColour intBlack;
@@ -128,7 +130,7 @@ private:
 	TerminalColour intWhite;
 
 
-	// Configuration Functions
+	//! Configuration Functions
 	void configurationDefaults();
 	void configurationLoad();
 	void configurationSave();

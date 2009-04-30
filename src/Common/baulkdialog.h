@@ -22,10 +22,10 @@
 #include <QDialog>
 #include <QWidget>
 
-/**
- * @author Jacob Alexander (HaaTa)
- *
- * Baulk reimplementation of QDialog
+
+//! Baulk reimplementation of QDialog
+/*!
+ * A common interface for dialogs in Baulk to be modified globally.
  */
 class BaulkDialog : public QDialog {
 	Q_OBJECT

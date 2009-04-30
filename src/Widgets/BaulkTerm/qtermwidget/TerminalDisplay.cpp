@@ -1,27 +1,23 @@
-/*
-    This file is part of Konsole, a terminal emulator for KDE.
-    
-    Copyright (C) 2006-7 by Robert Knight <robertknight@gmail.com>
-    Copyright (C) 1997,1998 by Lars Doelle <lars.doelle@on-line.de>
-    
-    Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
-    Additional fixes for BaulkTerm by Jacob Alexander (HaaTa) <haata at users.sourceforge.net>, Copyright (C) 2008
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
-*/
+//  This file is part of Konsole, a terminal emulator for KDE.
+//  
+//  Copyright (C) 2006-7 by Robert Knight <robertknight@gmail.com>
+//  Copyright (C) 1997,1998 by Lars Doelle <lars.doelle@on-line.de>
+//  
+//  Rewritten for QT4 by e_k <e_k at users.sourceforge.net>, Copyright (C)2008
+//  Forked for Baulk - Copyright (C) 2008-2009 - Jacob Alexander <haata at users.sf.net>
+//
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation; either version 2 of the License, or
+//  any later version, including version 3 of the License.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // Own
 #include "TerminalDisplay.h"
@@ -351,7 +347,7 @@ TerminalDisplay::~TerminalDisplay()
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
-/**
+/*!
  A table for emulating the simple (single width) unicode drawing chars.
  It represents the 250x - 257x glyphs. If it's zero, we can't use it.
  if it's not, it's encoded as follows: imagine a 5x5 grid where the points are numbered
@@ -2736,3 +2732,4 @@ void TerminalDisplay::setLineSpacing(uint i)
 }
 
 //#include "moc_TerminalDisplay.cpp"
+

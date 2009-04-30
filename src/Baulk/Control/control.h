@@ -36,11 +36,8 @@
 
 #include "interfacedialog.h"
 
+//! The main control for Baulk. 
 /**
- * @author Jacob Alexander (HaaTa)
- *
- * The main control for Baulk. 
- *
  * Handles most, if not all user interaction for Baulk, minus, what is
  *  provided by each Widget.
  */
@@ -48,8 +45,10 @@ class BaulkControl : public BaulkWidget {
 	Q_OBJECT
 
 public:
+	//! Default Constructor
 	BaulkControl( QWidget *parent = 0 );
 
+	//! Struct for list of libraries, contains a QStringList of names and QList of library loaders
 	struct LibraryList {
 		QStringList name;
 		QList<LibraryLoader*> library;
@@ -64,51 +63,51 @@ public slots:
 	void modifyGlobalKeyShortcut( int key, QString keyShortcut );
 
 private:
-	// Main Layout
+	//! Main Layouts
 	QHBoxLayout *topHLayout;
 	QVBoxLayout *topVLayout;
 
-	// Tab Layer
+	//! Tab Layer
 	QStackedWidget *tabLayer;
 
-	// Dynamic Layout
+	//! Dynamic Layout
 	QSplitter *dynTopLayout;
 	QSplitter *dynBotLayout;
 	int lastKnownGoodIndex;
 	bool invertIndex;
 
-	// Global QActions
+	//! Global QActions
 	QList<QAction*> glbQActions;
 
-	// Interface Dialog
+	//! Interface Dialog
 	BaulkInterfaceDialog *interfaceDialog;
 
-	// Library List
+	//! Library List
 	LibraryList libList;
 
-	// Baulk Config Loader/Saver
+	//! Baulk Config Loader/Saver
 	BaulkXML *xmlConfig;
 
 
-	// QAction Setup
+	//! QAction Setup
 	QAction *addGlobalAction( QString title, QString keyShortcut, bool globalConnect = false );
 	void setupQActions();
 
-	// Application Name for Errors
+	//! Application Name for Errors
 	QString errorName() const { return tr("BaulkControl"); }
 
-	// Widget Finders
+	//! Widget Finders
 	int dynBotIndex();
 	int dynTopIndex();
 
 private slots:
-	// Dynamic Librariess
+	//! Dynamic Librariess
 	void loadLibraries();
 
+	//! Instanciates Information Client
 	void startInformationClient();
 
-	// Tile Manipulation
-	// ** Focus
+	//! Tile Manipulation ** Focus
 	void focusDec();
 	void focusDecBorder();
 	void focusDown();
@@ -119,7 +118,7 @@ private slots:
 	void focusLayoutInc();
 	void focusRight();
 	void focusUp();
-	// ** Moving
+	//! Tile Manipulation ** Moving
 	void moveDec();
 	void moveDecBorder();
 	void moveDown();
@@ -130,13 +129,13 @@ private slots:
 	void moveLayoutInc();
 	void moveRight();
 	void moveUp();
-	// ** Orientation
+	//! Tile Manipulation ** Orientation
 	void swapOrientationBot();
 	void swapOrientationTop();
-	// ** Removal
+	//! Tile Manipulation ** Removal
 	void removeWidget();
 
-	// Assistive Functions
+	//! Assistive Function
 	void globalActionTriggered();
 
 protected:

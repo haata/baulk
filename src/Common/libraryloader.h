@@ -24,46 +24,46 @@
 
 #include "baulkwidget.h"
 
-/**
- * @author Jacob Alexander (HaaTa)
- *
- * Streamlined Library Loader for Baulk
+//! Streamlined Library Loader for Baulk
+/*!
+ * A reimplemented QLibray class for convenience functions used in Baulk
  */
 class LibraryLoader : public QLibrary {
 	Q_OBJECT
 
 public:
+	//! Default Constructor
 	LibraryLoader( QObject *parent = 0 );
-	// Directory is assumed
+
+	//! Constructor in which the library path is assumed Baulk defaults
 	LibraryLoader( QString libraryName, QObject *parent = 0 );
 
 	void setupLibraryLoader( QObject *parent );
 	
-	// A list of all errors since initialization, not accurate when using QLibrary directly (unless function reimplemented)
+	//! A list of all errors since initialization, not accurate when using QLibrary directly (unless function reimplemented)
 	QStringList errorList() const;
 
-	// Returns true if a library exists
-	// 	Assumes Baulk library directories
+	//! Returns true if a library exists. Assumes Baulk library directories
 	bool exists( QString libraryName );
 
-	// Loads the Library, returns true if successful, false otherwise
-	// 	Assumes Baulk library directories
+	//! Loads the Library, returns true if successful, false otherwise. Assumes Baulk library directories
 	bool loadLibrary( QString libraryName );
 	bool loadLibrary( QString libraryName, int versionNumber );
-	bool loadLibrary( QString libraryName, bool detectVersion, QString version = "" ); // Uses Baulk Control as required version by default
+	//! Uses Baulk Control as required version by default
+	bool loadLibrary( QString libraryName, bool detectVersion, QString version = "" ); 
 
-	// Less Restrictive Symbol Resolver, provided for convenience, be careful using it
+	//! Less Restrictive Symbol Resolver, provided for convenience, be careful using it
 	void *lrResolve( QString symbol );
 
-	// Returns a list of loadable libraries in the preferred library directory
+	//! Returns a list of loadable libraries in the preferred library directory
 	QStringList loadableLibraries();
 
-	// BaulkControl Simplified Loaders
+	//! BaulkControl Simplified Loaders
 	BaulkWidget *loadBaulkWidget( QString symbolBase, BaulkWidget *parent = 0 );
 	QAction *loadQAction( QString symbolBase, BaulkWidget *parent = 0 );
 	QObject *loadQObject( QString symbolBase, BaulkWidget *parent = 0 );
 
-	// Widget Name
+	//! Widget Name
 	QString widgetName() const;
 
 private:
