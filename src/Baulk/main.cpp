@@ -33,7 +33,7 @@ Baulk *baulk;
  */
 int main( int argc, char *argv[] ) {
 	// Message Handler
-	qInstallMsgHandler( handler );
+	qInstallMsgHandler( handler );  // TODO option for turning this on/off and both console and log
 
 #ifdef Q_WS_X11
 	// Compositing Information
@@ -50,20 +50,19 @@ int main( int argc, char *argv[] ) {
 #endif
 
 	baulk = new Baulk;
-	if ( baulk->processCommandArgs() )
-		baulk->show();
-	else {
-		delete baulk;
-		delete app;
-		return 0;
-	}
+	baulk->processCommandArgs();
+	//if ( !baulk->processCommandArgs() );
+	//	delete baulk;
+	//	delete app;
+	//	return 0;
+	//}
 
 	// Event-Loop	
 	int reTurn = app->exec();
 
 	// Post-Quit Events
-	delete baulk;
-	delete app;
+	//delete baulk;
+	//delete app;
 
 	return reTurn;
 }

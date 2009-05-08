@@ -18,8 +18,10 @@
 #ifndef __BAULK_H
 #define __BAULK_H
 
+#include <QDesktopWidget>
 #include <QCloseEvent>
-#include <QMainWindow>
+//#include <QMainWindow>
+#include <QObject>
 #include <QProcess>
 #include <QTest>
 #include <QWidget>
@@ -34,7 +36,7 @@
  * - Connecting message output to BaulkControl
  * - Connecting the Window Titling setting to BaulkControl.
  */
-class Baulk : public QMainWindow {
+class Baulk : public QObject {
 	Q_OBJECT
 
 public:

@@ -17,8 +17,12 @@
 
 #include "baulk.h"
 
+#include "X11/xcb_WindowScanner.h"
+
 // Constructor ************************************************************************************
-Baulk::Baulk( QWidget *parent ) : QMainWindow( parent ) {
+Baulk::Baulk( QWidget *parent ) : QObject( (QObject*) parent ) { // TODO Parent
+
+	///////////// Daemon 
 	QString serverListenName = "BaulkServ"; // TODO Put in config
 
 	// Start Daemon - Automatically closes if Daemon is already running
@@ -31,15 +35,41 @@ Baulk::Baulk( QWidget *parent ) : QMainWindow( parent ) {
 	QProcess::startDetached( program );
 	QTest::qSleep(100); // Leave Time for the Daemon to start
 
+	///////////// Screen Info
+	
+	qDebug( "Number of Screens %d" , qApp->desktop()->numScreens() );
+	// TODO Change to settings or dynamic (-1 is default screen)
+	QRect currentScreenSize = qApp->desktop()->availableGeometry( -1 );
+
+
 	// Setup Controller Instance
-	library = new LibraryLoader( "BaulkControl", this );
-	controller = library->loadBaulkWidget( "mainWidget", (BaulkWidget*)this );
+	library = new LibraryLoader( "BaulkControl" );
+	controller = library->loadBaulkWidget( "mainWidget" );
 	controller->setServerListenName( serverListenName );
-	setCentralWidget( controller );	
+	//setCentralWidget( controller );
 
 	// Window Settings
-	setWindowTitle( tr("Baulk - %1").arg( serverListenName ) );
+	//setWindowTitle( tr("Baulk - %1").arg( serverListenName ) );
 	connect( controller, SIGNAL( windowTitleNameSet( QString ) ), this, SLOT( setWindowTitleName( QString ) ) );
+
+	//////////////// Tiling Basic
+	
+	//controller->setGeometry( currentScreenSize );
+	qDebug( "%d", currentScreenSize.width() );
+	QRect tmp = currentScreenSize;
+	tmp.setRight( tmp.width() / 2 );
+	//controller->move( currentScreenSize.topLeft() );
+	controller->setGeometry( tmp );
+	controller->show();
+
+	QWidget *tets = new QWidget;
+	qDebug( "%d", currentScreenSize.width() );
+	QRect tmp2 = currentScreenSize;
+	tmp2.setLeft( tmp2.width() / 2 );
+	tets->setGeometry( tmp2 );
+	tets->show();
+
+	XCBWindowScanner scanner( this );
 }
 
 // Window Close Event *****************************************************************************
@@ -48,7 +78,7 @@ void Baulk::closeEvent( QCloseEvent *event ) {
 	
 	// TODO - Send Event to Controller for quit/save message
 	// 		Use controller infoClient inorder to determine whether or not to kill the server
-		
+	/*	
 	bool (*allowQuit)();
 	allowQuit = (bool(*)()) library->lrResolve("allowQuit");
 
@@ -57,6 +87,7 @@ void Baulk::closeEvent( QCloseEvent *event ) {
 		event->accept();
 	}
 	else event->ignore();
+	*/
 }
 
 // Log Update *************************************************************************************
@@ -76,6 +107,6 @@ bool Baulk::processCommandArgs() {
 
 // SLOTS ******************************************************************************************
 void Baulk::setWindowTitleName( QString windowTitle ) {
-	setWindowTitle( windowTitle );
+	//setWindowTitle( windowTitle );
 }
 

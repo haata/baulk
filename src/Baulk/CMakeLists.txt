@@ -7,6 +7,8 @@ set( HEAD_DIR ${PROJECT_SOURCE_DIR}/../.. )
 
 subdirs(
 	Control
+	#Win
+	X11
 )
 
 
@@ -60,12 +62,13 @@ if ( BuildBaulkBinary )
 	if( WIN32 )
 		add_library( ${LIB} STATIC ${SRCS} ${MOC_SRCS} )
 	endif( WIN32 )
-	
+
 	#| Link Needed Libraries
 	target_link_libraries( ${EXEC} 
 		${QT_LIBRARIES} 
 		LibraryLoader	# From Common
 		BaulkWidget	# From Common
+		BaulkX11
 	)
 	
 	#| Installation
