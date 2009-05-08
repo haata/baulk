@@ -17,7 +17,9 @@
 
 #include "baulk.h"
 
+#ifdef Q_WS_X11
 #include "X11/xcb_WindowScanner.h"
+#endif
 
 // Constructor ************************************************************************************
 Baulk::Baulk( QWidget *parent ) : QObject( (QObject*) parent ) { // TODO Parent
@@ -68,8 +70,9 @@ Baulk::Baulk( QWidget *parent ) : QObject( (QObject*) parent ) { // TODO Parent
 	tmp2.setLeft( tmp2.width() / 2 );
 	tets->setGeometry( tmp2 );
 	tets->show();
-
+#ifdef Q_WS_X11
 	XCBWindowScanner scanner( this );
+#endif
 }
 
 // Window Close Event *****************************************************************************

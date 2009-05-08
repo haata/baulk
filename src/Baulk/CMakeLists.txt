@@ -5,11 +5,18 @@ project( baulk )
 cmake_minimum_required( VERSION 2.6 )
 set( HEAD_DIR ${PROJECT_SOURCE_DIR}/../.. )
 
-subdirs(
-	Control
-	#Win
-	X11
-)
+
+if( WIN32 )
+	subdirs(
+		Control
+		#Win
+	)
+else( WIN32 ) #TODO Change to X11 detect
+	subdirs(
+		Control
+		X11
+	)
+endif( WIN32 )
 
 
 #| Sources
@@ -64,12 +71,20 @@ if ( BuildBaulkBinary )
 	endif( WIN32 )
 
 	#| Link Needed Libraries
-	target_link_libraries( ${EXEC} 
-		${QT_LIBRARIES} 
-		LibraryLoader	# From Common
-		BaulkWidget	# From Common
-		BaulkX11
-	)
+	if ( WIN32 )
+		target_link_libraries( ${EXEC} 
+			${QT_LIBRARIES} 
+			LibraryLoader	# From Common
+			BaulkWidget	# From Common
+		)
+	else ( WIN32 ) # TODO X11 Detection
+		target_link_libraries( ${EXEC} 
+			${QT_LIBRARIES} 
+			LibraryLoader	# From Common
+			BaulkWidget	# From Common
+			BaulkX11
+		)
+	endif ( WIN32 )
 	
 	#| Installation
 	install(
