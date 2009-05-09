@@ -19,6 +19,7 @@
 
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QList>
 #include <QObject>
 #include <QX11Info>
 
@@ -27,9 +28,14 @@
 #include <xcb/xcb_icccm.h>
 
 typedef struct {
-    xcb_window_t id;
-    xcb_query_tree_cookie_t tree_cookie;
+	xcb_window_t id;
+	xcb_query_tree_cookie_t tree_cookie;
 } root_win_t;
+
+typedef struct {
+	xcb_window_t id;
+	int screen;
+} windowInfo;
 
 //! Scans Viewable X11 Windows for Window IDs
 /*!
@@ -45,17 +51,57 @@ public:
 
 	//! Deconstructor
 	~XCBWindowScanner();
+
+	//-- Accessors
+	//! Full list of useable Window IDs (castable to long)
+	QList<windowInfo> fullList()     { return availableIDs; }
+	//! List filtered using filtering commands of Window IDs (castable to long)
+	QList<windowInfo> filteredList() { return filteredIDs; }
+
+	//-- Helpers
+	//! Prints the Atom String Information on the list of Windows
+	void logPrintIDList( QList<windowInfo> list );
+	
+	//-- Mutators
+	void resetFilteredList();
+	void updateNumberOfScreens();
+
+	//! RegExp Filter on Window Title Name (Visible)
+	void regexFilterWindowName( QRegExp exp );
+
+	//! RegExp Filter on the Name of the Window Icon (not always available)
+	void regexFilterWindowIconName( QRegExp exp );
+
+	//! RegExp Filter on the Hostname of the machine that owns the Window (usually the same, unless X over ssh)
+	void regexFilterWindowMachineName( QRegExp exp );
+
+	//! RegExp Filter on the Window Class Name (not user visible)
+	void regexFilterWindowClass( QRegExp exp );
+
+	//! RegExp Filter by Screen Number
+	void regexFilterScreenNumber( QRegExp exp );
+
+	//! Full Window ID rescan
+	//!  Resets the filtered list as well
+	void rescanWindowIDs();
 private:
+	//-- Variables
+	xcb_connection_t *connection;
+	int maxScreens;
+	QList<windowInfo> availableIDs;
+	QList<windowInfo> filteredIDs;
+
+	//-- Functions
+	void connectToX();
 	
 	//! Scans the Window IDs of the available windows
 	void parseWindowIDs();
 
 	/*! Get the QString value of an atom.
-	 * \param conn X connection.
-	 * \param w Window.
-	 * \param atom The atom.
+	 * \param windowID Window.
+	 * \param atomType The atom.
 	 * \return QString value on sucess, blank if not.
 	 */
-	QString windowAtomToString( xcb_connection_t *connection, xcb_window_t windowID, xcb_atom_t atomType );
+	QString windowAtomToString( xcb_window_t windowID, xcb_atom_t atomType );
 };
 

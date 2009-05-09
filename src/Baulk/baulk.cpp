@@ -72,6 +72,9 @@ Baulk::Baulk( QWidget *parent ) : QObject( (QObject*) parent ) { // TODO Parent
 	tets->show();
 #ifdef Q_WS_X11
 	XCBWindowScanner scanner( this );
+	scanner.regexFilterWindowName( QRegExp(".*VIM|Buddy List") );
+
+	scanner.logPrintIDList( scanner.filteredList() );
 #endif
 }
 

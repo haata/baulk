@@ -21,22 +21,26 @@
 
 // Constructors ***********************************************************************************
 XCBWindowScanner::XCBWindowScanner( QObject *parent ) : QObject( parent ) {
+	connectToX();
+	updateNumberOfScreens();
 	parseWindowIDs();
+	resetFilteredList(); // To fill filtered list variable
 }
 
 // Deconstructor **********************************************************************************
 XCBWindowScanner::~XCBWindowScanner() {
+	// TODO Clean Connection to X?
 }
 
 // Atom Operations ********************************************************************************
-QString XCBWindowScanner::windowAtomToString( xcb_connection_t *conn, xcb_window_t w, xcb_atom_t atom ) {
+QString XCBWindowScanner::windowAtomToString( xcb_window_t windowID, xcb_atom_t atomType ) {
 	xcb_atom_t COMPOUND_TEXT = 0;
 	xcb_atom_t UTF8_STRING = 0;
 
 	xcb_get_text_property_reply_t reply;
 	memset( &reply, 0, sizeof ( reply ) * 1 );
 
-	if ( !xcb_get_text_property_reply( conn, xcb_get_text_property_unchecked( conn, w, atom ), &reply, NULL) 
+	if ( !xcb_get_text_property_reply( connection, xcb_get_text_property_unchecked( connection, windowID, atomType ), &reply, NULL) 
 			|| !reply.name_len 
 			|| reply.format != 8 ) {
 		xcb_get_text_property_reply_wipe( &reply );
@@ -64,23 +68,30 @@ QString XCBWindowScanner::windowAtomToString( xcb_connection_t *conn, xcb_window
 	return text;
 }
 
-// Window ID Parsing ******************************************************************************
-void XCBWindowScanner::parseWindowIDs() {
+// XCB Connection *********************************************************************************
+void XCBWindowScanner::connectToX() {
 	// Connect to X Server through XCB
-	xcb_connection_t *connection = xcb_connect(NULL, 0 /* Default Screen, TODO Either config or detect from X11 int */ );
+	connection = xcb_connect(NULL, 0 /* Default Screen, TODO Either config or detect from X11 int */ );
 	if ( xcb_connection_has_error( connection ) )
 		qCritical("Cannot open display");
+}
 
+// Update Screen Number ***************************************************************************
+void XCBWindowScanner::updateNumberOfScreens() {
+	maxScreens = QApplication::desktop()->numScreens();
+}
+
+// Window ID Parsing ******************************************************************************
+void XCBWindowScanner::parseWindowIDs() {
 	// Declarations
 	int i, phys_screen, tree_c_len;
-	const int screen_max = QApplication::desktop()->numScreens();
-	root_win_t root_wins[screen_max];
+	root_win_t *root_wins = new root_win_t[maxScreens];
 	xcb_query_tree_reply_t *tree_r;
 	xcb_window_t *wins = NULL;
 	xcb_get_window_attributes_reply_t *attr_r;
 
 	// Scan the Available screens for Root IDs and Window Trees
-	for ( phys_screen = 0; phys_screen < screen_max; phys_screen++ ) {
+	for ( phys_screen = 0; phys_screen < maxScreens; phys_screen++ ) {
 		// Get the root window ID associated to this screen
 		root_wins[phys_screen].id = (xcb_window_t)QX11Info::appRootWindow( phys_screen );
 
@@ -93,7 +104,7 @@ void XCBWindowScanner::parseWindowIDs() {
 	//  - Get the attributes for each Window
 	//  - Determine if each Window is tileable
 	//  - Process useable Windows
-	for ( phys_screen = 0; phys_screen < screen_max; phys_screen++ ) {
+	for ( phys_screen = 0; phys_screen < maxScreens; phys_screen++ ) {
 		tree_r = xcb_query_tree_reply( connection, root_wins[phys_screen].tree_cookie, NULL );
 
 		// Tree Invalid
@@ -134,15 +145,122 @@ void XCBWindowScanner::parseWindowIDs() {
 			if ( !windowCheckSuccess[i] )
 				continue;
 
-			// Window INFO
-			qDebug( tr("Win#: %1  Screen: %2  Window ID: %3").arg( i ).arg( phys_screen ).arg( (long)wins[i] ).toUtf8() );
-			qDebug( windowAtomToString( connection, wins[i], WM_NAME ).toUtf8() ); // Visible name, often is dynamic...
-			qDebug( windowAtomToString( connection, wins[i], WM_ICON_NAME ).toUtf8() ); // Not always available
-			qDebug( windowAtomToString( connection, wins[i], WM_CLIENT_MACHINE ).toUtf8() );
-			qDebug( windowAtomToString( connection, wins[i], WM_CLASS ).toUtf8() ); // Hidden app name, usually useful
+			// Add to list of useable Window IDs
+			windowInfo tmp;
+			tmp.id = wins[i];
+			tmp.screen = phys_screen;
+			availableIDs += tmp;
 		}
 
 		delete tree_r;
 	}
+
+	delete root_wins;
+}
+
+void XCBWindowScanner::rescanWindowIDs() {
+	parseWindowIDs();
+	resetFilteredList();
+}
+
+// Window ID Filtering ****************************************************************************
+void XCBWindowScanner::resetFilteredList() {
+	filteredIDs = availableIDs;
+}
+
+void XCBWindowScanner::regexFilterWindowIconName( QRegExp exp ) {
+	if ( !exp.isValid() )
+		qWarning("Invalid Icon Name RegExp: " + exp.errorString().toUtf8() );
+
+	exp.setPatternSyntax( QRegExp::RegExp2 );
+
+	// Filter List
+	QList<windowInfo> newFilteredIDs;
+
+	for ( int c = 0; c < filteredIDs.count(); ++c )
+		if ( exp.exactMatch( windowAtomToString( filteredIDs[c].id, WM_ICON_NAME ) ) ) 
+			newFilteredIDs += filteredIDs[c];
+
+	filteredIDs = newFilteredIDs;
+}
+
+void XCBWindowScanner::regexFilterWindowClass( QRegExp exp ) {
+	if ( !exp.isValid() )
+		qWarning("Invalid Window Class Name RegExp: " + exp.errorString().toUtf8() );
+
+	exp.setPatternSyntax( QRegExp::RegExp2 );
+
+	QList<windowInfo> newFilteredIDs;
+
+	// Filter List
+	for ( int c = 0; c < filteredIDs.count(); ++c )
+		if ( exp.exactMatch( windowAtomToString( filteredIDs[c].id, WM_CLASS ) ) )
+			newFilteredIDs += filteredIDs[c];
+
+	filteredIDs = newFilteredIDs;
+}
+
+void XCBWindowScanner::regexFilterWindowMachineName( QRegExp exp ) {
+	if ( !exp.isValid() )
+		qWarning("Invalid Window Machine Name RegExp: " + exp.errorString().toUtf8() );
+
+	exp.setPatternSyntax( QRegExp::RegExp2 );
+
+	QList<windowInfo> newFilteredIDs;
+
+	// Filter List
+	for ( int c = 0; c < filteredIDs.count(); ++c )
+		if ( exp.exactMatch( windowAtomToString( filteredIDs[c].id, WM_CLIENT_MACHINE ) ) )
+			newFilteredIDs += filteredIDs[c];
+
+	filteredIDs = newFilteredIDs;
+}
+
+void XCBWindowScanner::regexFilterWindowName( QRegExp exp ) {
+	if ( !exp.isValid() )
+		qWarning("Invalid Window Name RegExp: " + exp.errorString().toUtf8() );
+
+	exp.setPatternSyntax( QRegExp::RegExp2 );
+
+	QList<windowInfo> newFilteredIDs;
+
+	// Filter List
+	for ( int c = 0; c < filteredIDs.count(); ++c )
+		if ( exp.exactMatch( windowAtomToString( filteredIDs[c].id, WM_NAME ) ) )
+			newFilteredIDs += filteredIDs[c];
+
+	filteredIDs = newFilteredIDs;
+}
+
+void XCBWindowScanner::regexFilterScreenNumber( QRegExp exp ) {
+	if ( !exp.isValid() )
+		qWarning("Invalid Screen Number RegExp: " + exp.errorString().toUtf8() );
+
+	exp.setPatternSyntax( QRegExp::RegExp2 );
+
+	QList<windowInfo> newFilteredIDs;
+
+	// Filter List
+	for ( int c = 0; c < filteredIDs.count(); ++c )
+		if ( exp.exactMatch( QString( filteredIDs[c].screen ) ) )
+			newFilteredIDs += filteredIDs[c];
+
+	filteredIDs = newFilteredIDs;
+}
+
+// ID Atom Info Log Printer ***********************************************************************
+void XCBWindowScanner::logPrintIDList( QList<windowInfo> list ) {
+	for ( int c = 0; c < list.count(); ++c ) {
+		qDebug( tr("------WindowInfo #%1------").arg( c ).toUtf8() );
+
+		qDebug( tr("Class: %1").arg( windowAtomToString( list[c].id, WM_CLASS ) ).toUtf8() );
+		qDebug( tr("Host: %1").arg( windowAtomToString( list[c].id, WM_CLIENT_MACHINE ) ).toUtf8() );
+		qDebug( tr("IconName: %1").arg( windowAtomToString( list[c].id, WM_ICON_NAME ) ).toUtf8() );
+		qDebug( tr("Name: %1").arg( windowAtomToString( list[c].id, WM_NAME ) ).toUtf8() );
+		qDebug( tr("ID: %1").arg( QString::number( (long)list[c].id ) ).toUtf8() );
+		qDebug( tr("Screen: %1").arg( QString::number( list[c].screen ) ).toUtf8() );
+	}
+
+	qDebug( tr("-----WindowInfo End-----").toUtf8() );
 }
 
