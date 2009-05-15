@@ -7,12 +7,14 @@ set( HEAD_DIR ${PROJECT_SOURCE_DIR}/../../.. )
 
 #| Sources
 set( SRCS
-	./xcb_WindowScanner.cpp
+	./xcb_windowmanipulation.cpp
+	./xcb_windowscanner.cpp
 )
 
 #| Headers
 set( HDRS
-	./xcb_WindowScanner.h
+	./xcb_windowmanipulation.h
+	./xcb_windowscanner.h
 )
 
 #| Library
