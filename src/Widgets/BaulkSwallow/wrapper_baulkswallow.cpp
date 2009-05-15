@@ -1,6 +1,7 @@
 // Baulk - Baulk Swallow - DLL Wrapper
 //
 // Baulk - Copyright (C) 2008 - Jacob Alexander
+//   <haata at users.sf.net>
 //
 //  File:	wrapper_baulkswallow.cpp
 //  Author(s):	Jacob Alexander (HaaTa)

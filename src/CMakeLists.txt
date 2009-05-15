@@ -102,6 +102,7 @@ endif ( BuildBaulk )
 #| Common Librarys
 if ( BuildCommon )
 	set( BuildBaulkDialog		1 )
+	set( BuildBaulkEmbed		1 )
 	set( BuildBaulkWidget		1 )
 	set( BuildBaulkXML		1 )
 	set( BuildLibLoader		1 )

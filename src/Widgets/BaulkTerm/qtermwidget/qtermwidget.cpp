@@ -226,9 +226,8 @@ void QTermWidget::setScrollBarPosition(ScrollBarPosition pos)
     m_impl->m_terminalDisplay->setScrollBarPosition((TerminalDisplay::ScrollBarPosition)pos);
 }
 
-void QTermWidget::sendText(QString &text)
-{
-    m_impl->m_session->sendText(text); 
+void QTermWidget::sendText(QString text) {
+	m_impl->m_session->sendText(text); 
 }
 
 void QTermWidget::resizeEvent(QResizeEvent*)

@@ -1,6 +1,7 @@
 // Baulk - Common - Baulk Widget
 //
 // Baulk - Copyright (C) 2008 - Jacob Alexander
+//   <haata at users.sf.net>
 //
 //  Baulk is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -54,6 +55,9 @@ public:
 	QString windowTitleName() const;
 	void setWindowTitleName( QString titleName );
 
+	int screenNumber() const              { return originalScreenNumber; }
+	void setScreenNumber( int screenNum ) { originalScreenNumber = screenNum; }
+
 	//! Command Line Argument Processing
 	virtual bool processCommandArgs();
 
@@ -61,6 +65,9 @@ public slots:
 
 private:
 	void widgetSetup();
+
+	//-- Variables
+	int originalScreenNumber;
 
 protected:
 	virtual void resizeEvent( QResizeEvent *event );

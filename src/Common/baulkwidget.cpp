@@ -1,6 +1,7 @@
 // Baulk - Common - Baulk Widget
 //
 // Baulk - Copyright (C) 2008 - Jacob Alexander
+//   <haata at users.sf.net>
 //
 //  Baulk is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -37,6 +38,9 @@ BaulkWidget::BaulkWidget( QWidget *wrapWidget, QWidget *parent ) : QWidget( pare
 void BaulkWidget::widgetSetup() {
 	setMinimumSize( 250, 250 );
 	setSizePolicy( QSizePolicy::Preferred, QSizePolicy::Preferred );
+
+	// TODO Use default screen instead or config option
+	originalScreenNumber = 0;
 }
 
 // Properties *************************************************************************************

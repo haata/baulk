@@ -537,9 +537,10 @@ void Session::close()
   }
 }
 
-void Session::sendText(const QString &text) const
-{
-  _emulation->sendText(text);
+void Session::sendText(const QString &text) const {
+	qDebug( "sss" );
+	qDebug( text.toUtf8() );
+	_emulation->sendText(text);
 }
 
 Session::~Session()

@@ -25,13 +25,11 @@ enum COLOR_SCHEME {     COLOR_SCHEME_WHITE_ON_BLACK	= 1,
 		        COLOR_SCHEME_GREEN_ON_BLACK,
 		        COLOR_SCHEME_BLACK_ON_LIGHT_YELLOW };
 
-class QTermWidget : public QWidget
-{
+class QTermWidget : public QWidget {
     Q_OBJECT
+
 public:
-    
-    enum ScrollBarPosition
-    {
+    enum ScrollBarPosition {
         /*! Do not show the scroll bar. */
         NoScrollBar=0,
         /*! Show the scroll bar on the left side of the display. */
@@ -83,7 +81,7 @@ public:
     void setScrollBarPosition(ScrollBarPosition);
     
     //! Send some text to terminal
-    void sendText(QString &text);
+    void sendText(QString text);
 
     //! Sets whether flow control is enabled
     void setFlowControlEnabled(bool enabled);

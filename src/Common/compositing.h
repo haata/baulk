@@ -1,6 +1,7 @@
 // Common - Compositing Handles from X11
 //
 // Baulk - Copyright (C) 2008  Jacob Alexander
+//   <haata at users.sf.net>
 //
 // Initial code is taken from the Qt 4 graphics dojo examples
 //  at http://labs.trolltech.com 

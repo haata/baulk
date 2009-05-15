@@ -928,16 +928,14 @@ void Vt102Emulation::sendMouseEvent( int cb, int cx, int cy , int eventType )
 #define encodeMode(M,B) BITS(B,getMode(M))
 #define encodeStat(M,B) BITS(B,((ev->modifiers() & (M)) == (M)))
 
-void Vt102Emulation::sendText( const QString& text )
-{
-  if (!text.isEmpty()) {
-    QKeyEvent event(QEvent::KeyPress, 
-                    0, 
-                    Qt::NoModifier, 
-                    text);
-    sendKeyEvent(&event); // expose as a big fat keypress event
-  }
-
+void Vt102Emulation::sendText( const QString& text ) {
+	if (!text.isEmpty()) {
+		QKeyEvent event( QEvent::KeyPress, 
+				0, 
+				Qt::NoModifier, 
+				text );
+		sendKeyEvent(&event); // expose as a big fat keypress event
+	}
 }
 
 void Vt102Emulation::sendKeyEvent( QKeyEvent* event )

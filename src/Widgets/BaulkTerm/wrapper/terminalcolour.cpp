@@ -1,6 +1,7 @@
 // Baulk - Terminal Colour Container
 //
 // Baulk - Copyright (C) 2008 - Jacob Alexander
+//   <haata at users.sf.net>
 //
 //  Baulk is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by

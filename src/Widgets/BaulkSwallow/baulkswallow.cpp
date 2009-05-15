@@ -1,6 +1,7 @@
 // Baulk - Baulk Swallow - Widget Embedder/Catcher for X11
 //
 // Baulk - Copyright (C) 2008 - Jacob Alexander
+//   <haata at users.sf.net>
 //
 //  File:	baulkswallow.cpp
 //  Author(s):	Jacob Alexander (HaaTa)
