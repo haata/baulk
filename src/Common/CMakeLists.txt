@@ -60,6 +60,24 @@ set( LIB_BD
 )
 
 
+##| Baulk Embed
+
+#| Sources
+set( SRCS_BE
+	./baulkembed.cpp
+)
+
+#| Headers
+set( HDRS_BE
+	./baulkembed.h
+)
+
+#| Library
+set( LIB_BE
+	BaulkEmbed
+)
+
+
 ##| Library Loader
 
 #| Sources
@@ -175,6 +193,17 @@ if ( BuildBaulkDialog )
 	target_link_libraries( ${LIB_BD} ${QT_LIBRARIES} )
 	install( TARGETS ${LIB_BD} DESTINATION lib )
 endif ( BuildBaulkDialog )
+
+
+##| Baulk Embed
+if ( BuildBaulkEmbed AND NOT WIN32 )
+	QT4_WRAP_CPP( MOC_SRCS_BE ${HDRS_BE} )
+	
+	add_library( ${LIB_BE} SHARED ${SRCS_BE} ${MOC_SRCS_BE} )
+	
+	target_link_libraries( ${LIB_BE} ${QT_LIBRARIES} )
+	install( TARGETS ${LIB_BE} DESTINATION lib )
+endif ( BuildBaulkEmbed AND NOT WIN32 )
 
 
 ##| BaulkXML

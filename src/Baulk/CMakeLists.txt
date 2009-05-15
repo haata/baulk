@@ -8,12 +8,12 @@ set( HEAD_DIR ${PROJECT_SOURCE_DIR}/../.. )
 
 if( WIN32 )
 	subdirs(
-		Control
+		#Control
 		#Win
 	)
 else( WIN32 ) #TODO Change to X11 detect
 	subdirs(
-		Control
+		#Control
 		X11
 	)
 endif( WIN32 )
@@ -81,6 +81,7 @@ if ( BuildBaulkBinary )
 		target_link_libraries( ${EXEC} 
 			${QT_LIBRARIES} 
 			LibraryLoader	# From Common
+			BaulkEmbed      # From Common
 			BaulkWidget	# From Common
 			BaulkX11
 		)
