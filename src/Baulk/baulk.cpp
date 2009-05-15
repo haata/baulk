@@ -1,6 +1,7 @@
 // Baulk
 //
-// Baulk - Copyright (C) 2008 - Jacob Alexander
+// Baulk - Copyright (C) 2008-2009 - Jacob Alexander
+//   <haata at users.sf.net>
 //
 //  Baulk is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -18,7 +19,8 @@
 #include "baulk.h"
 
 #ifdef Q_WS_X11
-#include "X11/xcb_WindowScanner.h"
+#include "X11/xcb_windowscanner.h"
+#include <baulkembed.h>
 #endif
 
 // Constructor ************************************************************************************
@@ -27,6 +29,7 @@ Baulk::Baulk( QWidget *parent ) : QObject( (QObject*) parent ) { // TODO Parent
 	///////////// Daemon 
 	QString serverListenName = "BaulkServ"; // TODO Put in config
 
+	/* Works, but not really necessary at this point
 	// Start Daemon - Automatically closes if Daemon is already running
 	QString program;
 	if ( QFile::exists("./baulkServ") )
@@ -36,7 +39,7 @@ Baulk::Baulk( QWidget *parent ) : QObject( (QObject*) parent ) { // TODO Parent
 
 	QProcess::startDetached( program );
 	QTest::qSleep(100); // Leave Time for the Daemon to start
-
+	*/
 	///////////// Screen Info
 	
 	qDebug( "Number of Screens %d" , qApp->desktop()->numScreens() );
@@ -64,18 +67,36 @@ Baulk::Baulk( QWidget *parent ) : QObject( (QObject*) parent ) { // TODO Parent
 	controller->setGeometry( tmp );
 	controller->show();
 
-	QWidget *tets = new QWidget;
-	qDebug( "%d", currentScreenSize.width() );
-	QRect tmp2 = currentScreenSize;
-	tmp2.setLeft( tmp2.width() / 2 );
-	tets->setGeometry( tmp2 );
-	tets->show();
 #ifdef Q_WS_X11
 	XCBWindowScanner scanner( this );
-	scanner.regexFilterWindowName( QRegExp(".*VIM|Buddy List") );
+	scanner.regexFilterWindowName( QRegExp(".*Nokia.*") );
 
 	scanner.logPrintIDList( scanner.filteredList() );
+
+	//BaulkEmbed *tets = new BaulkEmbed( (WId)scanner.filteredList()[0].id );
+	//qDebug( "%d", currentScreenSize.width() );
+	//QRect tmp2 = currentScreenSize;
+	//tmp2.setLeft( tmp2.width() / 2 );
+	//tets->setGeometry( tmp2 );
+	//tets->show();
 #endif
+}
+
+// Create Tiles
+QList<BaulkWidget*> createTiles( QList<windowInfo> windowIDlist, BaulkWidget *parent ) {
+	QList<BaulkWidget*> widgetList;
+
+	for ( int c = 0; c < windowIDlist.count(); ++c ) {
+		widgetList += new BaulkEmbed( windowIDlist[c].id, parent );
+		widgetList[c]->setScreenNumber( windowIDlist[c].screen );
+	}
+
+	return widgetList;
+}
+
+// Order Tiles
+void orderTiles( QList<BaulkWidget*> tileList ) {
+
 }
 
 // Window Close Event *****************************************************************************
