@@ -54,6 +54,7 @@ public:
 	void resizeWindow( xcb_window_t windowID, QRect newSize );
 	void moveWindow( xcb_window_t windowID, int toScreen, QPoint toPoint );
 	void setUserFocus( xcb_window_t windowID );
+	void setWindowBorder( xcb_window_t windowID, int width );
 
 	void setXCBConnection( xcb_connection_t *connection );
 

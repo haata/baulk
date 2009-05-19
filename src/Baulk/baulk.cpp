@@ -20,6 +20,7 @@
 
 #ifdef Q_WS_X11
 #include "X11/xcb_windowscanner.h"
+#include "X11/xcb_windowmanipulation.h"
 #include <baulkembed.h>
 #endif
 
@@ -49,13 +50,13 @@ Baulk::Baulk( QWidget *parent ) : QObject( (QObject*) parent ) { // TODO Parent
 
 	// Setup Controller Instance
 	library = new LibraryLoader( "BaulkControl" );
-	controller = library->loadBaulkWidget( "mainWidget" );
-	controller->setServerListenName( serverListenName );
+	//controller = library->loadBaulkWidget( "mainWidget" );
+	//controller->setServerListenName( serverListenName );
 	//setCentralWidget( controller );
 
 	// Window Settings
 	//setWindowTitle( tr("Baulk - %1").arg( serverListenName ) );
-	connect( controller, SIGNAL( windowTitleNameSet( QString ) ), this, SLOT( setWindowTitleName( QString ) ) );
+	//connect( controller, SIGNAL( windowTitleNameSet( QString ) ), this, SLOT( setWindowTitleName( QString ) ) );
 
 	//////////////// Tiling Basic
 	
@@ -64,15 +65,22 @@ Baulk::Baulk( QWidget *parent ) : QObject( (QObject*) parent ) { // TODO Parent
 	QRect tmp = currentScreenSize;
 	tmp.setRight( tmp.width() / 2 );
 	//controller->move( currentScreenSize.topLeft() );
-	controller->setGeometry( tmp );
-	controller->show();
+	//controller->setGeometry( tmp );
+	//controller->show();
 
 #ifdef Q_WS_X11
 	XCBWindowScanner scanner( this );
 	scanner.regexFilterWindowName( QRegExp(".*Nokia.*") );
-
 	scanner.logPrintIDList( scanner.filteredList() );
+	//QWidget *resre = new QWidget( );
+	//resre->show();
 
+	XCBWindowManipulation *windowManipulator = new XCBWindowManipulation( scanner.serverConnection(), this );
+	QRect recta( 5,5,600,800 );
+	windowManipulator->resizeWindow( scanner.filteredList()[0].id, recta );
+	windowManipulator->moveWindow( scanner.filteredList()[0].id, 0, recta.topLeft() );
+	windowManipulator->setWindowBorder( scanner.filteredList()[0].id, 0 );
+	windowManipulator->setUserFocus( scanner.filteredList()[0].id );
 	//BaulkEmbed *tets = new BaulkEmbed( (WId)scanner.filteredList()[0].id );
 	//qDebug( "%d", currentScreenSize.width() );
 	//QRect tmp2 = currentScreenSize;
@@ -123,7 +131,6 @@ bool Baulk::updateMsgLogs( QStringList msgLogs ) {
 		controller->setMsgLogs( msgLogs );
 		return true;
 	}
-	
 	return false;
 }
 

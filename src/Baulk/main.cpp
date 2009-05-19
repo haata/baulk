@@ -34,7 +34,7 @@ Baulk *baulk;
  */
 int main( int argc, char *argv[] ) {
 	// Message Handler
-	qInstallMsgHandler( handler );  // TODO option for turning this on/off and both console and log
+	//qInstallMsgHandler( handler );  // TODO option for turning this on/off and both console and log
 
 #ifdef Q_WS_X11
 	// Compositing Information

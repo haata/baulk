@@ -62,6 +62,8 @@ public:
 	//! List filtered using filtering commands of Window IDs (castable to long)
 	QList<windowInfo> filteredList() const { return filteredIDs; }
 
+	xcb_connection_t *serverConnection() const { return connection; }
+
 	//-- Helpers
 	//! Prints the Atom String Information on the list of Windows
 	void logPrintIDList( QList<windowInfo> list );
