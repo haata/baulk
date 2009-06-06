@@ -81,7 +81,7 @@ if ( BuildBaulkBinary )
 		target_link_libraries( ${EXEC} 
 			${QT_LIBRARIES} 
 			LibraryLoader	# From Common
-			BaulkEmbed      # From Common
+			#BaulkEmbed      # From Common
 			BaulkWidget	# From Common
 			BaulkX11
 		)

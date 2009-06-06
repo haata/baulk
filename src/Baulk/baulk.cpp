@@ -19,7 +19,6 @@
 #include "baulk.h"
 
 #ifdef Q_WS_X11
-#include "X11/xcb_windowscanner.h"
 #include "X11/xcb_windowmanipulation.h"
 #include <baulkembed.h>
 #endif
@@ -69,18 +68,18 @@ Baulk::Baulk( QWidget *parent ) : QObject( (QObject*) parent ) { // TODO Parent
 	//controller->show();
 
 #ifdef Q_WS_X11
-	XCBWindowScanner scanner( this );
-	scanner.regexFilterWindowName( QRegExp(".*Nokia.*") );
-	scanner.logPrintIDList( scanner.filteredList() );
+	XCBWindowManipulation test( this );
+	test.regexFilterWindowName( QRegExp(".*Nokia.*") );
+	test.logPrintIDList( test.filteredList() );
 	//QWidget *resre = new QWidget( );
 	//resre->show();
 
-	XCBWindowManipulation *windowManipulator = new XCBWindowManipulation( scanner.serverConnection(), this );
+	//XCBWindowManipulation *windowManipulator = new XCBWindowManipulation( scanner.serverConnection(), this );
 	QRect recta( 5,5,600,800 );
-	windowManipulator->resizeWindow( scanner.filteredList()[0].id, recta );
-	windowManipulator->moveWindow( scanner.filteredList()[0].id, 0, recta.topLeft() );
-	windowManipulator->setWindowBorder( scanner.filteredList()[0].id, 0 );
-	windowManipulator->setUserFocus( scanner.filteredList()[0].id );
+	//scanner.resizeWindow( scanner.filteredList()[0].id, recta );
+	test.moveWindow( test.filteredList()[0].id, 0, recta.topLeft() );
+	//windowManipulator->setWindowBorder( scanner.filteredList()[0].id, 0 );
+	//windowManipulator->setUserFocus( scanner.filteredList()[0].id );
 	//BaulkEmbed *tets = new BaulkEmbed( (WId)scanner.filteredList()[0].id );
 	//qDebug( "%d", currentScreenSize.width() );
 	//QRect tmp2 = currentScreenSize;
@@ -93,12 +92,12 @@ Baulk::Baulk( QWidget *parent ) : QObject( (QObject*) parent ) { // TODO Parent
 // Create Tiles
 QList<BaulkWidget*> createTiles( QList<windowInfo> windowIDlist, BaulkWidget *parent ) {
 	QList<BaulkWidget*> widgetList;
-
+/*
 	for ( int c = 0; c < windowIDlist.count(); ++c ) {
 		widgetList += new BaulkEmbed( windowIDlist[c].id, parent );
 		widgetList[c]->setScreenNumber( windowIDlist[c].screen );
 	}
-
+*/
 	return widgetList;
 }
 

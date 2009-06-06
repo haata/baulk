@@ -30,25 +30,24 @@
 //#include <xcb/xcb_atom.h>
 //#include <xcb/xcb_icccm.h>
 
+#include "xcb_windowscanner.h"
 
 //! Manipulates a window with convenient XCB functions
 /*!
  * Convenience functions for manipulating windows
  * in a Tiling Environment under XCB
  */
-class XCBWindowManipulation : public QObject {
+class XCBWindowManipulation : public XCBWindowScanner {
 	Q_OBJECT
 
 public:
 	// -- Constructors
 	XCBWindowManipulation( QObject *parent );
-	XCBWindowManipulation( xcb_connection_t *connection, QObject *parent );
 
 	// -- Destructor
 	~XCBWindowManipulation();
 
 	// -- Accessors
-	xcb_connection_t *connectionToXCB() { return server_connection; }
 
 	// -- Mutators
 	void resizeWindow( xcb_window_t windowID, QRect newSize );
@@ -60,7 +59,6 @@ public:
 
 private:
 	// -- Variables
-	xcb_connection_t *server_connection;
 	
 	// -- Functions
 };

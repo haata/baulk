@@ -51,7 +51,7 @@ int main( int argc, char *argv[] ) {
 #endif
 
 	baulk = new Baulk;
-	baulk->processCommandArgs();
+	//baulk->processCommandArgs();
 	//if ( !baulk->processCommandArgs() );
 	//	delete baulk;
 	//	delete app;
