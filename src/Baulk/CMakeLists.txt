@@ -19,7 +19,7 @@ else( WIN32 ) #TODO Change to X11 detect
 endif( WIN32 )
 
 
-#| Sources
+#| Sources 
 set( SRCS
 	./baulk.cpp
         ./main.cpp

@@ -18,9 +18,11 @@
 
 #include "unified_interface.h"
 
-UnifiedInterface::UnifiedInterface( QObject *parent ) : XCBWindowManipulation( parent ) {
+//-CMAKE UnifiedInterface::UnifiedInterface( QObject *parent ) : WinWindowManipulation( parent ) : WinWindowScanner( parent ) { //-WIN
+UnifiedInterface::UnifiedInterface( QObject *parent ) : XCBWindowManipulation( parent ) { //-X11
 }
 
 UnifiedInterface::~UnifiedInterface() {
 }
+
 

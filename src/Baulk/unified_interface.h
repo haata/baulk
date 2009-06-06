@@ -19,9 +19,12 @@
 #ifndef __UNIFIED_INTERFACE_H
 #define __UNIFIED_INTERFACE_H
 
-#include "X11/xcb_windowmanipulation.h"
+//-CMAKE #include "Win/win_windowmanipulation.h" //-WIN
+//-CMAKE #include "Win/win_windowscanner.h" //-WIN
+#include "X11/xcb_windowmanipulation.h" //-X11
 
-class UnifiedInterface : public XCBWindowManipulation {
+//-CMAKE class UnifiedInterface : public WinWindowManipulation, public WinWindowScanner { //-WIN
+class UnifiedInterface : public XCBWindowManipulation { //-X11
 	Q_OBJECT
 public:
 	UnifiedInterface( QObject *parent = 0 );
