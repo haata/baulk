@@ -149,9 +149,8 @@ void XCBWindowScanner::parseWindowIDs() {
 				continue;
 
 			// Add to list of useable Window IDs
-			windowInfo tmp;
-			tmp.id = wins[i];
-			tmp.screen = phys_screen;
+			QString tmp;
+			tmp = infoToListString( wins[i], phys_screen );
 			availableIDs += tmp;
 		}
 
@@ -178,10 +177,10 @@ void XCBWindowScanner::regexFilterWindowIconName( QRegExp exp ) {
 	exp.setPatternSyntax( QRegExp::RegExp2 );
 
 	// Filter List
-	QList<windowInfo> newFilteredIDs;
+	QStringList newFilteredIDs;
 
 	for ( int c = 0; c < filteredIDs.count(); ++c )
-		if ( exp.exactMatch( windowAtomToString( filteredIDs[c].id, WM_ICON_NAME ) ) ) 
+		if ( exp.exactMatch( windowAtomToString( listStringToWindowID( filteredIDs[c] ), WM_ICON_NAME ) ) ) 
 			newFilteredIDs += filteredIDs[c];
 
 	filteredIDs = newFilteredIDs;
@@ -193,11 +192,11 @@ void XCBWindowScanner::regexFilterWindowClass( QRegExp exp ) {
 
 	exp.setPatternSyntax( QRegExp::RegExp2 );
 
-	QList<windowInfo> newFilteredIDs;
+	QStringList newFilteredIDs;
 
 	// Filter List
 	for ( int c = 0; c < filteredIDs.count(); ++c )
-		if ( exp.exactMatch( windowAtomToString( filteredIDs[c].id, WM_CLASS ) ) )
+		if ( exp.exactMatch( windowAtomToString( listStringToWindowID( filteredIDs[c] ), WM_CLASS ) ) )
 			newFilteredIDs += filteredIDs[c];
 
 	filteredIDs = newFilteredIDs;
@@ -209,11 +208,11 @@ void XCBWindowScanner::regexFilterWindowMachineName( QRegExp exp ) {
 
 	exp.setPatternSyntax( QRegExp::RegExp2 );
 
-	QList<windowInfo> newFilteredIDs;
+	QStringList newFilteredIDs;
 
 	// Filter List
 	for ( int c = 0; c < filteredIDs.count(); ++c )
-		if ( exp.exactMatch( windowAtomToString( filteredIDs[c].id, WM_CLIENT_MACHINE ) ) )
+		if ( exp.exactMatch( windowAtomToString( listStringToWindowID( filteredIDs[c] ), WM_CLIENT_MACHINE ) ) )
 			newFilteredIDs += filteredIDs[c];
 
 	filteredIDs = newFilteredIDs;
@@ -225,11 +224,11 @@ void XCBWindowScanner::regexFilterWindowName( QRegExp exp ) {
 
 	exp.setPatternSyntax( QRegExp::RegExp2 );
 
-	QList<windowInfo> newFilteredIDs;
+	QStringList newFilteredIDs;
 
 	// Filter List
 	for ( int c = 0; c < filteredIDs.count(); ++c )
-		if ( exp.exactMatch( windowAtomToString( filteredIDs[c].id, WM_NAME ) ) )
+		if ( exp.exactMatch( windowAtomToString( listStringToWindowID( filteredIDs[c] ), WM_NAME ) ) )
 			newFilteredIDs += filteredIDs[c];
 
 	filteredIDs = newFilteredIDs;
@@ -241,27 +240,40 @@ void XCBWindowScanner::regexFilterScreenNumber( QRegExp exp ) {
 
 	exp.setPatternSyntax( QRegExp::RegExp2 );
 
-	QList<windowInfo> newFilteredIDs;
+	QStringList newFilteredIDs;
 
 	// Filter List
 	for ( int c = 0; c < filteredIDs.count(); ++c )
-		if ( exp.exactMatch( QString( filteredIDs[c].screen ) ) )
+		if ( exp.exactMatch( QString( listStringToScreen( filteredIDs[c] ) ) ) )
 			newFilteredIDs += filteredIDs[c];
 
 	filteredIDs = newFilteredIDs;
 }
 
+// Window Info Conversions ************************************************************************
+int XCBWindowScanner::listStringToWindowID( QString info ) {
+	return info.split(",")[0].toInt();
+}
+
+int XCBWindowScanner::listStringToScreen( QString info ) {
+	return info.split(",")[1].toInt();
+}
+
+QString XCBWindowScanner::infoToListString( int windowID, int screen ) {
+	return QString("%1,%2").arg( windowID ).arg( screen );
+}
+
 // ID Atom Info Log Printer ***********************************************************************
-void XCBWindowScanner::logPrintIDList( QList<windowInfo> list ) {
+void XCBWindowScanner::logPrintIDList( QStringList list ) {
 	for ( int c = 0; c < list.count(); ++c ) {
 		qDebug( tr("------WindowInfo #%1------").arg( c ).toUtf8() );
 
-		qDebug( tr("Class: %1").arg( windowAtomToString( list[c].id, WM_CLASS ) ).toUtf8() );
-		qDebug( tr("Host: %1").arg( windowAtomToString( list[c].id, WM_CLIENT_MACHINE ) ).toUtf8() );
-		qDebug( tr("IconName: %1").arg( windowAtomToString( list[c].id, WM_ICON_NAME ) ).toUtf8() );
-		qDebug( tr("Name: %1").arg( windowAtomToString( list[c].id, WM_NAME ) ).toUtf8() );
-		qDebug( tr("ID: %1").arg( QString::number( (long)list[c].id ) ).toUtf8() );
-		qDebug( tr("Screen: %1").arg( QString::number( list[c].screen ) ).toUtf8() );
+		qDebug( tr("Class: %1").arg( windowAtomToString( listStringToWindowID( list[c] ), WM_CLASS ) ).toUtf8() );
+		qDebug( tr("Host: %1").arg( windowAtomToString( listStringToWindowID( list[c] ), WM_CLIENT_MACHINE ) ).toUtf8() );
+		qDebug( tr("IconName: %1").arg( windowAtomToString( listStringToWindowID( list[c] ) , WM_ICON_NAME ) ).toUtf8() );
+		qDebug( tr("Name: %1").arg( windowAtomToString( listStringToWindowID( list[c] ), WM_NAME ) ).toUtf8() );
+		qDebug( tr("ID: %1").arg( QString::number( listStringToWindowID( list[c] ) ) ).toUtf8() );
+		qDebug( tr("Screen: %1").arg( QString::number( listStringToScreen( list[c] ) ) ).toUtf8() );
 	}
 
 	qDebug( tr("-----WindowInfo End-----").toUtf8() );

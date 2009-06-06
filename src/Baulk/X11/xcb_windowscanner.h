@@ -25,6 +25,7 @@
 #include <QDesktopWidget>
 #include <QList>
 #include <QObject>
+#include <QStringList>
 #include <QX11Info>
 
 #include <xcb/xcb.h>
@@ -35,11 +36,6 @@ typedef struct {
 	xcb_window_t id;
 	xcb_query_tree_cookie_t tree_cookie;
 } root_win_t;
-
-typedef struct {
-	xcb_window_t id;
-	int screen;
-} windowInfo;
 
 //! Scans Viewable X11 Windows for Window IDs
 /*!
@@ -57,17 +53,19 @@ public:
 	~XCBWindowScanner();
 
 	//-- Accessors
-	//! Full list of useable Window IDs (castable to long)
-	QList<windowInfo> fullList() const     { return availableIDs; }
-	//! List filtered using filtering commands of Window IDs (castable to long)
-	QList<windowInfo> filteredList() const { return filteredIDs; }
-
 	xcb_connection_t *serverConnection() const { return connection; }
+
+public slots: // Script Accessible Functions
+	//-- Accessors
+	//! Full list of useable Window IDs (castable to long)
+	QStringList fullList() const     { return availableIDs; }
+	//! List filtered using filtering commands of Window IDs (castable to long)
+	QStringList filteredList() const { return filteredIDs; }
 
 	//-- Helpers
 	//! Prints the Atom String Information on the list of Windows
-	void logPrintIDList( QList<windowInfo> list );
-	
+	void logPrintIDList( QStringList list );
+
 	//-- Mutators
 	void resetFilteredList();
 	void updateNumberOfScreens();
@@ -90,16 +88,22 @@ public:
 	//! Full Window ID rescan
 	//!  Resets the filtered list as well
 	void rescanWindowIDs();
+
+	// -- Converters
+	static int listStringToWindowID( QString info );
+	static int listStringToScreen( QString info );
+	static QString infoToListString( int windowID, int screen );
+
 private:
 	//-- Variables
 	xcb_connection_t *connection;
 	int maxScreens;
-	QList<windowInfo> availableIDs;
-	QList<windowInfo> filteredIDs;
+	QStringList availableIDs;
+	QStringList filteredIDs;
 
 	//-- Functions
 	void connectToX();
-	
+
 	//! Scans the Window IDs of the available windows
 	void parseWindowIDs();
 

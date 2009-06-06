@@ -18,57 +18,30 @@
 
 #include "baulk.h"
 
-#ifdef Q_WS_X11
-//#include "X11/xcb_windowmanipulation.h"
-#include "unified_interface.h"
-#include <baulkembed.h>
-#endif
-
 // Constructor ************************************************************************************
 Baulk::Baulk( QWidget *parent ) : QObject( (QObject*) parent ) { // TODO Parent
 
-	///////////// Daemon 
-	QString serverListenName = "BaulkServ"; // TODO Put in config
+	QScriptEngine engine;
+	// Baulk Script
+	engine.globalObject().setProperty( "UnifiedInterface", engine.scriptValueFromQMetaObject<UnifiedInterface>() );
 
-	/* Works, but not really necessary at this point
-	// Start Daemon - Automatically closes if Daemon is already running
-	QString program;
-	if ( QFile::exists("./baulkServ") )
-		program = QString("./baulkServ %1").arg( serverListenName );
-	else
-		program = QString("baulkServ %1").arg( serverListenName );
+	// Start Scripting Engine
+	QString scriptFileName("baulkscript.js"); // TODO Place with configs
+	QFile scriptFile( scriptFileName );
+	scriptFile.open( QIODevice::ReadOnly );
+	engine.evaluate( scriptFile.readAll(), scriptFileName );
+	scriptFile.close();
 
-	QProcess::startDetached( program );
-	QTest::qSleep(100); // Leave Time for the Daemon to start
-	*/
+	if ( engine.hasUncaughtException() )
+		qDebug("ARG!");
+
 	///////////// Screen Info
-	
 	qDebug( "Number of Screens %d" , qApp->desktop()->numScreens() );
 	// TODO Change to settings or dynamic (-1 is default screen)
 	QRect currentScreenSize = qApp->desktop()->availableGeometry( -1 );
-
-
-	// Setup Controller Instance
-	library = new LibraryLoader( "BaulkControl" );
-	//controller = library->loadBaulkWidget( "mainWidget" );
-	//controller->setServerListenName( serverListenName );
-	//setCentralWidget( controller );
-
-	// Window Settings
-	//setWindowTitle( tr("Baulk - %1").arg( serverListenName ) );
-	//connect( controller, SIGNAL( windowTitleNameSet( QString ) ), this, SLOT( setWindowTitleName( QString ) ) );
-
-	//////////////// Tiling Basic
-	
-	//controller->setGeometry( currentScreenSize );
 	qDebug( "%d", currentScreenSize.width() );
-	QRect tmp = currentScreenSize;
-	tmp.setRight( tmp.width() / 2 );
-	//controller->move( currentScreenSize.topLeft() );
-	//controller->setGeometry( tmp );
-	//controller->show();
 
-#ifdef Q_WS_X11
+#if 0
 	UnifiedInterface test( this );
 	test.regexFilterWindowName( QRegExp(".*Nokia.*") );
 	test.logPrintIDList( test.filteredList() );
@@ -78,7 +51,7 @@ Baulk::Baulk( QWidget *parent ) : QObject( (QObject*) parent ) { // TODO Parent
 	//XCBWindowManipulation *windowManipulator = new XCBWindowManipulation( scanner.serverConnection(), this );
 	QRect recta( 5,5,600,800 );
 	//scanner.resizeWindow( scanner.filteredList()[0].id, recta );
-	test.moveWindow( test.filteredList()[0].id, 0, recta.topLeft() );
+	test.moveWindow( UnifiedInterface::listStringToWindowID( test.filteredList()[0] ), 0, recta.topLeft() );
 	//windowManipulator->setWindowBorder( scanner.filteredList()[0].id, 0 );
 	//windowManipulator->setUserFocus( scanner.filteredList()[0].id );
 	//BaulkEmbed *tets = new BaulkEmbed( (WId)scanner.filteredList()[0].id );
@@ -88,23 +61,6 @@ Baulk::Baulk( QWidget *parent ) : QObject( (QObject*) parent ) { // TODO Parent
 	//tets->setGeometry( tmp2 );
 	//tets->show();
 #endif
-}
-
-// Create Tiles
-QList<BaulkWidget*> createTiles( QList<windowInfo> windowIDlist, BaulkWidget *parent ) {
-	QList<BaulkWidget*> widgetList;
-/*
-	for ( int c = 0; c < windowIDlist.count(); ++c ) {
-		widgetList += new BaulkEmbed( windowIDlist[c].id, parent );
-		widgetList[c]->setScreenNumber( windowIDlist[c].screen );
-	}
-*/
-	return widgetList;
-}
-
-// Order Tiles
-void orderTiles( QList<BaulkWidget*> tileList ) {
-
 }
 
 // Window Close Event *****************************************************************************

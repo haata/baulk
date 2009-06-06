@@ -21,14 +21,18 @@
 
 #include <QDesktopWidget>
 #include <QCloseEvent>
-//#include <QMainWindow>
 #include <QObject>
 #include <QProcess>
 #include <QTest>
+#include <QtScript>
 #include <QWidget>
 
 #include <baulkwidget.h>
 #include <libraryloader.h>
+
+#include "unified_interface.h"
+
+Q_SCRIPT_DECLARE_QMETAOBJECT(UnifiedInterface, QObject*)
 
 //! Main GUI Entrance class for Baulk.
 /*!

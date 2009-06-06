@@ -29,25 +29,33 @@ XCBWindowManipulation::~XCBWindowManipulation() {
 }
 
 // Window Shape ***********************************************************************************
-void XCBWindowManipulation::resizeWindow( xcb_window_t windowID, QRect newSize ) {
+void XCBWindowManipulation::resizeWindow( int windowID, QRect newSize ) {
 	uint32_t values[] = { newSize.height(), newSize.width() };
 	xcb_configure_window( serverConnection(), windowID, XCB_CONFIG_WINDOW_HEIGHT | XCB_CONFIG_WINDOW_WIDTH, values );
 }
 
+void XCBWindowManipulation::resizeWindow( int windowID, int width, int height ) {
+	resizeWindow( windowID, QRect( 0, 0, width, height ) );
+}
+
 // Window Location ********************************************************************************
-void XCBWindowManipulation::moveWindow( xcb_window_t windowID, int toScreen, QPoint toPoint ) {
+void XCBWindowManipulation::moveWindow( int windowID, int toScreen, QPoint toPoint ) {
 	// TODO - Screen # Moving
 	uint32_t values[] = { toPoint.x(), toPoint.y() };
 	xcb_configure_window( serverConnection(), windowID, XCB_CONFIG_WINDOW_X | XCB_CONFIG_WINDOW_Y, values );
 }
 
+void XCBWindowManipulation::moveWindow( int windowID, int toScreen, int x, int y ) {
+	moveWindow( windowID, toScreen, QPoint( x, y ) );
+}
+
 // Focus Control **********************************************************************************
-void XCBWindowManipulation::setUserFocus( xcb_window_t windowID ) {
+void XCBWindowManipulation::setUserFocus( int windowID ) {
 	xcb_set_input_focus( serverConnection(), XCB_INPUT_FOCUS_PARENT, windowID, XCB_CURRENT_TIME );
 }
 
 // Border Control *********************************************************************************
-void XCBWindowManipulation::setWindowBorder( xcb_window_t windowID, int width ) {
+void XCBWindowManipulation::setWindowBorder( int windowID, int width ) {
 	uint32_t values[] = { width };
 	xcb_configure_window( serverConnection(), windowID, XCB_CONFIG_WINDOW_BORDER_WIDTH, values );
 }

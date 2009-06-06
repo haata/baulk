@@ -27,8 +27,6 @@
 #include <QX11Info>
 
 #include <xcb/xcb.h>
-//#include <xcb/xcb_atom.h>
-//#include <xcb/xcb_icccm.h>
 
 #include "xcb_windowscanner.h"
 
@@ -50,12 +48,17 @@ public:
 	// -- Accessors
 
 	// -- Mutators
-	void resizeWindow( xcb_window_t windowID, QRect newSize );
-	void moveWindow( xcb_window_t windowID, int toScreen, QPoint toPoint );
-	void setUserFocus( xcb_window_t windowID );
-	void setWindowBorder( xcb_window_t windowID, int width );
+	void resizeWindow( int windowID, QRect newSize );
+	void moveWindow( int windowID, int toScreen, QPoint toPoint );
 
 	void setXCBConnection( xcb_connection_t *connection );
+
+public slots: // Scriptable Functions
+	// -- Mutators
+	void resizeWindow( int windowID, int width, int height );
+	void moveWindow( int windowID, int toScreen, int x, int y );
+	void setUserFocus( int windowID );
+	void setWindowBorder( int windowID, int width );
 
 private:
 	// -- Variables
