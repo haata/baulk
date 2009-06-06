@@ -23,11 +23,13 @@ endif( WIN32 )
 set( SRCS
 	./baulk.cpp
         ./main.cpp
+	./unified_interface.cpp
 )
 
 #| Headers
 set( HDRS
 	./baulk.h
+	./unified_interface.h
 )
 
 #| Executable

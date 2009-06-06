@@ -19,7 +19,8 @@
 #include "baulk.h"
 
 #ifdef Q_WS_X11
-#include "X11/xcb_windowmanipulation.h"
+//#include "X11/xcb_windowmanipulation.h"
+#include "unified_interface.h"
 #include <baulkembed.h>
 #endif
 
@@ -68,7 +69,7 @@ Baulk::Baulk( QWidget *parent ) : QObject( (QObject*) parent ) { // TODO Parent
 	//controller->show();
 
 #ifdef Q_WS_X11
-	XCBWindowManipulation test( this );
+	UnifiedInterface test( this );
 	test.regexFilterWindowName( QRegExp(".*Nokia.*") );
 	test.logPrintIDList( test.filteredList() );
 	//QWidget *resre = new QWidget( );
