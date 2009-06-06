@@ -50,20 +50,16 @@ int main( int argc, char *argv[] ) {
 	QApplication *app = new QApplication( argc, argv );
 #endif
 
-	baulk = new Baulk;
-	//baulk->processCommandArgs();
-	//if ( !baulk->processCommandArgs() );
-	//	delete baulk;
-	//	delete app;
-	//	return 0;
-	//}
+	baulk = new Baulk( app );
 
-	// Event-Loop	
-	int reTurn = app->exec();
+	// Event-Loop
+	int reTurn = 0;
+
+	if ( baulk->processCommandArgs() )
+		reTurn = app->exec();
 
 	// Post-Quit Events
-	//delete baulk;
-	//delete app;
+	delete app;
 
 	return reTurn;
 }

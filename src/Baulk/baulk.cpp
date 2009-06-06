@@ -19,7 +19,7 @@
 #include "baulk.h"
 
 // Constructor ************************************************************************************
-Baulk::Baulk( QWidget *parent ) : QObject( (QObject*) parent ) { // TODO Parent
+Baulk::Baulk( QObject *parent ) : QObject( parent ) {
 
 	QScriptEngine engine;
 	// Baulk Script
@@ -32,8 +32,10 @@ Baulk::Baulk( QWidget *parent ) : QObject( (QObject*) parent ) { // TODO Parent
 	engine.evaluate( scriptFile.readAll(), scriptFileName );
 	scriptFile.close();
 
-	if ( engine.hasUncaughtException() )
-		qDebug("ARG!");
+	if ( engine.hasUncaughtException() ) {
+		qDebug( tr("BaulkScript has blown up in your face!").toUtf8() );
+		qDebug( tr("%1 | %2").arg( engine.uncaughtException().toString() ).arg( engine.uncaughtExceptionBacktrace().join("\n") ).toUtf8() );
+	}
 
 	///////////// Screen Info
 	qDebug( "Number of Screens %d" , qApp->desktop()->numScreens() );
@@ -41,62 +43,17 @@ Baulk::Baulk( QWidget *parent ) : QObject( (QObject*) parent ) { // TODO Parent
 	QRect currentScreenSize = qApp->desktop()->availableGeometry( -1 );
 	qDebug( "%d", currentScreenSize.width() );
 
-#if 0
-	UnifiedInterface test( this );
-	test.regexFilterWindowName( QRegExp(".*Nokia.*") );
-	test.logPrintIDList( test.filteredList() );
-	//QWidget *resre = new QWidget( );
-	//resre->show();
-
-	//XCBWindowManipulation *windowManipulator = new XCBWindowManipulation( scanner.serverConnection(), this );
-	QRect recta( 5,5,600,800 );
-	//scanner.resizeWindow( scanner.filteredList()[0].id, recta );
-	test.moveWindow( UnifiedInterface::listStringToWindowID( test.filteredList()[0] ), 0, recta.topLeft() );
-	//windowManipulator->setWindowBorder( scanner.filteredList()[0].id, 0 );
-	//windowManipulator->setUserFocus( scanner.filteredList()[0].id );
-	//BaulkEmbed *tets = new BaulkEmbed( (WId)scanner.filteredList()[0].id );
-	//qDebug( "%d", currentScreenSize.width() );
-	//QRect tmp2 = currentScreenSize;
-	//tmp2.setLeft( tmp2.width() / 2 );
-	//tets->setGeometry( tmp2 );
-	//tets->show();
-#endif
-}
-
-// Window Close Event *****************************************************************************
-void Baulk::closeEvent( QCloseEvent *event ) {
-	//event->ignore();
-	
-	// TODO - Send Event to Controller for quit/save message
-	// 		Use controller infoClient inorder to determine whether or not to kill the server
-	/*	
-	bool (*allowQuit)();
-	allowQuit = (bool(*)()) library->lrResolve("allowQuit");
-
-	if ( allowQuit() ) {
-		qDebug("Closing");
-		event->accept();
-	}
-	else event->ignore();
-	*/
 }
 
 // Log Update *************************************************************************************
 bool Baulk::updateMsgLogs( QStringList msgLogs ) {
-	if ( controller != 0 ) {
-		controller->setMsgLogs( msgLogs );
-		return true;
-	}
-	return false;
+	// TODO Redo
+	return true;
 }
 
 // Command Line Arguments *************************************************************************
 bool Baulk::processCommandArgs() {
-	return controller->processCommandArgs();
-}
-
-// SLOTS ******************************************************************************************
-void Baulk::setWindowTitleName( QString windowTitle ) {
-	//setWindowTitle( windowTitle );
+	// TODO Redo
+	return true;
 }
 

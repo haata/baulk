@@ -20,10 +20,7 @@
 #define __BAULK_H
 
 #include <QDesktopWidget>
-#include <QCloseEvent>
 #include <QObject>
-#include <QProcess>
-#include <QTest>
 #include <QtScript>
 #include <QWidget>
 
@@ -46,7 +43,7 @@ class Baulk : public QObject {
 
 public:
 	//! Baulk Constructor
-	Baulk( QWidget *parent = 0 );
+	Baulk( QObject *parent = 0 );
 
 	/*!
 	 * This public function allows \link handler() \endlink
@@ -55,24 +52,6 @@ public:
 	bool updateMsgLogs( QStringList msgLogs );
 
 	bool processCommandArgs();
-
-private:
-	//! BaulkControl Pointer
-	BaulkWidget *controller;
-
-	//! BaulkControl Library Pointer
-	LibraryLoader *library;
-
-private slots:
-	//! Allows BaulkControl to change the Window Title
-	void setWindowTitleName( QString windowTitle );
-
-protected:
-	/*! 
-	 * Reimplemented QWidget Event that handles the application
-	 * Quit Event
-	 */ 
-	virtual void closeEvent( QCloseEvent *event );
 };
 
 #endif
