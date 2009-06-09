@@ -30,7 +30,7 @@ XCBWindowManipulation::~XCBWindowManipulation() {
 
 // Window Shape ***********************************************************************************
 void XCBWindowManipulation::resizeWindow( int windowID, QRect newSize ) {
-	uint32_t values[] = { newSize.height(), newSize.width() };
+	uint32_t values[] = { newSize.width(), newSize.height() };
 	xcb_configure_window( serverConnection(), windowID, XCB_CONFIG_WINDOW_HEIGHT | XCB_CONFIG_WINDOW_WIDTH, values );
 }
 
@@ -47,6 +47,43 @@ void XCBWindowManipulation::moveWindow( int windowID, int toScreen, QPoint toPoi
 
 void XCBWindowManipulation::moveWindow( int windowID, int toScreen, int x, int y ) {
 	moveWindow( windowID, toScreen, QPoint( x, y ) );
+}
+
+QString XCBWindowManipulation::windowSizeInfo( int windowID ) {
+	QString out;
+
+	xcb_get_geometry_cookie_t geomCookie = xcb_get_geometry( serverConnection(), windowID);
+	xcb_get_geometry_reply_t *geom = xcb_get_geometry_reply( serverConnection(), geomCookie, NULL);
+
+	out = QString("%1,%2,%3,%4,%5")
+		.arg( geom->x )
+		.arg( geom->y )
+		.arg( geom->width )
+		.arg( geom->height )
+		.arg( geom->border_width );
+
+	free (geom);
+	return out;
+}
+
+int XCBWindowManipulation::windowRelativeX( QString windowSizeInfo ) {
+	return windowSizeInfo.split(",")[0].toInt();
+}
+
+int XCBWindowManipulation::windowRelativeY( QString windowSizeInfo ) {
+	return windowSizeInfo.split(",")[1].toInt();
+}
+
+int XCBWindowManipulation::windowWidth( QString windowSizeInfo ) {
+	return windowSizeInfo.split(",")[2].toInt();
+}
+
+int XCBWindowManipulation::windowHeight( QString windowSizeInfo ) {
+	return windowSizeInfo.split(",")[3].toInt();
+}
+
+int XCBWindowManipulation::windowBorderWidth( QString windowSizeInfo ) {
+	return windowSizeInfo.split(",")[4].toInt();
 }
 
 // Focus Control **********************************************************************************
