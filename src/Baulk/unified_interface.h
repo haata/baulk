@@ -27,29 +27,29 @@
 class UnifiedInterface : public XCBWindowManipulation { //-X11
 	Q_OBJECT
 public:
-	// - Constructors
+	// -- Constructors
 	UnifiedInterface( QObject *parent = 0 );
 
-	// - Destructor
+	// -- Destructor
 	~UnifiedInterface();
 
-	// - Accessors
+	// -- Accessors
 	
-	// - Mutators
+	// -- Mutators
 	void tileIDList( QStringList windowIDList, bool horizontal, QRect area );
 
 public slots: // Scriptable Functions
-	// - Accessors
+	// -- Accessors
 	
-	// - Mutators
+	// -- Mutators
 	void setWindowBorders( QStringList windowIDList, int width );
 	void swapWindows( int windowID1, int windowID2 );
 	void tileIDList( QStringList windowIDList, bool horizontal, int x, int y, int width, int height );
 
 private:
-	// - Variables
+	// -- Variables
 	
-	// - Functions
+	// -- Functions
 };
 
 #endif

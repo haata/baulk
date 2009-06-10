@@ -54,11 +54,11 @@ public:
 	void setXCBConnection( xcb_connection_t *connection );
 
 public slots: // Scriptable Functions
-	// - Accessors
+	// -- Accessors
 	//! Format: relative x, relative y, width, height, border width
 	QString windowSizeInfo( int windowID );
 
-	// - Helpers
+	// -- Converters
 	int windowRelativeX( QString windowSizeInfo );
 	int windowRelativeY( QString windowSizeInfo );
 	int windowWidth( QString windowSizeInfo );

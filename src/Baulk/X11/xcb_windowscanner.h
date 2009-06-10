@@ -52,21 +52,21 @@ public:
 	//! Deconstructor
 	~XCBWindowScanner();
 
-	//-- Accessors
+	// -- Accessors
 	xcb_connection_t *serverConnection() const { return connection; }
 
 public slots: // Script Accessible Functions
-	//-- Accessors
+	// -- Accessors
 	//! Full list of useable Window IDs (castable to long)
 	QStringList fullList() const     { return availableIDs; }
 	//! List filtered using filtering commands of Window IDs (castable to long)
 	QStringList filteredList() const { return filteredIDs; }
 
-	//-- Helpers
+	// -- Helpers
 	//! Prints the Atom String Information on the list of Windows
 	void logPrintIDList( QStringList list );
 
-	//-- Mutators
+	// -- Mutators
 	void resetFilteredList();
 	void updateNumberOfScreens();
 
@@ -95,13 +95,13 @@ public slots: // Script Accessible Functions
 	static QString infoToListString( int windowID, int screen );
 
 private:
-	//-- Variables
+	// -- Variables
 	xcb_connection_t *connection;
 	int maxScreens;
 	QStringList availableIDs;
 	QStringList filteredIDs;
 
-	//-- Functions
+	// -- Functions
 	void connectToX();
 
 	//! Scans the Window IDs of the available windows
