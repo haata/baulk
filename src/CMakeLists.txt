@@ -1,16 +1,7 @@
-###| CMAKE Baulk (Top-Level Build) |###
-
-#| Build Target Variable Information
+# Please use at least one build flag, for first build. 
+# Note that if you select a build option after the first build, the build cache will be deleted in order to reset the build scheme.
 #
-# set using "cmake -D<variable>=<true/false> ."
-#
-# Note: You only need to set the variable once, at that point it will be in the variable
-# 	 cache. You will only need to set the variable again if you want to turn it off.
-# 
 # | BuildAll			- Builds everything 
-# | BuildReset			- Initializes build variables to zero before determining dependencies
-#				Note: This variable stays on, so you must set it to false if you want
-#					to build
 # 
 # Folder Builds
 # | BuildBaulk			- Builds Baulk (Default)
@@ -42,7 +33,23 @@
 # | BuildBaulkTermBinary 	- Builds binary version of BaulkTerm
 # | BuildQTermWidget		- Builds QTermWidget library
 #
-#|
+# set using "make <variable1> <variable2> build"
+# ie. make BuildAll or make BuildBaulkTermBinary BuildBaulk build
+
+###| CMAKE Baulk (Top-Level Build) |###
+
+#| CMake Build Target Variable Information
+#
+# set using "cmake -D<variable1>=<true/false> -D<variable2>=<true/false> ."
+# OR 
+# 
+# Note: You only need to set the variable once, at that point it will be in the variable
+# 	 cache. You will only need to set the variable again if you want to turn it off.
+# Other CMake Specific Variables
+#
+# | BuildReset			- Initializes build variables to zero before determining dependencies
+#				Note: This variable stays on, so you must set it to false if you want
+#					to build
 
 ##| Project
 project( BaulkTOPLEVEL )
